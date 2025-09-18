@@ -1,0 +1,55 @@
+{
+    // BEGIN - Recording specific settings
+    "editor.fontSize": 22, // Use 18 for Screen Recordings
+    "debug.console.fontSize": 20, // Use 18 for Screen Recordings
+    "terminal.integrated.fontSize": 22, // Use 18 for Screen Recordings
+    "window.zoomLevel": 0, // Use 3 for Screen Recordings
+
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "python.envFile": "${workspaceFolder}/.env",
+    "terminal.integrated.env.linux": {
+        "PRE_NAMESPACE_PWD": "${workspaceFolder}"
+    },
+    "python.languageServer": "Pylance",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}"
+    ],
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}"
+    ],
+    "python.terminal.activateEnvironment": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "**/*.egg-info": true,
+        ".pytest_cache": true,
+        ".coverage": true,
+        "htmlcov": true
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "files.associations": {
+        "*.toml": "toml"
+    }
+}

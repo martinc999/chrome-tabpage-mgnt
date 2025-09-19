@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <h2>Tab Scanner</h2>
+    <button id="refreshButton">🔄 Refresh</button>
+  </div>
+  
+  <div class="stats">
+    <span id="tabCount">Loading tabs...</span>
+  </div>
+  
+  <div class="toolbar">
+    <button id="customPromptBtn">Custom Prompt</button>
+    <button id="categoriesBtn">Build Categories</button>
+  </div>
+  
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search tabs..." />
+  </div>
+  
+  <div id="tabsList" class="tabs-container">
+    <div class="loading">Scanning tabs...</div>
+  </div>
+  
+  <!-- Custom Prompt Modal -->
+  <div id="customPromptModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>AI-Powered Tab Analysis</h3>
+        <button class="close-btn" id="closePromptModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="ai-status" id="aiStatus">
+          <div class="status-indicator" id="statusIndicator">🔄</div>
+          <span id="statusText">Checking AI availability...</span>
+        </div>
+        
+        <div id="promptSection" style="display: none;">
+          <label for="promptInput">Ask about your tabs:</label>
+          <textarea id="promptInput" placeholder="Try asking:
+• Summarize my browsing activity
+• What topics am I researching?  
+• Find duplicate or similar tabs
+• Show me work-related tabs
+• Categorize my tabs by topic"></textarea>
+          
+          <div class="prompt-options">
+            <label>
+              <input type="checkbox" id="includeContent" checked>
+              Include page content in analysis
+            </label>
+            <label>
+              <input type="checkbox" id="includeUrls" checked>
+              Include URLs in analysis
+            </label>
+          </div>
+          
+          <div class="button-group">
+            <button id="submitPrompt">Analyze Tabs</button>
+            <button id="quickSummary" class="secondary-btn">Quick Summary</button>
+          </div>
+        </div>
+        
+        <div id="promptStatus" class="status-message" style="display: none;">
+          <div class="loading-spinner"></div>
+          <span>AI is processing your request...</span>
+        </div>
+        
+        <div id="promptResults" class="results-section" style="display: none;">
+          <h4>AI Analysis Results:</h4>
+          <div id="resultsContent"></div>
+          <button id="newPrompt" class="secondary-btn">Ask Another Question</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Categories Modal -->
+  <div id="categoriesModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Build Categories</h3>
+        <button class="close-btn" id="closeCategoriesModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="categoryList">
+          <div class="category-item">Science</div>
+          <div class="category-item">Entertainment</div>
+          <div class="category-item">News</div>
+          <div class="category-item">Technology</div>
+          <div class="category-item">Social Media</div>
+          <div class="category-item">Shopping</div>
+          <div class="category-item">Education</div>
+          <div class="category-item">Work</div>
+        </div>
+        <button id="createGroups">Please create groups</button>
+        <div id="categoryTree" class="category-tree" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

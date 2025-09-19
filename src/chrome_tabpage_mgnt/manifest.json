@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Scanner",
+  "version": "1.0",
+  "description": "Scan and list all open tabs across Chrome windows with AI-powered analysis",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting",
+    "aiOriginTrial"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

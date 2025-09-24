@@ -608,3 +608,25 @@ body {
 .tabs-container::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+.tab-favicon img,
+.category-tab-favicon {
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  object-fit: contain;
+}
+
+.tab-item,
+.category-tab-item {
+  align-items: center;
+}
+
+.tab-favicon,
+.category-tab-item img {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+}

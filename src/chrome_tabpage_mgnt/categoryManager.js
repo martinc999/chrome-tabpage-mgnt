@@ -7,13 +7,13 @@ class CategoryManager {
         console.log('CategoryManager: Constructor completed');
     }
 
-    async generatePredefinedCategories() {
+    async generatePredefinedCategories(progressCallback = null) {
         console.log('CategoryManager: generatePredefinedCategories() called');
 
         if (this.aiManager.isAIAvailable) {
             console.log('CategoryManager: AI is available, generating AI-based categories');
 
-            const allCategories = await this.processAllTabsInChunks('predefined');
+            const allCategories = await this.processAllTabsInChunks('predefined', null, progressCallback);
             console.log('CategoryManager: Final merged AI categories:', allCategories);
             return allCategories;
         } else {
@@ -22,13 +22,13 @@ class CategoryManager {
         }
     }
 
-    async generateDiscoverCategories(prompt) {
+    async generateDiscoverCategories(prompt, progressCallback = null) {
         console.log('CategoryManager: generateDiscoverCategories() called with prompt:', prompt);
 
         if (this.aiManager.isAIAvailable) {
             console.log('CategoryManager: AI is available, generating custom categories');
 
-            const allCategories = await this.processAllTabsInChunks('custom', prompt);
+            const allCategories = await this.processAllTabsInChunks('custom', prompt, progressCallback);
             console.log('CategoryManager: Final merged custom AI categories:', allCategories);
             return allCategories;
         } else {
@@ -36,7 +36,6 @@ class CategoryManager {
             return this.generateFallbackCategories();
         }
     }
-
 
     
     generateFallbackCategories() {
@@ -110,8 +109,8 @@ class CategoryManager {
 
             // Update progress
             if (progressCallback) {
-                const progress = Math.round(((i + 1) / totalChunks) * 100);
-                progressCallback(progress, i + 1, totalChunks);
+                const progress = Math.round((endIndex / totalTabs) * 100);
+                progressCallback(progress, endIndex, totalTabs);
             }
 
             const tabTitles = chunk.map(tab => tab.title).join(', ');
@@ -141,7 +140,7 @@ class CategoryManager {
 
         // Final progress update
         if (progressCallback) {
-            progressCallback(100, totalChunks, totalChunks);
+            progressCallback(100, totalTabs, totalTabs);
         }
 
         console.log('CategoryManager: All chunks processed. Category sets collected:', allCategorySets.length);

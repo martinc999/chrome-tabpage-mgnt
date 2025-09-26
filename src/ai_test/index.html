@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AIManager Demo</title>
+</head>
+<body>
+  <h1>AIManager Test</h1>
+  <script src="aiManager_working.js"></script>
+  <script>
+    // Usage example
+    async function runExample() {
+      const aiManager = new AIManager();
+      try {
+        await aiManager.initializeAI();
+        
+        const tabNames = ['Gmail', 'Slack', 'GitHub', 'YouTube', 'Netflix'];
+        const categories = await aiManager.generateCategoriesFromTabNames(tabNames);
+        console.log('Categories:', categories);
+        
+        const limitedCategories = await aiManager.generateLimitedCategories(tabNames, 3);
+        console.log('Limited categories:', limitedCategories);
+        
+        aiManager.destroy();
+      } catch (error) {
+        console.error('Example failed:', error.message);
+      }
+    }
+    runExample();
+  </script>
+</body>
+</html>

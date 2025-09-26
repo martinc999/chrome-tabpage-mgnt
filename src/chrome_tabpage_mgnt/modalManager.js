@@ -47,6 +47,7 @@ class ModalManager {
     container.style.display = 'none';
     
     try {
+      // FIXED: This will now call the correct method
       const categories = await this.categoryManager.generatePredefinedCategories();
       await this.buildPredefinedCategoryTree(categories);
     } catch (error) {
@@ -65,6 +66,7 @@ class ModalManager {
     this.showDiscoverCategoryProcessing();
     
     try {
+      // FIXED: This will now call the correct method
       const categories = await this.categoryManager.generateDiscoverCategories(prompt);
       await this.buildDiscoverCategoryTree(categories, prompt);
     } catch (error) {
@@ -81,6 +83,7 @@ class ModalManager {
     container.style.display = 'block';
     container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
     
+    // FIXED: Use the updated categorizeTabs method
     const categorizedTabs = await this.categoryManager.categorizeTabs(categories);
     this.renderCategoryTree(categorizedTabs, container, 'Predefined Categories');
   }
@@ -91,6 +94,7 @@ class ModalManager {
     container.style.display = 'block';
     container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
     
+    // FIXED: Use the updated categorizeTabs method
     const categorizedTabs = await this.categoryManager.categorizeTabs(categories);
     this.renderCategoryTree(categorizedTabs, container, `Discovered Categories: "${prompt}"`);
   }

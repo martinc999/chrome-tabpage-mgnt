@@ -86,6 +86,33 @@ class CategoryManager {
         return finalCategories;
     }
 
+    async processInParallel(items, asyncFn, concurrencyLimit = 5) {
+        const results = [];
+        const totalItems = items.length;
+        let itemIndex = 0;
+        const workers = [];
+
+        const worker = async () => {
+            while (itemIndex < totalItems) {
+                const currentIndex = itemIndex++;
+                if (currentIndex < totalItems) {
+                    const item = items[currentIndex];
+                    results[currentIndex] = await asyncFn(item, currentIndex).catch(error => {
+                        console.error(`Error processing item at index ${currentIndex}:`, error);
+                        return null; // Ensure promise resolves so Promise.all doesn't fail early
+                    });
+                }
+            }
+        };
+
+        const workerCount = Math.min(concurrencyLimit, totalItems);
+        for (let i = 0; i < workerCount; i++) {
+            workers.push(worker());
+        }
+
+        await Promise.all(workers);
+        return results;
+    }
 
     // categoryManager.js - Modify processAllTabsInChunks method
     async processAllTabsInChunks(mode, customPrompt = null, progressCallback = null) {
@@ -96,31 +123,28 @@ class CategoryManager {
         const chunkSize = 1;
         const totalChunks = Math.ceil(totalTabs / chunkSize);
 
-        console.log(`CategoryManager: Processing ${totalTabs} tabs in ${totalChunks} chunks of ${chunkSize}`);
+        console.log(`CategoryManager: Processing ${totalTabs} tabs with a concurrency limit.`);
 
-        const allCategorySets = [];
-
+        const chunks = [];
         for (let i = 0; i < totalChunks; i++) {
             const startIndex = i * chunkSize;
             const endIndex = Math.min(startIndex + chunkSize, totalTabs);
-            const chunk = allTabs.slice(startIndex, endIndex);
+            chunks.push(allTabs.slice(startIndex, endIndex));
+        }
 
-            console.log(`CategoryManager: Processing chunk ${i + 1}/${totalChunks} (tabs ${startIndex + 1}-${endIndex})`);
+        let processedTabs = 0;
 
-            // Update progress
-            if (progressCallback) {
-                const progress = Math.round((endIndex / totalTabs) * 100);
-                progressCallback(progress, endIndex, totalTabs);
-            }
-
+        const processChunk = async (chunk, index) => {
             const tabInfo = chunk.map(tab => {
                 const url = new URL(tab.url);
                 const url_ext = url.pathname + url.search + url.hash;
                 return `'domain:${tab.domain}', 'description: ${tab.title}', 'url_ext': ${url_ext}`;
             }).join('\n');
-            console.log(`CategoryManager: Chunk ${i + 1} tab info:`, tabInfo);
 
             try {
+                console.log(`CategoryManager: Processing chunk ${index + 1}/${totalChunks}`);
+                console.log(`CategoryManager: Chunk ${index + 1} tab info:`, tabInfo);
+
                 let categories;
                 if (mode === 'predefined') {
                     categories = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
@@ -128,19 +152,24 @@ class CategoryManager {
                     categories = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
                 }
 
-                console.log(`CategoryManager: Chunk ${i + 1} generated categories:`, categories);
-                if (categories && categories.length > 0) {
-                    allCategorySets.push(categories);
-                }
-            } catch (error) {
-                console.error(`CategoryManager: Error processing chunk ${i + 1}:`, error);
-            }
+                console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, categories);
 
-            if (i < totalChunks - 1) {
-                console.log('CategoryManager: Waiting 500ms before next chunk...');
-                await new Promise(resolve => setTimeout(resolve, 500));
+                // Update progress inside the resolved promise
+                processedTabs += chunk.length;
+                if (progressCallback) {
+                    const progress = Math.round((processedTabs / totalTabs) * 100);
+                    progressCallback(progress, processedTabs, totalTabs);
+                }
+
+                return (categories && categories.length > 0) ? categories : null;
+            } catch (error) {
+                console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
+                return null; // Return null on error
             }
-        }
+        };
+
+        const concurrencyLimit = 5; // Limit to 5 concurrent requests
+        const allCategorySets = (await this.processInParallel(chunks, processChunk, concurrencyLimit)).filter(set => set !== null);
 
         // Final progress update
         if (progressCallback) {
@@ -288,6 +317,90 @@ class CategoryManager {
         console.log('CategoryManager: Categories to use:', categories);
         console.log('CategoryManager: Tabs to categorize:', tabs.length);
 
+        const chunkSize = 20; // Process tabs in chunks to avoid overly large prompts
+        const categorization = {};
+        categories.forEach(cat => categorization[cat] = []);
+
+        // Create distinct category list to avoid synonyms
+        const distinctCategories = this.createDistinctCategoryList(categories);
+        console.log('CategoryManager: Distinct categories for AI:', distinctCategories);
+
+        const processChunk = async (tabChunk) => {
+            // Prepare tab data for the current chunk
+            const tabsData = tabChunk.map(tab => ({
+                id: tab.id,
+                title: tab.title,
+                domain: tab.domain,
+            }));
+
+            const tabDescriptions = tabsData.map((tab, index) =>
+                `${index}: "${tab.title}" (${tab.domain})`
+            ).join('\n');
+
+            const prompt = `You are a browser tab categorization expert. Analyze the following browser tabs and assign each one to the most appropriate category from the provided list.
+
+AVAILABLE CATEGORIES (use these exact names):
+${distinctCategories.map((cat, i) => `${i + 1}. ${cat}`).join('\n')}
+
+TABS TO CATEGORIZE:
+${tabDescriptions}
+
+Respond with a mapping in the format: TAB_INDEX:CATEGORY_NAME
+Example:
+0:Development
+1:Entertainment
+2:Work & Productivity
+
+Rules:
+- Use ONLY the category names provided above.
+- Every tab must be assigned to a category.
+
+MAPPING:`;
+
+            try {
+                const response = await this.aiManager.prompt(prompt);
+                const mappings = this.parseAIMappingResponse(response, tabChunk, distinctCategories);
+
+                tabChunk.forEach((tab, index) => {
+                    let assignedCategory = mappings[index];
+
+                    if (!distinctCategories.includes(assignedCategory)) {
+                        console.warn(`CategoryManager: AI returned invalid category "${assignedCategory}" for tab "${tab.title}". Using first category.`);
+                        assignedCategory = distinctCategories[0];
+                    }
+
+                    if (categorization[assignedCategory]) {
+                        categorization[assignedCategory].push(tab);
+                    } else {
+                        console.warn(`CategoryManager: Attempted to push to a non-existent category "${assignedCategory}". Assigning to first category.`);
+                        categorization[distinctCategories[0]].push(tab);
+                    }
+                });
+            } catch (error) {
+                console.error('CategoryManager: Error processing categorization chunk:', error);
+                // Fallback for the failed chunk
+                tabChunk.forEach((tab, index) => {
+                    const categoryIndex = index % distinctCategories.length;
+                    const assignedCategory = distinctCategories[categoryIndex];
+                    categorization[assignedCategory].push(tab);
+                });
+            }
+        };
+
+        for (let i = 0; i < tabs.length; i += chunkSize) {
+            const tabChunk = tabs.slice(i, i + chunkSize);
+            await processChunk(tabChunk);
+        }
+
+        console.log('CategoryManager: AI categorization completed for all chunks.');
+        return categorization;
+    }
+
+    categorizeWithAI_OLD_ONESHOT(categories, tabs) {
+        console.log('CategoryManager: categorizeWithAI() called with one-shot mapping approach');
+        console.log('CategoryManager: Categories to use:', categories);
+        console.log('CategoryManager: Tabs to categorize:', tabs.length);
+
         const categorization = {};
         categories.forEach(cat => categorization[cat] = []);
 
@@ -334,7 +447,7 @@ MAPPING:`;
         console.log('CategoryManager: Prompt preview:', prompt.substring(0, 500) + '...');
 
         try {
-            const response = await this.aiManager.aiSession.prompt(prompt);
+            const response = await this.aiManager.prompt(prompt);
             console.log('CategoryManager: AI one-shot response:', response);
 
             // Parse the mapping response

@@ -2,7 +2,7 @@
 class AILogger {
     constructor(options = {}) {
         this.logEntries = [];
-        this.batchSize = 10;
+        this.batchSize = 100;
         this.flushOnUnload = options.flushOnUnload || false;
         if (this.flushOnUnload) {
             window.addEventListener('beforeunload', () => this.flush());

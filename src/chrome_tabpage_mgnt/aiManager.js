@@ -5,12 +5,19 @@ class AIManager {
     this.isAIAvailable = false;
     this.logger = new AILogger({ flushOnUnload: true });
     this.systemPrompt = '';
+    this.promptCount = 0;
+    this.refreshThreshold = 50; // Refresh session after this many prompts
+    this.isRefreshing = false;
+    this.initializationPromise = null;
+    this.nextAiSessionPromise = null; // For the hot-swap
   }
 
-  async initializeAI() {
-    try {
-      console.log('Checking AI availability...');
-      const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
+  async initializeAI(retryCount = 3, delay = 1000) {
+    if (this.initializationPromise) return this.initializationPromise;
+    this.initializationPromise = (async () => { for (let i = 0; i < retryCount; i++) {
+      try {
+        console.log('AIManager: Initializing AI session...');
+          const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
 
 **Primary Goal:** Create the most relevant set of category names that efficiently groups the *entire batch* of tabs.
 
@@ -36,20 +43,87 @@ class AIManager {
 1: Data Science
 2: Social Media
 3: Development
-4: News/AI
-`;
-      this.systemPrompt = systemPromptContent;
-      this.aiSession = await LanguageModel.create({
-        initialPrompts: [{
-          role: "system",
-          content: systemPromptContent
-        }]
-      });
-      this.isAIAvailable = true;
-      console.log('AI ready for category generation');
-    } catch (error) {
-      console.error('AI initialization failed:', error.message);
+4: News/AI`;
+          this.systemPrompt = systemPromptContent;
+          this.aiSession = await LanguageModel.create({
+            initialPrompts: [{
+              role: "system",
+              content: systemPromptContent
+            }]
+          });
+          this.isAIAvailable = true;
+          this.promptCount = 0; // Reset counter on successful initialization
+          console.log('AI ready for category generation');
+        this.initializationPromise = null;
+        return; // Success
+      } catch (error) {
+        console.error(`AI initialization attempt ${i + 1} failed:`, error.message);
+        if (i < retryCount - 1) {
+          console.log(`Retrying in ${delay / 1000}s...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          console.error('AI initialization failed after multiple retries.');
+          this.initializationPromise = null;
+          throw error; // Re-throw the error after the last attempt
+        }
+      }
+    }})();
+    return this.initializationPromise;
+  }
+
+  /**
+   * A wrapper for aiSession.prompt that handles session refreshing.
+   * @param {string} promptText The prompt to send to the AI.
+   * @returns {Promise<string>} The AI's response.
+   */
+  async prompt(promptText) {
+    // If a new session is ready, perform the hot-swap
+    if (this.nextAiSessionPromise) {
+      try {
+        const newSession = await this.nextAiSessionPromise;
+        if (this.aiSession) {
+          this.aiSession.destroy();
+        }
+        this.aiSession = newSession;
+        this.promptCount = 0;
+        this.nextAiSessionPromise = null;
+        console.log('AIManager: Hot-swapped to new AI session.');
+      } catch (error) {
+        console.error('AIManager: Failed to swap to new AI session, continuing with old one.', error);
+        this.nextAiSessionPromise = null; // Clear the failed promise
+      }
     }
+    
+    this.promptCount++;
+    
+    // Trigger a non-blocking refresh if threshold is met
+    if (this.promptCount >= this.refreshThreshold && !this.nextAiSessionPromise) {
+      this.prepareNextSession();
+    }
+    
+    if (!this.aiSession) {
+      throw new Error("AI session is not available.");
+    }
+    
+    return this.aiSession.prompt(promptText);
+  }
+
+  /**
+   * Creates a new AI session in the background without blocking ongoing requests.
+   */
+  prepareNextSession() {
+    console.log(`AIManager: Refresh threshold reached. Preparing new AI session in the background.`);
+    this.nextAiSessionPromise = LanguageModel.create({
+      initialPrompts: [{
+        role: "system",
+        content: this.systemPrompt
+      }]
+    }).catch(error => {
+      console.error('AIManager: Failed to prepare next AI session.', error);
+      // Ensure we can try again later by nullifying the failed promise
+      this.nextAiSessionPromise = null;
+      throw error; // Rethrow so the original caller knows, if it was awaited
+    });
   }
 
   /**
@@ -66,7 +140,7 @@ class AIManager {
     const prompt = `Tab names: ${tabNamesString}`;
 
     try {
-      const response = await this.aiSession.prompt(prompt);
+      const response = await this.prompt(prompt);
       this.logger.log(this.systemPrompt, prompt, response);
       const lines = response.split('\n');
       const categories = lines.map(line => {
@@ -99,7 +173,7 @@ class AIManager {
     const tabNamesString = Array.isArray(tabNames) ? tabNames.join(', ') : tabNames;
 
     try {
-      const response = await this.aiSession.prompt(`${customPrompt}\n\nTab names: ${tabNamesString}`);
+      const response = await this.prompt(`${customPrompt}\n\nTab names: ${tabNamesString}`);
       const lines = response.split('\n');
       const categories = lines.map(line => {
         const parts = line.split(':');
@@ -131,7 +205,7 @@ class AIManager {
 Categories to analyze: ${categoryListString}\n`;
 
     try {
-      const response = await this.aiSession.prompt(prompt);
+      const response = await this.prompt(prompt);
       const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
       const synonymGroups = JSON.parse(cleanedResponse);
       return synonymGroups;
@@ -158,7 +232,7 @@ Categories to analyze: ${categoryListString}\n`;
     const prompt = `Generate exactly ${maxCategories} category names for these browser tabs: ${tabNamesString}`;
 
     try {
-      const response = await this.aiSession.prompt(prompt);
+      const response = await this.prompt(prompt);
       const lines = response.split('\n');
       const categories = lines.map(line => {
         const parts = line.split(':');
@@ -215,6 +289,7 @@ Categories to analyze: ${categoryListString}\n`;
       this.aiSession.destroy();
       this.aiSession = null;
       this.isAIAvailable = false;
+      this.initializationPromise = null;
     }
   }
 }

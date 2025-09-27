@@ -94,7 +94,6 @@ class CategoryManager {
         const allTabs = this.tabManager.tabs;
         const totalTabs = allTabs.length;
         const chunkSize = 1;
-        const chunkSize = 20;
         const totalChunks = Math.ceil(totalTabs / chunkSize);
 
         console.log(`CategoryManager: Processing ${totalTabs} tabs in ${totalChunks} chunks of ${chunkSize}`);
@@ -105,9 +104,6 @@ class CategoryManager {
             const startIndex = i * chunkSize;
             const endIndex = Math.min(startIndex + chunkSize, totalTabs);
             const chunk = allTabs.slice(startIndex, endIndex);
-            const chunk = allTabs.slice(i * chunkSize, (i + 1) * chunkSize);
-            chunks.push(chunk);
-        }
 
             console.log(`CategoryManager: Processing chunk ${i + 1}/${totalChunks} (tabs ${startIndex + 1}-${endIndex})`);
 
@@ -117,7 +113,6 @@ class CategoryManager {
                 progressCallback(progress, endIndex, totalTabs);
             }
 
-        const promises = chunks.map((chunk, index) => {
             const tabInfo = chunk.map(tab => {
                 const url = new URL(tab.url);
                 const url_ext = url.pathname + url.search + url.hash;
@@ -132,44 +127,18 @@ class CategoryManager {
                 } else if (mode === 'custom') {
                     categories = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
                 }
-            console.log(`CategoryManager: Preparing chunk ${index + 1}/${totalChunks}`);
 
                 console.log(`CategoryManager: Chunk ${i + 1} generated categories:`, categories);
                 if (categories && categories.length > 0) {
                     allCategorySets.push(categories);
-            const promise = (async () => {
-                try {
-                    if (mode === 'predefined') {
-                        return await this.aiManager.generateCategoriesFromTabNames(tabInfo);
-                    } else if (mode === 'custom') {
-                        return await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
-                    }
-                } finally {
-                    // Update progress after each call completes
-                    if (progressCallback) {
-                        const processedCount = (index + 1) * chunkSize;
-                        const progress = Math.round((Math.min(processedCount, totalTabs) / totalTabs) * 100);
-                        progressCallback(progress, Math.min(processedCount, totalTabs), totalTabs);
-                    }
                 }
             } catch (error) {
                 console.error(`CategoryManager: Error processing chunk ${i + 1}:`, error);
             }
-            })();
-            return promise;
-        });
 
             if (i < totalChunks - 1) {
                 console.log('CategoryManager: Waiting 500ms before next chunk...');
                 await new Promise(resolve => setTimeout(resolve, 500));
-        const results = await Promise.allSettled(promises);
-
-        for (const [index, result] of results.entries()) {
-            if (result.status === 'fulfilled' && result.value && result.value.length > 0) {
-                console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, result.value);
-                allCategorySets.push(result.value);
-            } else if (result.status === 'rejected') {
-                console.error(`CategoryManager: Error processing chunk ${index + 1}:`, result.reason);
             }
         }
 

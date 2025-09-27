@@ -3,14 +3,41 @@ class AIManager {
   constructor() {
     this.aiSession = null;
     this.isAIAvailable = false;
-    this.logger = new AILogger();
+    this.logger = new AILogger({ flushOnUnload: true });
     this.systemPrompt = '';
   }
 
   async initializeAI() {
     try {
       console.log('Checking AI availability...');
-      const systemPromptContent = "You analyze browser tab names and generate logical category names for organizing them. Respond with a mapping of tab index to category name. For example: 0: Coding";
+      const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
+
+**Primary Goal:** Create the most relevant set of category names that efficiently groups the *entire batch* of tabs.
+
+**Instructions:**
+1.**Analyze Content First (Priority):** Prioritize the **'description'** and **'url_ext'** to determine the content. The content is always paramount. Use the **'domain'** only as a fallback for generic or uninformative descriptions.
+
+2.**Handling Major Platforms (CRITICAL):**
+    * **YouTube/Video Sites:** If the domain is a video platform (e.g., youtube.com) and the description indicates a video, the category must reflect the **topic of the video** (e.g., 'ML Video' or 'History Video'), or simply **'Video Content'** if the topic is too broad.
+    * **AI/Chatbot Platforms:** If the domain is a specific AI platform (e.g., chatgpt.com, grok.com), the category must be **'AI/Chatbots'** or a related term, regardless of the conversation's internal topic (e.g., a conversation about history on ChatGPT is still categorized as 'AI/Chatbots').
+    * **Social Media/News:** Use a single, consolidated category (e.g., 'Social Media' or 'News') for general feeds and homepages.
+
+3.**Category Granularity:**
+* Keep category names **concise** (1-3 words) and **specific** to the content (e.g., use 'Machine Learning' instead of 'Coding' or 'Research').
+* **Minimize Redundancy:** Use a limited, consolidated set of categories for the entire batch. Use one term like **'Development'** instead of multiple overlapping terms. The total number of unique categories should typically not exceed **10** for a batch of 20 elements.
+
+4.**Output Format (STRICT):** Respond **ONLY** with a strictly formatted list of index-to-category mappings.
+* The output must be a sequence of lines, where each line contains the tab's **index** (starting from 0), a **colon**, and a **single space**, followed by the **Category Name**.
+* **NO** introductory text, **NO** headers, **NO** trailing punctuation, and **NO** bullet points.
+* The index **must** be present for every element in the batch (0 to N-1, where N is the total number of tabs).
+
+**Example of Desired Output:**
+0: Coding
+1: Data Science
+2: Social Media
+3: Development
+4: News/AI
+`;
       this.systemPrompt = systemPromptContent;
       this.aiSession = await LanguageModel.create({
         initialPrompts: [{
@@ -68,9 +95,9 @@ class AIManager {
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category generation');
     }
-    
+
     const tabNamesString = Array.isArray(tabNames) ? tabNames.join(', ') : tabNames;
-    
+
     try {
       const response = await this.aiSession.prompt(`${customPrompt}\n\nTab names: ${tabNamesString}`);
       const lines = response.split('\n');
@@ -92,33 +119,27 @@ class AIManager {
 
   async mergeCategoriesWithAI(categories) {
     if (!this.isAIAvailable || !this.aiSession) {
-        throw new Error('AI not available for category merging');
+      throw new Error('AI not available for category merging');
     }
 
     const categoryListString = categories.join(', ');
-    const prompt = `Analyze the following list of categories and group synonyms. For each group, choose the best primary category name.
-Respond with a JSON object where keys are the primary category names and values are arrays of the synonyms.
-Example input: "Work, Productivity, Dev, Development, Entertainment"
-Example output:
-{
-  "Work": ["Work", "Productivity"],
+    const prompt = `Analyze the following list of categories and group synonyms. For each group, choose the best primary category name.\nRespond with a JSON object where keys are the primary category names and values are arrays of the synonyms.\nExample input: "Work, Productivity, Dev, Development, Entertainment"\nExample output:\n{\n  "Work": ["Work", "Productivity"],
   "Development": ["Dev", "Development"],
   "Entertainment": ["Entertainment"]
 }
 
-Categories to analyze: ${categoryListString}
-`;
+Categories to analyze: ${categoryListString}\n`;
 
     try {
-        const response = await this.aiSession.prompt(prompt);
-        const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
-        const synonymGroups = JSON.parse(cleanedResponse);
-        return synonymGroups;
+      const response = await this.aiSession.prompt(prompt);
+      const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
+      const synonymGroups = JSON.parse(cleanedResponse);
+      return synonymGroups;
     } catch (error) {
-        console.error('Error merging categories with AI:', error);
-        const fallbackGroups = {};
-        categories.forEach(cat => fallbackGroups[cat] = [cat]);
-        return fallbackGroups;
+      console.error('Error merging categories with AI:', error);
+      const fallbackGroups = {};
+      categories.forEach(cat => fallbackGroups[cat] = [cat]);
+      return fallbackGroups;
     }
   }
 
@@ -135,7 +156,7 @@ Categories to analyze: ${categoryListString}
 
     const tabNamesString = Array.isArray(tabNames) ? tabNames.join(', ') : tabNames;
     const prompt = `Generate exactly ${maxCategories} category names for these browser tabs: ${tabNamesString}`;
-    
+
     try {
       const response = await this.aiSession.prompt(prompt);
       const lines = response.split('\n');
@@ -170,21 +191,21 @@ Categories to analyze: ${categoryListString}
   static checkBrowserCompatibility() {
     const isChrome = /Chrome/.test(navigator.userAgent);
     const chromeVersion = navigator.userAgent.match(/Chrome\/(\d+)/)?.[1];
-    
+
     console.log('Browser compatibility check:');
     console.log('- Is Chrome:', isChrome);
     console.log('- Chrome version:', chromeVersion);
-    
+
     if (!isChrome) {
       console.warn('Chrome AI requires Chrome browser');
       return false;
     }
-    
+
     if (chromeVersion && parseInt(chromeVersion) < 127) {
       console.warn('Chrome AI requires Chrome 127 or later');
       return false;
     }
-    
+
     return true;
   }
 

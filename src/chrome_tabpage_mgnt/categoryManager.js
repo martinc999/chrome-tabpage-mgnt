@@ -113,15 +113,19 @@ class CategoryManager {
                 progressCallback(progress, endIndex, totalTabs);
             }
 
-            const tabTitles = chunk.map(tab => tab.title).join(', ');
-            console.log(`CategoryManager: Chunk ${i + 1} tab titles:`, tabTitles);
+            const tabInfo = chunk.map(tab => {
+                const url = new URL(tab.url);
+                const url_ext = url.pathname + url.search + url.hash;
+                return `'domain:${tab.domain}', 'description: ${tab.title}', 'url_ext': ${url_ext}`;
+            }).join('\n');
+            console.log(`CategoryManager: Chunk ${i + 1} tab info:`, tabInfo);
 
             try {
                 let categories;
                 if (mode === 'predefined') {
-                    categories = await this.aiManager.generateCategoriesFromTabNames(tabTitles);
+                    categories = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
                 } else if (mode === 'custom') {
-                    categories = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabTitles);
+                    categories = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
                 }
 
                 console.log(`CategoryManager: Chunk ${i + 1} generated categories:`, categories);
@@ -218,6 +222,27 @@ class CategoryManager {
 
         // Return ALL categories found, no artificial limits
         return uniqueCategories;
+    }
+
+    mergeCategorizedTabs(categorizedTabs, synonymGroups) {
+        console.log('CategoryManager: mergeCategorizedTabs() called');
+        const finalCategorization = {};
+
+        for (const primaryCategory in synonymGroups) {
+            const synonyms = synonymGroups[primaryCategory];
+            let allTabsForPrimary = [];
+
+            synonyms.forEach(synonym => {
+                if (categorizedTabs[synonym]) {
+                    allTabsForPrimary = allTabsForPrimary.concat(categorizedTabs[synonym]);
+                }
+            });
+
+            finalCategorization[primaryCategory] = allTabsForPrimary;
+        }
+
+        console.log('CategoryManager: Final merged categorization:', finalCategorization);
+        return finalCategorization;
     }
 
     analyzeDomains() {

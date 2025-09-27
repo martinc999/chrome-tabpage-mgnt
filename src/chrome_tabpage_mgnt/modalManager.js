@@ -67,21 +67,25 @@ class ModalManager {
     container.style.display = 'none';
 
     try {
-        const categories = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
+        const initialCategories = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
         
         categoryList.style.display = 'none';
         container.style.display = 'block';
         container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
         
-        const categorizedTabs = await this.categoryManager.categorizeTabs(categories);
+        const categorizedTabs = await this.categoryManager.categorizeTabs(initialCategories);
+
+        container.innerHTML = '<div class="loading">🤖 Merging synonymous categories...</div>';
+        const synonymGroups = await this.aiManager.mergeCategoriesWithAI(Object.keys(categorizedTabs));
+        const finalCategorizedTabs = this.categoryManager.mergeCategorizedTabs(categorizedTabs, synonymGroups);
 
         this.predefinedCache = {
             tabsCount: currentTabsCount,
-            categories: categories,
-            categorizedTabs: categorizedTabs
+            categories: Object.keys(finalCategorizedTabs),
+            categorizedTabs: finalCategorizedTabs
         };
         
-        this.renderCategoryTree(categorizedTabs, container, 'Predefined Categories');
+        this.renderCategoryTree(finalCategorizedTabs, container, 'Predefined Categories');
 
     } catch (error) {
         console.error('Category generation failed:', error);
@@ -110,21 +114,25 @@ class ModalManager {
     this.showDiscoverCategoryProcessing();
 
     try {
-        const categories = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
+        const initialCategories = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
         
         container.style.display = 'block';
         container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
 
-        const categorizedTabs = await this.categoryManager.categorizeTabs(categories);
+        const categorizedTabs = await this.categoryManager.categorizeTabs(initialCategories);
+
+        container.innerHTML = '<div class="loading">🤖 Merging synonymous categories...</div>';
+        const synonymGroups = await this.aiManager.mergeCategoriesWithAI(Object.keys(categorizedTabs));
+        const finalCategorizedTabs = this.categoryManager.mergeCategorizedTabs(categorizedTabs, synonymGroups);
 
         this.discoverCache = {
             prompt: prompt,
             tabsCount: currentTabsCount,
-            categories: categories,
-            categorizedTabs: categorizedTabs
+            categories: Object.keys(finalCategorizedTabs),
+            categorizedTabs: finalCategorizedTabs
         };
 
-        this.renderCategoryTree(categorizedTabs, container, `Discovered Categories: "${prompt}"`);
+        this.renderCategoryTree(finalCategorizedTabs, container, `Discovered Categories: "${prompt}"`);
 
     } catch (error) {
         console.error('Discover category generation failed:', error);

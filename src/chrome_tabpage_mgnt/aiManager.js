@@ -3,15 +3,19 @@ class AIManager {
   constructor() {
     this.aiSession = null;
     this.isAIAvailable = false;
+    this.logger = new AILogger();
+    this.systemPrompt = '';
   }
 
   async initializeAI() {
     try {
       console.log('Checking AI availability...');
+      const systemPromptContent = "You analyze browser tab names and generate logical category names for organizing them. Respond with a mapping of tab index to category name. For example: 0: Coding";
+      this.systemPrompt = systemPromptContent;
       this.aiSession = await LanguageModel.create({
         initialPrompts: [{
           role: "system",
-          content: "You analyze browser tab names and generate logical category names for organizing them. Respond only with comma-separated category names."
+          content: systemPromptContent
         }]
       });
       this.isAIAvailable = true;
@@ -32,12 +36,22 @@ class AIManager {
     }
 
     const tabNamesString = Array.isArray(tabNames) ? tabNames.join(', ') : tabNames;
-    
+    const prompt = `Tab names: ${tabNamesString}`;
+
     try {
-      const response = await this.aiSession.prompt(`Tab names: ${tabNamesString}`);
-      const categories = response.split(',').map(cat => cat.trim()).filter(cat => cat.length > 0);
-      console.log('Generated categories:', categories);
-      return categories;
+      const response = await this.aiSession.prompt(prompt);
+      this.logger.log(this.systemPrompt, prompt, response);
+      const lines = response.split('\n');
+      const categories = lines.map(line => {
+        const parts = line.split(':');
+        if (parts.length > 1) {
+          return parts[1].trim();
+        }
+        return null;
+      }).filter(cat => cat !== null);
+      const uniqueCategories = [...new Set(categories)];
+      console.log('Generated categories:', uniqueCategories);
+      return uniqueCategories;
     } catch (error) {
       console.error('Error generating categories:', error.message);
       throw error;
@@ -59,12 +73,52 @@ class AIManager {
     
     try {
       const response = await this.aiSession.prompt(`${customPrompt}\n\nTab names: ${tabNamesString}`);
-      const categories = response.split(',').map(cat => cat.trim()).filter(cat => cat.length > 0);
-      console.log('Generated categories with custom prompt:', categories);
-      return categories;
+      const lines = response.split('\n');
+      const categories = lines.map(line => {
+        const parts = line.split(':');
+        if (parts.length > 1) {
+          return parts[1].trim();
+        }
+        return null;
+      }).filter(cat => cat !== null);
+      const uniqueCategories = [...new Set(categories)];
+      console.log('Generated categories with custom prompt:', uniqueCategories);
+      return uniqueCategories;
     } catch (error) {
       console.error('Error generating categories with custom prompt:', error.message);
       throw error;
+    }
+  }
+
+  async mergeCategoriesWithAI(categories) {
+    if (!this.isAIAvailable || !this.aiSession) {
+        throw new Error('AI not available for category merging');
+    }
+
+    const categoryListString = categories.join(', ');
+    const prompt = `Analyze the following list of categories and group synonyms. For each group, choose the best primary category name.
+Respond with a JSON object where keys are the primary category names and values are arrays of the synonyms.
+Example input: "Work, Productivity, Dev, Development, Entertainment"
+Example output:
+{
+  "Work": ["Work", "Productivity"],
+  "Development": ["Dev", "Development"],
+  "Entertainment": ["Entertainment"]
+}
+
+Categories to analyze: ${categoryListString}
+`;
+
+    try {
+        const response = await this.aiSession.prompt(prompt);
+        const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
+        const synonymGroups = JSON.parse(cleanedResponse);
+        return synonymGroups;
+    } catch (error) {
+        console.error('Error merging categories with AI:', error);
+        const fallbackGroups = {};
+        categories.forEach(cat => fallbackGroups[cat] = [cat]);
+        return fallbackGroups;
     }
   }
 
@@ -84,9 +138,17 @@ class AIManager {
     
     try {
       const response = await this.aiSession.prompt(prompt);
-      const categories = response.split(',').map(cat => cat.trim()).filter(cat => cat.length > 0);
-      console.log('Generated limited categories:', categories);
-      return categories;
+      const lines = response.split('\n');
+      const categories = lines.map(line => {
+        const parts = line.split(':');
+        if (parts.length > 1) {
+          return parts[1].trim();
+        }
+        return null;
+      }).filter(cat => cat !== null);
+      const uniqueCategories = [...new Set(categories)];
+      console.log('Generated limited categories:', uniqueCategories);
+      return uniqueCategories;
     } catch (error) {
       console.error('Error generating limited categories:', error.message);
       throw error;

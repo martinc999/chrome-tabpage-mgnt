@@ -9,17 +9,17 @@ class TabManager {
     try {
       const windows = await chrome.windows.getAll({ populate: true });
       this.tabs = [];
-
+      
       for (const window of windows) {
         for (const tab of window.tabs) {
           const tabData = await this.enrichTabData(tab, window.id);
           this.tabs.push(tabData);
         }
       }
-
+      
       this.filteredTabs = [...this.tabs];
       return this.tabs;
-
+      
     } catch (error) {
       console.error('Failed to load tabs:', error);
       throw error;
@@ -54,9 +54,7 @@ class TabManager {
         func: this.getPageMetadata
       });
 
-      const description = results[0]?.result?.description || 'No description available';
-      // Remove newlines from the description to ensure it's a single line.
-      return description.replace(/(\r\n|\n|\r)/gm, " ").trim();
+      return results[0]?.result?.description || 'No description available';
     } catch {
       return 'Content not accessible';
     }
@@ -65,7 +63,7 @@ class TabManager {
   getPageMetadata() {
     const selectors = [
       'meta[name="description"]',
-      'meta[property="og:description"]',
+      'meta[property="og:description"]', 
       'meta[name="twitter:description"]'
     ];
 
@@ -96,10 +94,10 @@ class TabManager {
   }
 
   isSystemPage(url) {
-    return url.startsWith('chrome://') ||
-      url.startsWith('chrome-extension://') ||
-      url.startsWith('edge://') ||
-      url.startsWith('about:');
+    return url.startsWith('chrome://') || 
+           url.startsWith('chrome-extension://') || 
+           url.startsWith('edge://') ||
+           url.startsWith('about:');
   }
 
   getDefaultFavicon() {
@@ -108,18 +106,18 @@ class TabManager {
 
   filterTabs(searchTerm) {
     const term = searchTerm.toLowerCase().trim();
-
+    
     if (!term) {
       this.filteredTabs = [...this.tabs];
     } else {
-      this.filteredTabs = this.tabs.filter(tab =>
+      this.filteredTabs = this.tabs.filter(tab => 
         tab.title.toLowerCase().includes(term) ||
         tab.url.toLowerCase().includes(term) ||
         tab.domain.toLowerCase().includes(term) ||
         tab.description.toLowerCase().includes(term)
       );
     }
-
+    
     return this.filteredTabs;
   }
 
@@ -131,6 +129,17 @@ class TabManager {
       window.close();
     } catch (error) {
       console.error('Failed to activate tab:', error);
+      throw error;
+    }
+  }
+
+  async closeTabs(tabIds) {
+    try {
+      await chrome.tabs.remove(tabIds);
+      // Refresh the internal state after closing tabs
+      await this.loadAllTabs();
+    } catch (error) {
+      console.error('Failed to close tabs:', error);
       throw error;
     }
   }
@@ -148,7 +157,7 @@ class TabManager {
   getStatistics() {
     const windowCount = new Set(this.tabs.map(tab => tab.windowId)).size;
     const pinnedCount = this.tabs.filter(tab => tab.isPinned).length;
-
+    
     return {
       totalTabs: this.tabs.length,
       windowCount,

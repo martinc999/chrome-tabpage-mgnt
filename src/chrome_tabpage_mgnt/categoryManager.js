@@ -14,7 +14,7 @@ class CategoryManager {
             console.log('CategoryManager: AI is available, generating AI-based categories');
 
             const allCategories = await this.processAllTabsInChunks('predefined', null, progressCallback);
-            console.log('CategoryManager: Final merged AI categories:', allCategories);
+            console.log('CategoryManager: Final merged AI categories:', allCategories.join('|'));
             return allCategories;
         } else {
             console.log('CategoryManager: AI not available, using fallback categories');
@@ -29,7 +29,7 @@ class CategoryManager {
             console.log('CategoryManager: AI is available, generating custom categories');
 
             const allCategories = await this.processAllTabsInChunks('custom', prompt, progressCallback);
-            console.log('CategoryManager: Final merged custom AI categories:', allCategories);
+            console.log('CategoryManager: Final merged custom AI categories:', allCategories.join('|'));
             return allCategories;
         } else {
             console.log('CategoryManager: AI not available, using fallback categories');
@@ -138,7 +138,7 @@ class CategoryManager {
             const tabInfo = chunk.map(tab => {
                 const url = new URL(tab.url);
                 const url_ext = url.pathname + url.search + url.hash;
-                return `'domain:${tab.domain}', 'description: ${tab.title}', 'url_ext': ${url_ext}`;
+                return `${tab.id}|${tab.windowId}|${tab.domain}|${tab.title}|${url_ext}`;
             }).join('\n');
 
             try {
@@ -165,10 +165,15 @@ class CategoryManager {
             } catch (error) {
                 console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
                 // Fallback for a failed chunk
-                const tabInfoForMapping = chunk.map(tab => `'domain:${tab.domain}', 'description: ${tab.title}', 'url_ext': ...`).join('\n');
+                const tabInfoForMapping = chunk.map(tab => {
+                    const url = new URL(tab.url);
+                    const url_ext = url.pathname + url.search + url.hash;
+                    return `${tab.id}|${tab.windowId}|${tab.domain}|${tab.title}|${url_ext}`;
+                }).join('\n');
+
                 return {
                     categories: ['Unknown'],
-                    mapping: [`Tab: ${tabInfoForMapping} -> Category: Unknown`]
+                    mapping: [`${tabInfoForMapping}|Unknown`]
                 };
             }
         };
@@ -346,7 +351,7 @@ class CategoryManager {
 
         // Create comprehensive one-shot prompt
         const tabDescriptions = tabsData.map(tab =>
-            `${tab.index}: "${tab.title}" (${tab.domain})`
+            `'id:${tab.id}', 'windowId:${tab.windowId}', ${tab.index}: "${tab.title}" (${tab.domain})`
         ).join('\n');
 
         const prompt = `You are a browser tab categorization expert. Analyze ALL the following browser tabs and create a mapping between each tab and the most appropriate category.
@@ -628,5 +633,6 @@ MAPPING:`;
 }
 
 // Expose globally
+
 console.log('CategoryManager: Class definition loaded and exposed globally');
 window.CategoryManager = CategoryManager;

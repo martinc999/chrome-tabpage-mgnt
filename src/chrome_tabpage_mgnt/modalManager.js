@@ -143,6 +143,7 @@ class ModalManager {
             <span class="category-toggle">▼</span>
             <span class="category-name">${categoryName}</span>
             <span class="category-count">(${tabs.length})</span>
+            <button class="close-category-tabs-btn" title="Close all tabs in this category" data-category-name="${this.escapeHtml(categoryName)}">×</button>
           </div>
           <div class="category-content">
             ${tabs.map(tab => this.renderCategoryTab(tab)).join('')}
@@ -174,7 +175,11 @@ class ModalManager {
 
   attachCategoryEventListeners(container) {
     container.querySelectorAll('.category-header').forEach(header => {
-      header.addEventListener('click', () => {
+      header.addEventListener('click', (e) => {
+        // Prevent toggling when the close button is clicked
+        if (e.target.classList.contains('close-category-tabs-btn')) {
+          return;
+        }
         const content = header.nextElementSibling;
         const toggle = header.querySelector('.category-toggle');
 
@@ -192,6 +197,14 @@ class ModalManager {
       item.addEventListener('click', () => {
         const tabId = parseInt(item.dataset.tabId);
         this.tabManager.activateTab(tabId);
+      });
+    });
+
+    container.querySelectorAll('.close-category-tabs-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const categoryName = button.dataset.categoryName;
+        this.handleCloseCategoryTabs(categoryName, container);
       });
     });
   }
@@ -231,5 +244,37 @@ class ModalManager {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  }
+
+  async handleCloseCategoryTabs(categoryName, container) {
+    if (!confirm(`Are you sure you want to close all ${categoryName} tabs?`)) {
+      return;
+    }
+
+    const isPredefined = container.id === 'predefinedCategoryTree';
+    const cache = isPredefined ? this.predefinedCache : this.discoverCache;
+
+    if (!cache.categorizedTabs || !cache.categorizedTabs[categoryName]) {
+      console.error('Could not find tabs for category:', categoryName);
+      return;
+    }
+
+    const tabsToClose = cache.categorizedTabs[categoryName];
+    const tabIdsToClose = tabsToClose.map(tab => tab.id);
+
+    try {
+      await this.tabManager.closeTabs(tabIdsToClose);
+
+      // Remove the category group from the UI
+      const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`).parentElement;
+      categoryGroup.remove();
+
+      // Update the cache
+      delete cache.categorizedTabs[categoryName];
+
+    } catch (error) {
+      console.error(`Failed to close tabs for category ${categoryName}:`, error);
+      alert(`An error occurred while closing tabs for ${categoryName}.`);
+    }
   }
 }

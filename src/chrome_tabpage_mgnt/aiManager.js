@@ -159,7 +159,7 @@ class AIManager {
           const index = parseInt(parts[0], 10);
           const category = parts[1].trim();
           if (!isNaN(index) && index < tabInfoArray.length) {
-            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+            rawCategorizationLog.push(`${tabInfoArray[index]}|${category}`);
           }
           return category;
         }
@@ -202,7 +202,7 @@ class AIManager {
           const index = parseInt(parts[0], 10);
           const category = parts[1].trim();
           if (!isNaN(index) && index < tabInfoArray.length) {
-            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+            rawCategorizationLog.push(`${tabInfoArray[index]}|${category}`);
           }
           return category;
         }
@@ -246,7 +246,7 @@ class AIManager {
           const index = parseInt(parts[0], 10);
           const category = parts[1].trim();
           if (!isNaN(index) && index < tabInfoArray.length) {
-            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+            rawCategorizationLog.push(`${tabInfoArray[index]}|${category}`);
           }
           return category;
         }

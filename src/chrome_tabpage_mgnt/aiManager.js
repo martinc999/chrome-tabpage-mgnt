@@ -14,9 +14,10 @@ class AIManager {
 
   async initializeAI(retryCount = 3, delay = 1000) {
     if (this.initializationPromise) return this.initializationPromise;
-    this.initializationPromise = (async () => { for (let i = 0; i < retryCount; i++) {
-      try {
-        console.log('AIManager: Initializing AI session...');
+    this.initializationPromise = (async () => {
+      for (let i = 0; i < retryCount; i++) {
+        try {
+          console.log('AIManager: Initializing AI session...');
           const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
 
 **Primary Goal:** Create the most relevant set of category names that efficiently groups the *entire batch* of tabs.
@@ -46,6 +47,9 @@ class AIManager {
 4: News/AI`;
           this.systemPrompt = systemPromptContent;
           this.aiSession = await LanguageModel.create({
+            temperature: 0.2,
+            topK: 1, 
+            outputLanguage: 'en',
             initialPrompts: [{
               role: "system",
               content: systemPromptContent
@@ -54,20 +58,21 @@ class AIManager {
           this.isAIAvailable = true;
           this.promptCount = 0; // Reset counter on successful initialization
           console.log('AI ready for category generation');
-        this.initializationPromise = null;
-        return; // Success
-      } catch (error) {
-        console.error(`AI initialization attempt ${i + 1} failed:`, error.message);
-        if (i < retryCount - 1) {
-          console.log(`Retrying in ${delay / 1000}s...`);
-          await new Promise(resolve => setTimeout(resolve, delay));
-        } else {
-          console.error('AI initialization failed after multiple retries.');
           this.initializationPromise = null;
-          throw error; // Re-throw the error after the last attempt
+          return; // Success
+        } catch (error) {
+          console.error(`AI initialization attempt ${i + 1} failed:`, error.message);
+          if (i < retryCount - 1) {
+            console.log(`Retrying in ${delay / 1000}s...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+          } else {
+            console.error('AI initialization failed after multiple retries.');
+            this.initializationPromise = null;
+            throw error; // Re-throw the error after the last attempt
+          }
         }
       }
-    }})();
+    })();
     return this.initializationPromise;
   }
 
@@ -93,18 +98,18 @@ class AIManager {
         this.nextAiSessionPromise = null; // Clear the failed promise
       }
     }
-    
+
     this.promptCount++;
-    
+
     // Trigger a non-blocking refresh if threshold is met
     if (this.promptCount >= this.refreshThreshold && !this.nextAiSessionPromise) {
       this.prepareNextSession();
     }
-    
+
     if (!this.aiSession) {
       throw new Error("AI session is not available.");
     }
-    
+
     return this.aiSession.prompt(promptText);
   }
 
@@ -114,6 +119,7 @@ class AIManager {
   prepareNextSession() {
     console.log(`AIManager: Refresh threshold reached. Preparing new AI session in the background.`);
     this.nextAiSessionPromise = LanguageModel.create({
+      outputLanguage: 'en',
       initialPrompts: [{
         role: "system",
         content: this.systemPrompt
@@ -142,17 +148,28 @@ class AIManager {
     try {
       const response = await this.prompt(prompt);
       this.logger.log(this.systemPrompt, prompt, response);
+
+      const tabInfoArray = tabNamesString.split('\n');
+      const rawCategorizationLog = [];
+
       const lines = response.split('\n');
       const categories = lines.map(line => {
         const parts = line.split(':');
         if (parts.length > 1) {
-          return parts[1].trim();
+          const index = parseInt(parts[0], 10);
+          const category = parts[1].trim();
+          if (!isNaN(index) && index < tabInfoArray.length) {
+            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+          }
+          return category;
         }
         return null;
       }).filter(cat => cat !== null);
+
+      console.log('AIManager: Raw Tab-to-Category mapping before merging:\n', rawCategorizationLog.join('\n'));
       const uniqueCategories = [...new Set(categories)];
       console.log('Generated categories:', uniqueCategories);
-      return uniqueCategories;
+      return { categories: uniqueCategories, mapping: rawCategorizationLog };
     } catch (error) {
       console.error('Error generating categories:', error.message);
       throw error;
@@ -174,46 +191,31 @@ class AIManager {
 
     try {
       const response = await this.prompt(`${customPrompt}\n\nTab names: ${tabNamesString}`);
+
+      const tabInfoArray = tabNamesString.split('\n');
+      const rawCategorizationLog = [];
+
       const lines = response.split('\n');
       const categories = lines.map(line => {
         const parts = line.split(':');
         if (parts.length > 1) {
-          return parts[1].trim();
+          const index = parseInt(parts[0], 10);
+          const category = parts[1].trim();
+          if (!isNaN(index) && index < tabInfoArray.length) {
+            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+          }
+          return category;
         }
         return null;
       }).filter(cat => cat !== null);
+
+      console.log('AIManager: Raw Tab-to-Category mapping before merging (custom prompt):\n', rawCategorizationLog.join('\n'));
       const uniqueCategories = [...new Set(categories)];
       console.log('Generated categories with custom prompt:', uniqueCategories);
-      return uniqueCategories;
+      return { categories: uniqueCategories, mapping: rawCategorizationLog };
     } catch (error) {
       console.error('Error generating categories with custom prompt:', error.message);
       throw error;
-    }
-  }
-
-  async mergeCategoriesWithAI(categories) {
-    if (!this.isAIAvailable || !this.aiSession) {
-      throw new Error('AI not available for category merging');
-    }
-
-    const categoryListString = categories.join(', ');
-    const prompt = `Analyze the following list of categories and group synonyms. For each group, choose the best primary category name.\nRespond with a JSON object where keys are the primary category names and values are arrays of the synonyms.\nExample input: "Work, Productivity, Dev, Development, Entertainment"\nExample output:\n{\n  "Work": ["Work", "Productivity"],
-  "Development": ["Dev", "Development"],
-  "Entertainment": ["Entertainment"]
-}
-
-Categories to analyze: ${categoryListString}\n`;
-
-    try {
-      const response = await this.prompt(prompt);
-      const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
-      const synonymGroups = JSON.parse(cleanedResponse);
-      return synonymGroups;
-    } catch (error) {
-      console.error('Error merging categories with AI:', error);
-      const fallbackGroups = {};
-      categories.forEach(cat => fallbackGroups[cat] = [cat]);
-      return fallbackGroups;
     }
   }
 
@@ -233,17 +235,28 @@ Categories to analyze: ${categoryListString}\n`;
 
     try {
       const response = await this.prompt(prompt);
+
+      const tabInfoArray = tabNamesString.split('\n');
+      const rawCategorizationLog = [];
+
       const lines = response.split('\n');
       const categories = lines.map(line => {
         const parts = line.split(':');
         if (parts.length > 1) {
-          return parts[1].trim();
+          const index = parseInt(parts[0], 10);
+          const category = parts[1].trim();
+          if (!isNaN(index) && index < tabInfoArray.length) {
+            rawCategorizationLog.push(`Tab: ${tabInfoArray[index]} -> Category: ${category}`);
+          }
+          return category;
         }
         return null;
       }).filter(cat => cat !== null);
+
+      console.log('AIManager: Raw Tab-to-Category mapping before merging (limited categories):\n', rawCategorizationLog.join('\n'));
       const uniqueCategories = [...new Set(categories)];
       console.log('Generated limited categories:', uniqueCategories);
-      return uniqueCategories;
+      return { categories: uniqueCategories, mapping: rawCategorizationLog };
     } catch (error) {
       console.error('Error generating limited categories:', error.message);
       throw error;

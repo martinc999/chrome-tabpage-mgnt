@@ -145,14 +145,14 @@ class CategoryManager {
                 console.log(`CategoryManager: Processing chunk ${index + 1}/${totalChunks}`);
                 console.log(`CategoryManager: Chunk ${index + 1} tab info:`, tabInfo);
 
-                let categories;
+                let result;
                 if (mode === 'predefined') {
-                    categories = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
+                    result = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
                 } else if (mode === 'custom') {
-                    categories = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
+                    result = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
                 }
 
-                console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, categories);
+                console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, result.categories);
 
                 // Update progress inside the resolved promise
                 processedTabs += chunk.length;
@@ -161,15 +161,25 @@ class CategoryManager {
                     progressCallback(progress, processedTabs, totalTabs);
                 }
 
-                return (categories && categories.length > 0) ? categories : null;
+                return result || null;
             } catch (error) {
                 console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
-                return null; // Return null on error
+                // Fallback for a failed chunk
+                const tabInfoForMapping = chunk.map(tab => `'domain:${tab.domain}', 'description: ${tab.title}', 'url_ext': ...`).join('\n');
+                return {
+                    categories: ['Unknown'],
+                    mapping: [`Tab: ${tabInfoForMapping} -> Category: Unknown`]
+                };
             }
         };
 
-        const concurrencyLimit = 5; // Limit to 5 concurrent requests
-        const allCategorySets = (await this.processInParallel(chunks, processChunk, concurrencyLimit)).filter(set => set !== null);
+        const concurrencyLimit = 1; // Limit to 5 concurrent requests
+        const allResults = (await this.processInParallel(chunks, processChunk, concurrencyLimit)).filter(res => res !== null);
+
+        const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
+        const fullMapping = allResults.flatMap(res => res.mapping);
+        console.log('CategoryManager: Full mapping to be downloaded:', fullMapping);
+        this.downloadMapping(fullMapping);
 
         // Final progress update
         if (progressCallback) {
@@ -187,6 +197,29 @@ class CategoryManager {
         console.log('CategoryManager: Final merged categories:', mergedCategories);
 
         return mergedCategories;
+    }
+
+    downloadMapping(mappingArray, filenamePrefix = 'categorization-mapping') {
+        if (!mappingArray || mappingArray.length === 0) {
+            console.log('CategoryManager: No mapping data to download.');
+            return;
+        }
+
+        const content = mappingArray.join('\n');
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        chrome.downloads.download({
+            url: url,
+            filename: `${filenamePrefix}-${Date.now()}.txt`,
+            saveAs: false
+        }, () => {
+            if (chrome.runtime.lastError) {
+                console.error('CategoryManager: Download failed:', chrome.runtime.lastError);
+            }
+        });
+
+        console.log(`CategoryManager: Triggered download for mapping file.`);
     }
 
     mergeCategories(categorySets) {
@@ -251,27 +284,6 @@ class CategoryManager {
 
         // Return ALL categories found, no artificial limits
         return uniqueCategories;
-    }
-
-    mergeCategorizedTabs(categorizedTabs, synonymGroups) {
-        console.log('CategoryManager: mergeCategorizedTabs() called');
-        const finalCategorization = {};
-
-        for (const primaryCategory in synonymGroups) {
-            const synonyms = synonymGroups[primaryCategory];
-            let allTabsForPrimary = [];
-
-            synonyms.forEach(synonym => {
-                if (categorizedTabs[synonym]) {
-                    allTabsForPrimary = allTabsForPrimary.concat(categorizedTabs[synonym]);
-                }
-            });
-
-            finalCategorization[primaryCategory] = allTabsForPrimary;
-        }
-
-        console.log('CategoryManager: Final merged categorization:', finalCategorization);
-        return finalCategorization;
     }
 
     analyzeDomains() {

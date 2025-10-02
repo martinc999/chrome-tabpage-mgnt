@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,24 +13,28 @@
       padding: 20px;
       background: #f5f5f5;
     }
+
     .container {
       background: white;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     }
+
     h1 {
       color: #333;
       text-align: center;
       margin-bottom: 20px;
       font-size: 20px;
     }
+
     .controls {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
+
     button {
       background: #007bff;
       color: white;
@@ -40,15 +45,18 @@
       font-size: 12px;
       transition: all 0.2s;
     }
+
     button:hover {
       background: #0056b3;
       transform: translateY(-1px);
     }
+
     button:disabled {
       background: #ccc;
       cursor: not-allowed;
       transform: none;
     }
+
     .status {
       padding: 12px;
       border-radius: 6px;
@@ -56,59 +64,70 @@
       font-size: 13px;
       font-weight: 500;
     }
+
     .status.success {
       background: #d4edda;
       color: #155724;
       border: 1px solid #c3e6cb;
     }
+
     .status.error {
       background: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
+
     .status.info {
       background: #cce7ff;
       color: #004085;
       border: 1px solid #b3d9ff;
     }
+
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 15px;
     }
+
     .stat-card {
       background: #e9ecef;
       padding: 12px;
       border-radius: 6px;
       text-align: center;
     }
+
     .stat-number {
       font-size: 18px;
       font-weight: bold;
       color: #007bff;
     }
+
     .stat-label {
       font-size: 10px;
       color: #666;
       margin-top: 3px;
     }
+
     .categories-section {
       background: #f8f9fa;
       padding: 15px;
       border-radius: 6px;
       margin-bottom: 15px;
     }
+
     .categories-section h3 {
       margin: 0 0 10px 0;
       font-size: 14px;
       color: #333;
     }
+
     .category-list {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
+
     .category-tag {
       background: #28a745;
       color: white;
@@ -117,15 +136,18 @@
       font-size: 11px;
       font-weight: 500;
     }
+
     .tabs-section {
       max-height: 400px;
       overflow-y: auto;
     }
+
     .tabs-section h3 {
       margin: 0 0 10px 0;
       font-size: 14px;
       color: #333;
     }
+
     .tab-item {
       background: #f8f9fa;
       padding: 10px;
@@ -135,20 +157,24 @@
       cursor: pointer;
       transition: background 0.2s;
     }
+
     .tab-item:hover {
       background: #e9ecef;
     }
+
     .tab-header {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 4px;
     }
+
     .tab-favicon {
       width: 16px;
       height: 16px;
       border-radius: 2px;
     }
+
     .tab-title {
       font-weight: 600;
       color: #333;
@@ -158,6 +184,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     .tab-url {
       font-size: 10px;
       color: #666;
@@ -166,11 +193,13 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     .tab-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .tab-category {
       background: #007bff;
       color: white;
@@ -178,10 +207,12 @@
       border-radius: 3px;
       font-size: 10px;
     }
+
     .tab-domain {
       font-size: 10px;
       color: #999;
     }
+
     .search-box {
       width: 100%;
       padding: 10px;
@@ -190,6 +221,7 @@
       margin-bottom: 15px;
       font-size: 13px;
     }
+
     .loading {
       text-align: center;
       color: #666;
@@ -198,10 +230,11 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>🗂️ Chrome Tab Categorizer</h1>
-    
+
     <div class="controls">
       <button id="loadTabs">Load Chrome Tabs</button>
       <button id="generateCategories" disabled>Generate Categories</button>
@@ -220,7 +253,8 @@
 
     <div id="tabsSection" class="tabs-section" style="display: none;">
       <h3>📑 Your Chrome Tabs</h3>
-      <input type="text" id="searchBox" class="search-box" placeholder="Search tabs by title, URL, or domain..." style="display: none;">
+      <input type="text" id="searchBox" class="search-box" placeholder="Search tabs by title, URL, or domain..."
+        style="display: none;">
       <div id="tabsContainer"></div>
     </div>
   </div>
@@ -238,18 +272,18 @@
           console.log('Loading tabs from Chrome...');
           const windows = await chrome.windows.getAll({ populate: true });
           this.tabs = [];
-          
+
           for (const window of windows) {
             for (const tab of window.tabs) {
               const tabData = await this.enrichTabData(tab, window.id);
               this.tabs.push(tabData);
             }
           }
-          
+
           this.filteredTabs = [...this.tabs];
           console.log(`Loaded ${this.tabs.length} tabs from ${windows.length} windows`);
           return this.tabs;
-          
+
         } catch (error) {
           console.error('Failed to load tabs:', error);
           throw error;
@@ -294,7 +328,7 @@
       getPageMetadata() {
         const selectors = [
           'meta[name="description"]',
-          'meta[property="og:description"]', 
+          'meta[property="og:description"]',
           'meta[name="twitter:description"]'
         ];
 
@@ -325,11 +359,11 @@
       }
 
       isSystemPage(url) {
-        return url.startsWith('chrome://') || 
-               url.startsWith('chrome-extension://') || 
-               url.startsWith('edge://') ||
-               url.startsWith('about:') ||
-               url.startsWith('moz-extension://');
+        return url.startsWith('chrome://') ||
+          url.startsWith('chrome-extension://') ||
+          url.startsWith('edge://') ||
+          url.startsWith('about:') ||
+          url.startsWith('moz-extension://');
       }
 
       getDefaultFavicon() {
@@ -342,11 +376,11 @@
 
       filterTabs(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
-        
+
         if (!term) {
           this.filteredTabs = [...this.tabs];
         } else {
-          this.filteredTabs = this.tabs.filter(tab => 
+          this.filteredTabs = this.tabs.filter(tab =>
             tab.title.toLowerCase().includes(term) ||
             tab.url.toLowerCase().includes(term) ||
             tab.domain.toLowerCase().includes(term) ||
@@ -354,7 +388,7 @@
             tab.category.toLowerCase().includes(term)
           );
         }
-        
+
         return this.filteredTabs;
       }
 
@@ -414,14 +448,14 @@
 
           for (const [category, patterns] of Object.entries(categoryPatterns)) {
             if (!categories.includes(category)) continue;
-            
+
             let score = 0;
             for (const pattern of patterns) {
               if (tabContent.includes(pattern.toLowerCase())) {
                 score += pattern.length; // Longer matches get higher scores
               }
             }
-            
+
             if (score > bestScore) {
               bestScore = score;
               bestMatch = category;
@@ -436,7 +470,7 @@
         const windowCount = new Set(this.tabs.map(tab => tab.windowId)).size;
         const pinnedCount = this.tabs.filter(tab => tab.isPinned).length;
         const categorizedCount = this.tabs.filter(tab => tab.category !== 'uncategorized').length;
-        
+
         return {
           totalTabs: this.tabs.length,
           windowCount,
@@ -456,7 +490,7 @@
       async initializeAI() {
         try {
           console.log('Checking Chrome AI availability...');
-          
+
           if (typeof window.ai !== 'undefined' && window.ai.languageModel) {
             this.aiSession = await window.ai.languageModel.create({
               systemPrompt: "You analyze browser tab titles and generate logical category names for organizing them. Respond only with comma-separated category names that are relevant and concise."
@@ -493,7 +527,7 @@
       generateFallbackCategories(tabNames) {
         const categories = new Set();
         const tabContent = tabNames.join(' ').toLowerCase();
-        
+
         // Predefined category detection
         const categoryKeywords = {
           'Communication': ['gmail', 'mail', 'slack', 'discord', 'zoom', 'teams', 'chat', 'message'],
@@ -554,7 +588,7 @@
         document.getElementById('generateCategories').addEventListener('click', () => this.generateCategories());
         document.getElementById('assignCategories').addEventListener('click', () => this.assignCategories());
         document.getElementById('clearData').addEventListener('click', () => this.clearData());
-        
+
         // Search functionality
         const searchBox = document.getElementById('searchBox');
         searchBox.addEventListener('input', (e) => {
@@ -568,7 +602,7 @@
         statusEl.textContent = message;
         statusEl.className = `status ${type}`;
         statusEl.style.display = 'block';
-        
+
         if (type === 'success' || type === 'info') {
           setTimeout(() => {
             statusEl.style.display = 'none';
@@ -579,7 +613,7 @@
       updateStats() {
         const stats = this.tabManager.getStatistics();
         const statsEl = document.getElementById('stats');
-        
+
         statsEl.innerHTML = `
           <div class="stat-card">
             <div class="stat-number">${stats.totalTabs}</div>
@@ -598,7 +632,7 @@
             <div class="stat-label">Windows</div>
           </div>
         `;
-        
+
         statsEl.style.display = 'grid';
       }
 
@@ -607,15 +641,15 @@
 
         try {
           this.showStatus('Loading Chrome tabs...', 'info');
-          
+
           await this.tabManager.loadAllTabs();
           this.renderTabs();
           this.updateStats();
-          
+
           document.getElementById('generateCategories').disabled = false;
           document.getElementById('searchBox').style.display = 'block';
           this.showStatus(`Successfully loaded ${this.tabManager.tabs.length} tabs`, 'success');
-          
+
         } catch (error) {
           this.showStatus(`Failed to load tabs: ${error.message}`, 'error');
           console.error('Load tabs error:', error);
@@ -625,26 +659,26 @@
       async generateCategories() {
         try {
           this.showStatus('Initializing AI and generating categories...', 'info');
-          
+
           await this.aiManager.initializeAI();
           const tabNames = this.tabManager.getTabNames();
-          
+
           if (tabNames.length === 0) {
             throw new Error('No tabs loaded. Please load tabs first.');
           }
-          
+
           this.generatedCategories = await this.aiManager.generateCategoriesFromTabNames(tabNames);
-          
+
           if (this.generatedCategories.length === 0) {
             throw new Error('No categories generated');
           }
-          
+
           this.renderCategories();
           this.updateStats();
-          
+
           document.getElementById('assignCategories').disabled = false;
           this.showStatus(`Generated ${this.generatedCategories.length} categories`, 'success');
-          
+
         } catch (error) {
           this.showStatus(`Failed to generate categories: ${error.message}`, 'error');
           console.error('Generate categories error:', error);
@@ -656,15 +690,15 @@
           if (this.generatedCategories.length === 0) {
             throw new Error('No categories available. Please generate categories first.');
           }
-          
+
           this.showStatus('Assigning categories to tabs...', 'info');
-          
+
           this.tabManager.assignCategories(this.generatedCategories);
           this.renderTabs();
           this.updateStats();
-          
+
           this.showStatus('Successfully categorized all tabs', 'success');
-          
+
         } catch (error) {
           this.showStatus(`Failed to assign categories: ${error.message}`, 'error');
           console.error('Assign categories error:', error);
@@ -675,23 +709,23 @@
         this.tabManager.tabs = [];
         this.tabManager.filteredTabs = [];
         this.generatedCategories = [];
-        
+
         document.getElementById('tabsSection').style.display = 'none';
         document.getElementById('categoriesSection').style.display = 'none';
         document.getElementById('stats').style.display = 'none';
         document.getElementById('status').style.display = 'none';
         document.getElementById('searchBox').style.display = 'none';
-        
+
         document.getElementById('generateCategories').disabled = true;
         document.getElementById('assignCategories').disabled = true;
-        
+
         this.showStatus('All data cleared', 'success');
       }
 
       renderTabs() {
         const tabsContainer = document.getElementById('tabsContainer');
         const tabsSection = document.getElementById('tabsSection');
-        
+
         if (this.tabManager.filteredTabs.length === 0) {
           if (this.tabManager.tabs.length === 0) {
             tabsSection.style.display = 'none';
@@ -700,7 +734,7 @@
           }
           return;
         }
-        
+
         tabsContainer.innerHTML = this.tabManager.filteredTabs.map(tab => `
           <div class="tab-item" onclick="app.activateTab(${tab.id})">
             <div class="tab-header">
@@ -714,23 +748,23 @@
             </div>
           </div>
         `).join('');
-        
+
         tabsSection.style.display = 'block';
       }
 
       renderCategories() {
         const categoryList = document.getElementById('categoryList');
         const categoriesSection = document.getElementById('categoriesSection');
-        
+
         if (this.generatedCategories.length === 0) {
           categoriesSection.style.display = 'none';
           return;
         }
-        
-        categoryList.innerHTML = this.generatedCategories.map(category => 
+
+        categoryList.innerHTML = this.generatedCategories.map(category =>
           `<div class="category-tag">${category}</div>`
         ).join('');
-        
+
         categoriesSection.style.display = 'block';
       }
 
@@ -747,4 +781,5 @@
     const app = new TabCategorizerApp();
   </script>
 </body>
+
 </html>

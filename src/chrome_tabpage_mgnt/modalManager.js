@@ -55,6 +55,7 @@ class ModalManager {
     const categoryList = document.getElementById('predefinedCategoryList');
     const currentTabsCount = this.tabManager.tabs.length;
 
+    // Check cache
     if (this.predefinedCache.tabsCount === currentTabsCount && this.predefinedCache.categorizedTabs) {
       console.log('Using cached predefined categories.');
       categoryList.style.display = 'none';
@@ -67,24 +68,44 @@ class ModalManager {
     container.style.display = 'none';
 
     try {
-      const initialCategories = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
+      // NEW: generatePredefinedCategories now returns {categories, groupedTabs}
+      const result = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
+      
+      console.log('CategoryManager result:', result);
 
-      categoryList.style.display = 'none';
-      container.style.display = 'block';
-      container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
+      // Check if we got groupedTabs from the AI process
+      let finalCategorizedTabs;
+      
+      if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
+        // AI already grouped the tabs during generation
+        console.log('Using AI-grouped tabs from generation phase');
+        finalCategorizedTabs = result.groupedTabs;
+      } else {
+        // Fallback or AI didn't group - use categorizeTabs
+        console.log('No grouped tabs from generation, categorizing now...');
+        categoryList.style.display = 'none';
+        container.style.display = 'block';
+        container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
+        
+        finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
+      }
 
-      const finalCategorizedTabs = await this.categoryManager.categorizeTabs(initialCategories);
-
+      // Update cache
       this.predefinedCache = {
         tabsCount: currentTabsCount,
-        categories: Object.keys(finalCategorizedTabs),
+        categories: result.categories,
         categorizedTabs: finalCategorizedTabs
       };
+
+      // Render the tree
+      categoryList.style.display = 'none';
+      container.style.display = 'block';
       this.renderCategoryTree(finalCategorizedTabs, container, 'Predefined Categories');
 
     } catch (error) {
       console.error('Category generation failed:', error);
       categoryList.innerHTML = '<div class="error">Failed to categorize tabs. Please try again.</div>';
+      container.style.display = 'none';
     }
   }
 
@@ -98,7 +119,10 @@ class ModalManager {
     const container = document.getElementById('discoverCategoryTree');
     const currentTabsCount = this.tabManager.tabs.length;
 
-    if (this.discoverCache.tabsCount === currentTabsCount && this.discoverCache.prompt === prompt && this.discoverCache.categorizedTabs) {
+    // Check cache
+    if (this.discoverCache.tabsCount === currentTabsCount && 
+        this.discoverCache.prompt === prompt && 
+        this.discoverCache.categorizedTabs) {
       console.log('Using cached discover categories.');
       document.getElementById('discoverCategoryStatus').style.display = 'none';
       container.style.display = 'block';
@@ -109,20 +133,38 @@ class ModalManager {
     this.showDiscoverCategoryProcessing();
 
     try {
-      const initialCategories = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
+      // NEW: generateDiscoverCategories now returns {categories, groupedTabs}
+      const result = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
+      
+      console.log('CategoryManager discover result:', result);
 
-      container.style.display = 'block';
-      container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
+      // Check if we got groupedTabs from the AI process
+      let finalCategorizedTabs;
+      
+      if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
+        // AI already grouped the tabs during generation
+        console.log('Using AI-grouped tabs from generation phase');
+        finalCategorizedTabs = result.groupedTabs;
+      } else {
+        // Fallback or AI didn't group - use categorizeTabs
+        console.log('No grouped tabs from generation, categorizing now...');
+        container.style.display = 'block';
+        container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
+        
+        finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
+      }
 
-      const finalCategorizedTabs = await this.categoryManager.categorizeTabs(initialCategories);
-
+      // Update cache
       this.discoverCache = {
         prompt: prompt,
         tabsCount: currentTabsCount,
-        categories: Object.keys(finalCategorizedTabs),
+        categories: result.categories,
         categorizedTabs: finalCategorizedTabs
       };
 
+      // Render the tree
+      document.getElementById('discoverCategoryStatus').style.display = 'none';
+      container.style.display = 'block';
       this.renderCategoryTree(finalCategorizedTabs, container, `Discovered Categories: "${prompt}"`);
 
     } catch (error) {
@@ -226,11 +268,11 @@ class ModalManager {
 
     const message = `🤖 AI analyzing your tabs... (${processed}/${total} tabs, ${progress}%)`;
 
-    if (categoryList.style.display !== 'none') {
+    if (categoryList && categoryList.style.display !== 'none') {
       categoryList.innerHTML = `<div class="loading">${message}</div>`;
     }
 
-    if (discoverCategoryStatus.style.display !== 'none') {
+    if (discoverCategoryStatus && discoverCategoryStatus.style.display !== 'none') {
       discoverCategoryStatus.innerHTML = `<div class="loading">${message}</div>`;
     }
   }
@@ -266,8 +308,10 @@ class ModalManager {
       await this.tabManager.closeTabs(tabIdsToClose);
 
       // Remove the category group from the UI
-      const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`).parentElement;
-      categoryGroup.remove();
+      const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`)?.parentElement;
+      if (categoryGroup) {
+        categoryGroup.remove();
+      }
 
       // Update the cache
       delete cache.categorizedTabs[categoryName];

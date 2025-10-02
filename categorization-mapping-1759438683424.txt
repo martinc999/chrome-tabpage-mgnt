@@ -1,0 +1,460 @@
+1676703083|1676703082|docs.ray.io|Distributing your PyTorch Training Code with Ray Train and Ray Data — Ray 2.49.2|/en/latest/train/examples/pytorch/distributing-pytorch/README.html
+1676703087|1676703082|inferentialthinking.com|10.1. Empirical Distributions — Computational and Inferential Thinking|/chapters/10/1/Empirical_Distributions.html
+1676703090|1676703082|www.linkedin.com|(23) Hanna Klimczak-Plucińska | LinkedIn|/in/hklimczak/
+1676703093|1676703082|github.com|multi-imbalance/multi_imbalance/ensemble/mrbbagging.py at master · damianhorna/multi-imbalance|/damianhorna/multi-imbalance/blob/master/multi_imbalance/ensemble/mrbbagging.py
+1676703096|1676703082|www.thealgorithmicbridge.com|(5) After GPT-5 Release, Hundreds Begged OpenAI to Bring Back GPT-4o|/p/after-gpt-5-release-hundreds-begged?utm_source=post-email-title&publication_id=883883&post_id=170532680&utm_campaign=email-post-title&isFreemail=true&r=91rvq&triedRedirect=true&utm_medium=email
+1676703099|1676703082|www.poznan.pl|Gratowisko Poznań Dębiec (PSZOK) | Wszystko o odpadach | Poznan.pl|/mim/wortals/wortal,904/punkty-selektywnego-zbierania-odpadow-komunalnych,poi,6100/-,75050.html
+1676703102|1676703082|docs.google.com|Dokument bez tytułu - Dokumenty Google|/document/d/1b_CV0IQ8eIRWwfSLAyN6_B3BaN9H0U05uRayQCwa6p4/edit?tab=t.0
+1676703105|1676703082|calendar.google.com|Kalendarz Google - Tydzień, w którym przypada 4 sierpnia 2025|/calendar/u/0/r/week/2025/8/8
+1676703108|1676703082|link.springer.com|RETRACTED ARTICLE: Prenatal Exposure to COVID-19 mRNA Vaccine BNT162b2 Induces Autism-Like Behaviors in Male Neonatal Rats: Insights into WNT and BDNF Signaling Perturbations | Neurochemical Research|/article/10.1007/s11064-023-04089-2
+1676703111|1676703082|www.facebook.com|Facebook|/
+1676703114|1676703082|newtab|Nowa karta|/
+1676703115|1676703082|www.youtube.com|He Insulted This Israeli… Then Completely Changed His Mind - YouTube|/watch?v=SNMHHqRbtLg
+1676703118|1676703082|github.com|GitHub|/
+1676703121|1676703082|www.google.com|Pozwolenie na nunchaku - Szukaj w Google|/search?client=ms-android-samsung-ss&hl=pl-PL&sca_esv=699dcbf54c4bfee5&cs=0&sxsrf=AE3TifNzqqrvPR_GP6S18P-MFx5oiYZKWQ:1754149352045&q=Pozwolenie+na+nunchaku&sa=X&ved=2ahUKEwj0yYrIu-yOAxXjB9sEHSmIDXEQpboHKAN6BAgCEAU
+1676703124|1676703082|localhost|localhost|/
+1676703127|1676703082|notesfrompoland.com|Poland says it “can serve as example” for countries considering recognising Palestine | Notes From Poland|/2025/07/31/poland-says-it-can-serve-as-example-for-countries-considering-recognising-palestine/?fbclid=IwY2xjawL7H2ZleHRuA2FlbQIxMQABHqrFDkwaU3tB8_BVJSkXApDYaBM51VXTbIR4AVqf-b4qQ78KovJzNyTJudQp_aem_dMpInWLe09BhtZAmKMRBWg
+1676703130|1676703082|x.com|x.com/home|/home
+1676703133|1676703082|thepalindrome.org|The Roadmap of Mathematics for Machine Learning|/p/the-roadmap-of-mathematics-for-machine-learning
+1676703136|1676703082|www.empik.com|Marcin - Dostępne środki - empik.com|/twoje-konto/dostepne-srodki
+1676703139|1676703082|cmsprawni.pl|Neurochirurgia – Centrum Medyczne Sprawni|/neurochirurgia/
+1676703142|1676703082|www.google.com|interluda - Szukaj w Google|/search?q=interluda&oq=interluda&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIMCAEQABgKGLEDGIAEMgkIAhAAGAoYgAQyCQgDEAAYChiABDIJCAQQABgKGIAEMgkIBRAAGAoYgAQyCQgGEAAYChiABDIJCAcQABgKGIAEMgkICBAAGAoYgAQyCQgJEAAYChiABNIBCDMzMjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+1676703145|1676703082|www.facebook.com|(13) Facebook|/
+1676703148|1676703082|filozofia.amu.edu.pl|2025SZ-FO-lic.pdf|/__data/assets/pdf_file/0024/619017/2025SZ-FO-lic.pdf
+1676703151|1676703082|www.snm.edu.pl|Stowarzyszenie Nauczycieli Matematyki: Dr hab. Maciej Błaszak, profesor UAM - wykład inauguracyjny: "Mózg predyktywny ucznia: analiza i refleksja w procesie zdobywania wiedzy"|/2018/01/dr-hab-maciej-baszak-profesor-uam-wykad.html
+1676703154|1676703082|fdown.net|fdown.net|/download.php
+1676703157|1676703082|app.docker.com|app.docker.com|/auth/callback?code=k2SkBYQKOvjlbFo8l6vhrVLlvsmLjaK0LR-UmV_QxUySo&state=vlTC98sPfzEveofQkT0gkw-66Mj4-VpB9UfOsxC-U6s
+1676703160|1676703082|www.youtube.com|Historia Polaka, który stworzył AI wartą miliardy, walcząc z kartelami | Marcin Markiewicz - YouTube|/watch?v=d6F9nfUikwk&ab_channel=ThisIsIT-MaciejKawecki
+1676703163|1676703082|newtab|Nowa karta|/
+1676703164|1676703082|play.hbomax.com|And Just Like That... • HBO Max|/show/b9c27771-247a-459d-b751-85460d3fd5a2
+1676703167|1676703082|www.google.pl|23 Polanka – Mapy Google|/maps/@52.3993879,16.9597186,3a,75y,218.68h,81.74t/am=t/data=!3m7!1e1!3m5!1ssvccf8io-XrVCIdOyhzYYw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D8.256945057466794%26panoid%3Dsvccf8io-XrVCIdOyhzYYw%26yaw%3D218.67794758282764!7i13312!8i6656?entry=ttu&g_ep=EgoyMDI1MDgwNS4wIKXMDSoASAFQAw%3D%3D
+1676703170|1676703082|localhost|localhost:8080|/
+1676703173|1676703082|chatgpt.com|British support in 1948|/c/689762a5-bc10-8333-9f15-560b7d1fbcb4
+1676703176|1676703082|www.youtube.com|Machine Learning Explained in 100 Seconds - YouTube|/watch?v=PeMlggyqz0Y&ab_channel=Fireship
+1676703179|1676703082|grok.com|Troubleshooting Python Module Linking in VSCode - Grok|/chat/51eb86cf-c9fe-40bb-82fd-8dc4bdfabd54
+1676703182|1676703082|eins.pl|Formularze zgłoszenia szkody - EINS Polska|/dokumenty-do-pobrania/formularze-zgloszenia-szkody/
+1676703185|1676703082|www.youtube.com|(30) PydanticAI: the AI Agent Framework Winner - YouTube|/watch?v=-WB0T0XmDrY&t=637s
+1676703188|1676703082|mail.google.com|Nowe konto zostało utworzone - martinc999@gmail.com - Gmail|/mail/u/0/#inbox/FMfcgzQcpwrkhSmGWZmCpwbNPHjxzmpj
+1676703191|1676703082|devops.arpideas.pl|Dokumentacja - Overview|/Projects/NaszaMoc/_wiki/wikis/Spirvent.wiki/208/Dokumentacja
+1676703194|1676703082|www.pse.pl|TECHNICZNE STANDARDY PRZYŁĄCZENIA SYSTEMÓW|/documents/20182/976314471/OIRE_2024-12-30_TSPS.pdf
+1676703197|1676703082|devops.arpideas.pl|Projects - Home|/Projects/
+1676703200|1676703082|m365.cloud.microsoft|Czat | M365 Copilot|/chat/?auth=2&origindomain=Office&client-request-id=8a6175a4-3bd1-4dce-9d7c-57ac7eb005cc
+1676703203|1676703082|eu.onetimesecret.com|Onetime Secret|/secret/2vidohq82xl1dlknemouufsreysoo2c
+1676703206|1676703082|www.pzu.pl|PZU | Ubezpieczenia, emerytury i inwestycje dla Ciebie i rodziny|/
+1676703209|1676703082|moje.pzu.pl|mojePZU - Twoje internetowe konto - ubezpieczenia, wizyty lekarskie|/cas/logout
+1676703212|1676703082|moje.pzu.pl|mojePZU - Twoje internetowe konto - ubezpieczenia, wizyty lekarskie|/cas/logout
+1676703215|1676703082|www.youtube.com|PydanticAI: zwycięzca w kategorii AI Agent Framework - YouTube|/watch?v=-WB0T0XmDrY
+1676703218|1676703082|www.youtube.com|2025 TSC Barcelona - Early Morning meditation with Deepak Chopra - YouTube|/watch?v=5Z-ApnX5YBU&list=PLl_UXfN1hubXOLMWSZgu1OPwsZL_lnh8u&index=19
+1676703221|1676703082|wiadomosci.gazeta.pl|Stanisław Soyka nie żyje. Są wstępne wnioski biegłego. Będzie też sekcja zwłok|/polska/7,198072,32195795,stanislaw-soyka-nie-zyje-sa-wstepne-wnioski-bieglego-bedzie.html#s=BoxPWD
+1676703224|1676703082|dspy.ai|Overview - DSPy|/tutorials/gepa_ai_program/
+1676703227|1676703082|www.google.com|us open - Szukaj w Google|/search?q=us+open&oq=us+open&gs_lcrp=EgZjaHJvbWUqBwgAEAAYjwIyBwgAEAAYjwIyDQgBEC4YgwEYsQMYgAQyDggCEEUYJxg7GIAEGIoFMgYIAxBFGDwyBggEEEUYPDIGCAUQRRg8MgYIBhBFGEEyBggHEEUYQdIBCDM3ODVqMGo0qAIGsAIB8QWbW8x9DZVP8w&sourceid=chrome&ie=UTF-8
+1676703230|1676703082|www.perplexity.ai|I have hipothesis that the lateralization of motoric and lagunage structure...|/search/i-have-hipothesis-that-the-lat-NHJrDNv4TyGeSx0vELFWZg
+1676703233|1676703082|discovery.ucl.ac.uk|Testing the relationship between lateralization on sequence-based motor tasks and language lateralit|/id/eprint/10157667/1/Testing%20the%20relationship%20between%20lateralization%20on%20sequence%20based%20motor%20tasks%20and%20language%20laterality%20using%20an%20online%20battery.pdf
+1676703236|1676703082|www.onet.pl|Sąd uznał decyzje Trumpa za nielegalne. Rosja uderzyła w Ukrainie, Polska poderwała samoloty. Podsumowanie nocy - Wiadomości|/informacje/onetwiadomosci/rosja-uderzyla-w-ukrainie-polska-reaguje-podsumowanie-nocy/6bhc3dy,79cfc278
+1676703239|1676703082|grok.com|Troubleshooting Pydantic AI Invoice Extraction - Grok|/chat/cfb0cba2-1cc8-43f2-a3c8-6343e4801ef5
+1676703242|1676703082|www.google.com|miele - Szukaj w Google|/search?q=miele&oq=miele&gs_lcrp=EgZjaHJvbWUyDAgAEEUYORixAxiABDIKCAEQLhixAxiABDIHCAIQLhiABDIKCAMQABixAxiABDIHCAQQABiABDITCAUQLhivARjHARiABBiYBRieBTIHCAYQABiABDIGCAcQRRhB0gEIMTEwM2owajeoAgCwAgA&sourceid=chrome&ie=UTF-8
+1676703245|1676703082|www.ceneo.pl|Miele UltraPhase 1 3szt. i 2 3szt. - Opinie i atrakcyjne ceny na Ceneo.pl|/131197012;pla?se=Gsny3YeAhbYC-dPtwGBslmWnsAqEsNg5&shop=146601524&gad_source=1&gad_campaignid=22882905343&gbraid=0AAAAADi0cY6osXkVERkGmO3-srYympG19&gclid=Cj0KCQjwwsrFBhD6ARIsAPnUFD0n4ZZUy10VP6-badAxWVUREEZkqmn2b-e4FhCx9ExsY4UZ6esgjAYaAiW5EALw_wcB
+1676703248|1676703082|www.youtube.com|Krzesło IDEALNE? - YouTube|/watch?v=H89dEt7b_fQ
+1676703251|1676703082|www.dragonflychair.com|Ortopedyczne krzesło do aktywnego siedzenia przy biurku|/dragonflychair-comfort-silver
+1676703254|1676703082|www.youtube.com|dbt (data build tool) - Overview for Data Engineering & Modelling - YouTube|/watch?v=C9wEdUjTNk8&list=PL-2EBeDYMIbQD6dX2cHYFm5nkqIjdt8IJ&ab_channel=BugBytes
+1676703257|1676703082|www.youtube.com|Witamina C niszczy agresywne komórki nowotworowe, jeśli stosuje się ją w połączeniu z TYM prostym... - YouTube|/watch?v=phg_9Vv22fk&ab_channel=Physionic
+1676703260|1676703082|x.com|x.com/home|/home
+1676703263|1676703082|wsl.localhost|page_2.html|/Ubuntu-22.04/home/marcin/repos/pdf-npm/data_parser_main/out/html/FakturaVAT_3109175/page_2.html
+1676703264|1676703082|www.facebook.com|(3) Facebook|/profile.php?id=1546577859&comment_id=Y29tbWVudDozMTE1MDIzODA0MTI1Nzg0Nl8xNDI1OTM3MDYyMDM2MjMx
+1676703267|1676703082|www.researchgate.net|Cierpliwości...|/journal/Nature-Communications-2041-1723/publication/341292815_Synergistic_effect_of_fasting-mimicking_diet_and_vitamin_C_against_KRAS_mutated_cancers/links/5fb4f410299bf10c3689d98b/Synergistic-effect-of-fasting-mimicking-diet-and-vitamin-C-against-KRAS-mutated-cancers.pdf?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InB1YmxpY2F0aW9uRG93bmxvYWQiLCJwcmV2aW91c1BhZ2UiOiJwdWJsaWNhdGlvbiJ9fQ&__cf_chl_tk=meLkQigeDaFHjetJUF3AZTsSa59YeAf1qKyIDHZ1j80-1756825509-1.0.1.1-c_mexjlTabROcBMmH.emQk55VAT4w_wtc.M4a6yE0iw
+1676703270|1676703082||Synergistic_effect_of_fasting-mimicking_diet_and_v.pdf|/C:/Users/marcin/Downloads/Synergistic_effect_of_fasting-mimicking_diet_and_v.pdf
+1676703271|1676703082|chatgpt.com|Fasting protocol details|/c/68b58419-3f68-832b-98b4-1b55e470ad9d
+1676703274|1676703082|www.youtube.com|(10) Co w głowie ma zwierzę? - Przewodnik po Rozumie - NOWY CYKL O MÓZGU - YouTube|/watch?v=z88xFIJdWeg
+1676703277|1676703082|ndrk.pl|Marek Kaczmarzyk – Neurodydaktyka Doktora Kaczmarzyka|/autorzy/marek-kaczmarzyk/
+1676703280|1676703082|pl.wikipedia.org|Marek Kaczmarzyk – Wikipedia, wolna encyklopedia|/wiki/Marek_Kaczmarzyk
+1676703283|1676703082|grok.com|Grok|/?referrer=website
+1676703286|1676703082|newtab|Nowa karta|/
+1676703287|1676703082|www.facebook.com|Facebook|/
+1676703290|1676703082||description1.htm|/C:/Users/marcin/AppData/Local/Temp/ALTERIStmp1756822473502269/description1.htm
+1676703291|1676703082|www.znanylekarz.pl|Lek. Tomasz Szczepański - Umów wizytę online | ZnanyLekarz.pl|/tomasz-szczepanski-2/internista-ultrasonografista/wroclaw#addresses-section
+1676703294|1676703082|poznan.medfemina.pl|Cennik - Centrum Zdrowia Medfemina|/cennik/
+1676703297|1676703082|endocare.wroclaw.pl|Cennik - Centrum Medyczne Endocare Wrocław|/cennik/
+1676703300|1676703082||Opis badania|/C:/Users/marcin/AppData/Local/Temp/ALTERIStmp1756825300583711/description1.htm
+1676703301|1676703082||file:///C:/Users/marcin/AppData/Local/Temp/ALTERIStmp1756825439128879/description1.htm|/C:/Users/marcin/AppData/Local/Temp/ALTERIStmp1756825439128879/description1.htm
+1676703302|1676703082|www.microdicom.com|MicroDicom - Free DICOM viewer and software|/
+1676703305|1676703082|www.facebook.com|(17) Facebook|/
+1676703308|1676703082|medicalxpress.com|Neuroscientists show for first time that precise timing of nerve signals determines how brain processes information|/news/2025-09-neuroscientists-precise-nerve-brain.html?fbclid=IwY2xjawMj7BFleHRuA2FlbQIxMQABHm4JLkn-njlllPeL3_zxunSehKXdrJ54TOaRf9HZVnG2_JiTT09932Fk8L7U_aem_75CVk0d8YpMY5Y6ciLEHwQ
+1676703311|1676703082|pl.wikipedia.org|Ivan Lendl – Wikipedia, wolna encyklopedia|/wiki/Ivan_Lendl
+1676703314|1676703082|www.facebook.com|Facebook|/
+1676703317|1676703082|thecognitivepsychologist.substack.com|(5) Interpretable neural networks, human and artificial|/p/interpretable-neural-networks-human-and-artificial?fbclid=IwY2xjawMj9EVleHRuA2FlbQIxMABicmlkETFwUk94QnNzWVFNM3h5ek1OAR6qqOSK8LVcnbCNb0OqmHcLD7DuMgr4t-7Nnr3Fq4DnsVQrqtzBpJ78VFFCHA_aem_X5ODzZf4iPrkyy5exWcmNQ
+1676703320|1676703082|www.deeplearning.ai|DSPy: Build and Optimize Agentic Apps - DeepLearning.AI|/short-courses/dspy-build-optimize-agentic-apps/
+1676703323|1676703082|learn.deeplearning.ai|DSPy: Build and Optimize Agentic Apps - DeepLearning.AI|/courses/dspy-build-optimize-agentic-apps/lesson/bsrk7/dspy-programming---signatures-and-modules
+1676703326|1676703082|s172-29-7-82p8888.lab-aws-production.deeplearning.ai|L2/|/tree/L2
+1676703329|1676703082|www.youtube.com|(10) Pyproject.toml: The modern Python project definition file, explained - YouTube|/watch?v=QMY-OkckDwo&ab_channel=InfoWorld
+1676703332|1676703082|mail.google.com|[September] Middleware in LangChain 1.0 alpha and designing agent runtime - martinc999@gmail.com - Gmail|/mail/u/0/#inbox/FMfcgzQcpwvBVpqKQNlNxhffxKvWtzTn
+1676703335|1676703082|luma.com|Context Engineering Webinar: Manus + LangChain · Luma|/819i5ime?_hsenc=p2ANqtz-_WQoetQ07eFoE3-NAVFak_HGGpzPcxdiJWcM40uBN5MFAVXy1h5oEf-DWYUHjPaXfE0uyDWjaygwa3bVT5DI9ItSKb0A&_hsmi=14881600&utm_content=14881600&utm_medium=email&utm_source=hs_email
+1676703338|1676703082|rsvp.withgoogle.com|Home|/events/google-ai-agents-intensive_2025?utm_medium=email&utm_source=gamma&utm_campaign=learn-aiagents-intensive-2025
+1676703341|1676703082|www.kaggle.com|5-Day Gen AI Intensive Course with Google | Kaggle|/learn-guide/5-day-genai
+1676703344|1676703082|aistudio.google.com|Google AI Studio|/prompts/1gSs0HYwHPIkyjZMt3xCRv18ewvLn0irP
+1676703347|1676703082|rsvp.withgoogle.com|Home|/events/google-ai-agents-intensive_2025?utm_medium=email&utm_source=gamma&utm_campaign=learn-aiagents-intensive-2025
+1676703350|1676703082|www.kaggle.com|5-Day Gen AI Intensive Course with Google | Kaggle|/learn-guide/5-day-genai
+1676703353|1676703082|www.youtube.com|(10) What is a vector? - YouTube|/shorts/kKiNh5ZIVEQ
+1676704437|1676703082|www.facebook.com|(4) Facebook|/
+1676704440|1676703082|wyborcza.pl|YouTube zapłaci Trumpowi prawie 24,5 mln dolarów za ban z 2021 roku|/7,75399,32288758,youtube-zaplaci-trumpowi-prawie-25-mln-dolarow-inne-platformy.html#s=S.TD-K.C-B.1-L.2.duzy
+1676703362|1676703082|www.youtube.com|(10) Does AI Actually Boost Developer Productivity? (100k Devs Study) - Yegor Denisov-Blanch, Stanford - YouTube|/watch?v=tbDDYKRFjhk
+1676703365|1676703082|www.google.com|Kont ene rART - Szukaj w Google|/search?q=Kont+ene+rART&oq=Kont+ene+rART&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTISCAEQLhgNGK8BGMcBGIAEGI4FMgkIAhAAGA0YgAQyCQgDEAAYDRiABDIJCAQQABgNGIAEMgYIBRBFGDwyBggGEEUYPDIGCAcQRRg80gEHNjEzajBqNKgCALACAQ&sourceid=chrome&ie=UTF-8
+1676703368|1676703082|api.whatsapp.com|Udostępnij w WhatsAppie|/send?text=https%3A%2F%2Fshare.google%2Fn5XgUW8fkXQddbKlG
+1676703371|1676703082|www.google.com|KontenerART - Szukaj w Google|/search?sca_esv=191b7c8b3afd2e9f&sxsrf=AE3TifPaZU5iwxQ9EMb2DIkLAxYCi9b3TQ:1756914249979&kgmid=/g/12lr5l6g0&q=KontenerART&shndl=30&shem=lcuae,lsptbl1,uaasie&source=sh/x/loc/uni/m1/1&kgs=82a856846edd3348&utm_source=lcuae,lsptbl1,uaasie,sh/x/loc/uni/m1/1
+1676703374|1676703082|www.linkedin.com|Post | LinkedIn|/posts/lukasikgrzegorz_pko-bank-polski-wczoraj-udost%C4%99pni%C5%82-sw%C3%B3j-model-activity-7368533217408094208-lovj/?utm_source=share&utm_medium=member_ios&rcm=ACoAAABMDpMBqFUaMd_jWLpWcreMqV0I0MhIHOU
+1676703377|1676703082|localhost|🇵🇱 Screen Function Extractio... • Open WebUI|/c/152209f4-5298-4e3b-9342-3e1e5f9b55f7
+1676703380|1676703082|devops.arpideas.pl|devops.arpideas.pl/Projects|/Projects
+1676703383|1676703082|support.google.com|Watching videos with paid product placements, sponsorships & endorsements - YouTube Help|/youtube/answer/10588440?nohelpkit=1&visit_id=638925115060278456-2885797465&p=ppp&rd=1
+1676703386|1676703082|mail.google.com|Perspective Illusions: the Amphitheatre Table - martinc999@gmail.com - Gmail|/mail/u/0/#inbox/FMfcgzQcpwsssKxXlTHfCklRLWNXMPMS
+1676703389|1676703082|x.com|(1) Główna / X|/home
+1676703392|1676703082|mail.google.com|Odebrane (934) - martinc999@gmail.com - Gmail|/mail/u/0/#inbox
+1676703395|1676703082|app.autopay.eu|Aplikacja, z którą zapłacisz szybciej - app.autopay.pl|/akceptacja-regulaminu/9791c7891c931c919afd3b8bf4423584
+1676703398|1676703082|www.linkedin.com|Feed | LinkedIn|/feed/
+1676703401|1676703082|github.com|leochlon/hallbayes|/leochlon/hallbayes
+1676703404|1676703082|github.com|leochlon/hallbayes|/leochlon/hallbayes
+1676703407|1676703082|jakdojade.pl|Jakdojade - podróżuj wygodnie komunikacją miejską i PKP|/co-nowego?redirect=%2Fswarzedz
+1676703410|1676703082|developers.google.com|Używanie czatu z agentem jako programisty pracującego w parze  |  Gemini Code Assist  |  Google for Developers|/gemini-code-assist/docs/use-agentic-chat-pair-programmer?hl=pl
+1676703413|1676703082|www.google.com|catwalk fashion designer famous - Szukaj w Google|/search?q=catwalk+fashion+designer+famous&sca_esv=7550878c098e0420&udm=2&biw=2084&bih=1271&sxsrf=AE3TifP4y9gh0pCwxrFvHFrdSATOc0D1cw%3A1756999139040&ei=4625aOKaAvPZwPAP-daFwAg&ved=0ahUKEwiimLbss7-PAxXzLBAIHXlrAYgQ4dUDCBE&uact=5&oq=catwalk+fashion+designer+famous&gs_lp=Egtnd3Mtd2l6LWltZyIfY2F0d2FsayBmYXNoaW9uIGRlc2lnbmVyIGZhbW91c0j8JlCRA1ikJXAEeACQAQCYAbMBoAGPB6oBAzguMrgBA8gBAPgBAZgCAqACQ8ICBBAAGB7CAgYQABgIGB7CAggQABgIGAoYHpgDAIgGAZIHATKgB-UDsgcBMbgHPsIHBTAuMS4xyAcE&sclient=gws-wiz-img#vhid=oYmKac0d188wMM&vssid=mosaic
+1676703416|1676703082|localhost|Open WebUI|/
+1676703419|1676703082|chatgpt.com|Analiza wyników EKG|/c/68bab44f-2aa4-8324-b33a-30ff44dc4dc1
+1676703422|1676703082|www.facebook.com|Facebook|/
+1676703425|1676703082|192.168.1.42|WarzelniaNAS|/cgi-bin/
+1676703428|1676703082|translate.google.com|Tłumacz Google|/?sl=auto&tl=pl&text=head-to-head%20matchups&op=translate
+1676703431|1676703082|grok.com|Finding Programs Blocking Files on Windows 10 - Grok|/c/a9fcc4ae-385c-404c-8ce6-f312fe8620f2
+1676703434|1676703082|learn.microsoft.com|Handle - Sysinternals | Microsoft Learn|/en-us/sysinternals/downloads/handle
+1676703437|1676703082|grok.com|Neural Dynamics in Language Production - Grok|/c/54894298-f85a-4a46-a63d-7c90d4acfe23
+1676703440|1676703082|www.youtube.com|(16) Copernicus - YouTube|/@CopernicusCenter
+1676703443|1676703082|components|Komponenty|/
+1676703444|1676703082|localhost|Tak, załączone obrazy MRI (rez... • Open WebUI|/c/c5a1eeb9-e017-417e-88d0-0afb1427da4c
+1676703447|1676703082|wiadomosci.gazeta.pl|Prezydencki projekt ws. CPK przeszedł do dalszych prac. Tusk: Nie akceptuję głosowania posłów|/polityka/7,198012,32280936,prezydencki-projekt-ws-cpk-przeszedl-do-dalszych-prac-tusk.html#google_vignette
+1676703450|1676703082|claude.ai|Chrome model categorization issue - Claude|/chat/b0c6866b-7533-430d-9a00-5d0226bc6119
+1676703453|1676703082|docs.google.com|Arkusz kalkulacyjny bez tytułu - Arkusze Google|/spreadsheets/d/1_N8M-NTvLnBiv7iDFxyRlBqJVrXdT1XYdv7cVntiZKg/edit?gid=1620631341#gid=1620631341
+1676703456|1676703082|www.youtube.com|(30) No One Taught Eigenvalues & EigenVectors Like This - YouTube|/watch?v=1sDBruay100
+1676703459|1676703082|www.onkonet.pl|Biopsje w diagnostyce onkologicznej - biopsja cienkoigłowa BAC, biopsja gruboigłowa, biopsja płynna oraz inne rodzaje biopsji|/dp_diagnostyka_biopsje.php
+1676703462|1676703082|open.poznan.pl|Cennik-swiadczen-medycznych-od-07.07.2021-roku.pdf|/wp-content/uploads/2021/07/Cennik-swiadczen-medycznych-od-07.07.2021-roku.pdf
+1676703465|1676703082|www.google.com|Biopsja stereotaktyczna S-VAB - Szukaj w Google|/search?sca_esv=c4554e91040c2cd7&sxsrf=AE3TifMtTIYUM3FOK7HWYovoR4ynKsw-MA:1758901385168&udm=2&fbs=AIIjpHwW-0r_Aj4UyfJvqQzQzjQGITTmC230_MNxN_VvYo5ocBioNjs2eU9dWE6kP5lXYjcp7-u-z7lno7Honqy9ETn-z1PwUXoAITDNawwGpZcUI0850GEe_dI47ImwXtxH9sa1fLEhU02c_1xKDZ40pab34k9MKYBPEvinNepeNQ3EFxxPb98YJfSqnd-53essCDgWoGT5Qh9xMp2kO_Z9F5UFlXV3uA&q=Biopsja+stereotaktyczna+S-VAB&sa=X&ved=2ahUKEwiB64ei4vaPAxVxExAIHUr4NWEQtKgLegQIEhAB&biw=1840&bih=1145&dpr=1.1#vhid=DDF9G3eg2qvdIM&vssid=mosaic
+1676703468|1676703082|docs.google.com|categorization-mapping-1759054915849 - Arkusze Google|/spreadsheets/d/1z-rJgRxmj4gnsEzw1Ft1Fe_o50D_bYz7AYLg97VMJXY/edit?gid=266668393#gid=266668393
+1676703471|1676703082|przegladsportowy.onet.pl|Polscy siatkarze nagle wpadli w pułapkę. Tak zareagował Nikola Grbić - Przegląd Sportowy Onet|/siatkowka/mistrzostwa-swiata-siatkarzy/polscy-siatkarze-nagle-wpadli-w-pulapke-tak-zareagowal-nikola-grbic/2fck2lh
+1676703474|1676703082|x.com|(1) Główna / X|/home
+1676703477|1676703082|docs.google.com|categorization-mapping-1759074099394 - Arkusze Google|/spreadsheets/d/1Jcibq5ybcsmORd4-bccC1vrDAHAKso3JrZZf0Nrv94M/edit?gid=180128872#gid=180128872
+1676703480|1676703082|localhost|Please verify whether the foll... • Open WebUI|/c/f366e0a0-5764-4ea5-9993-7ebf3753edce
+1676703483|1676703082|chatgpt.com|Review statement revision|/c/68da6535-6244-832c-8511-0220e34d0f52
+1676703486|1676703082|newtab|Nowa karta|/
+1676703487|1676703082||Techniczne Standardy Komunikacji Biznesowej: Atrybuty Charakterystyki PP|/C:/Users/marcin/AppData/Local/Temp/dedf0748-2f0a-4ca4-985b-0f7d239b52ec_Biznesowe-6f252f98-b141-4231-9bbf-d5af27baf8a5.zip.2ec/6_Zalacznik_nr_5_1_Atrybuty_charakterystyki_PP%20(1).pdf
+1676703488|1676703082|chatgpt.com|Składki nienależne w ZUS|/c/68db092c-64e0-832f-9f95-ab9b084bfbeb
+1676703491|1676703082|mail.google.com|badanie mri - martinc999@gmail.com - Gmail|/mail/u/0/#sent/KtbxLvgxBHbRbtHpsXQSnWjjqxRMHDQtFg
+1676704443|1676703082|grok.com|Hierarchia przepływów energii spółdzielni - Grok|/c/0a3d31fd-74a1-4229-9a46-adf9eeb37422
+1676704446|1676703082|docs.google.com|22 wrz 2025 | Łukasz - zadania - Dokumenty Google|/document/d/12AMq4NrGIoI6pGAKB4-9g4JL52a1U_962VQIbVHcjQI/edit?tab=t.0#heading=h.1tl5rhnk1xd6
+1676704449|1676703082|docs.google.com|Ekrany Energa - Dokumenty Google|/document/d/1nFuxlyuFT31LO8Qi3u8G_H-ke3tKLcY3DJeYnxBVx1I/edit?tab=t.0
+1676703503|1676703082|mojlicznik.energa-operator.pl|Logowanie - Portal Klienta|/dp/UserLogin.do
+1676704452|1676703082|www.deepseek.com|DeepSeek | 深度求索|/
+1676704455|1676703082|chat.deepseek.com|DeepSeek|/
+1676703512|1676703082|wsl.localhost|Mockup: eBOK — Transakcje|/Ubuntu-22.04/home/marcin/repos/energy-cooperative/ux/index.html
+1676704458|1676703082|docs.google.com|22 wrz 2025 | Łukasz - zadania - Dokumenty Google|/document/d/12AMq4NrGIoI6pGAKB4-9g4JL52a1U_962VQIbVHcjQI/edit?tab=t.0#heading=h.1tl5rhnk1xd6
+1676704461|1676703082|chat.deepseek.com|DeepSeek|/a/chat/s/64018835-bdad-4684-bd25-8e463277396d
+1676703519|1676703082|ebok.pgnig.pl|eBOK PGNiG - Załatw wszystko online!|/
+1676703522|1676703082|ebok.pgnig.pl|get-invoice-pdf|/crm/get-invoice-pdf?invoiceNumber=P%2F44485834%2F0004%2F25%2F1&mode=partial
+1676703525|1676703082|ebok.pgnig.pl|get-invoice-pdf|/crm/get-invoice-pdf?invoiceNumber=P%2F44485834%2F0005%2F25&mode=partial
+1676703529|1676703528|www.datacamp.com|Top 30 LLM Interview Questions and Answers for 2025 | DataCamp|/blog/llm-interview-questions?utm_source=customerio&utm_medium=email&utm_campaign=250602_1-freeweek-t1_2-b2c_3-all_4-na_5-na_6-na_7-le_8-emal-ci_9-na_10-debifawjun25_11-email&utm_content=blast
+1676703533|1676703528|www.datacamp.com|Top 30 AI Interview Questions and Answers | DataCamp|/blog/ai-interview-questions
+1676703536|1676703528|www.datacamp.com|Machine Learning with Tree-Based Models in Python Course | DataCamp|/courses/machine-learning-with-tree-based-models-in-python
+1676703539|1676703528|www.datacamp.com|Top 30 RAG Interview Questions and Answers for 2025 | DataCamp|/blog/rag-interview-questions
+1676703542|1676703528|www.datacamp.com|Top 30 Machine Learning Interview Questions For 2025 | DataCamp|/blog/top-machine-learning-interview-questions
+1676703545|1676703528|garymarcus.substack.com|(5) OpenAI’s future, foretold? - by Gary Marcus - Marcus on AI|/p/openais-future-foretold?img=https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd4598d3f-7e9b-4f73-bf41-a5cc5fedcd5f_1905x1010.png&open=false
+1676703548|1676703528|garymarcus.substack.com|(5) AI Agents have, so far, mostly been a dud - by Gary Marcus|/p/ai-agents-have-so-far-mostly-been?img=https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8547417a-d656-48a0-bee7-f0164afcf1c2_1221x1000.png&open=false
+1676703551|1676703528|github.com|webmachinelearning/prompt-api: 💬 A proposal for a web API for prompting browser-provided language models|/webmachinelearning/prompt-api
+1676703554|1676703528|huggingface.co|Qwen (Qwen)|/Qwen
+1676703557|1676703528|www.deeplearning.ai|Function-Calling and Data Extraction with LLMs - DeepLearning.AI|/short-courses/function-calling-and-data-extraction-with-llms/
+1676703560|1676703528|learn.deeplearning.ai|DeepLearning.AI - Learning Platform|/
+1676703563|1676703528|huggingface.co|TheBloke/NexusRaven-V2-13B-GGUF · Hugging Face|/TheBloke/NexusRaven-V2-13B-GGUF?local-app=ollama
+1676703566|1676703528|arxiv.org|[2012.00152] Every Model Learned by Gradient Descent Is Approximately a Kernel Machine|/abs/2012.00152?fbclid=IwY2xjawLxssNleHRuA2FlbQIxMABicmlkETFlSG5ubndpallhY3JtZFhYAR7b3BD5NMvmcRnF2XOFy50MYpy9uNbaUkZ05h--zmQq-ChDuCBfB7tTZ9IKBA_aem_w5PY8LJDZ8GQsdFRZyLSwQ
+1676703569|1676703528|arxiv.org|A comprehensive taxonomy of hallucinations in Large Language Models|/pdf/2508.01781
+1676703572|1676703528|www.youtube.com|Jak wyleczyłem rwę kulszową: osobista historia powrotu do zdrowia - YouTube|/watch?v=bGm4txL0bwo&ab_channel=WillHarlow%E2%80%93Over-FiftiesSpecialistPhysio
+1676703575|1676703528|play.hbomax.com|play.hbomax.com/show/b9c27771-247a-459d-b751-85460d3fd5a2|/show/b9c27771-247a-459d-b751-85460d3fd5a2
+1676703578|1676703528|github.com|Repository search results|/search?q=martinc999%2FDockerfile&type=repositories
+1676703581|1676703528|x.com|x.com/home|/home
+1676703584|1676703528|www.youtube.com|(174) DeepMind Genie3 – symulacja świata [wywiad ekskluzywny] - YouTube|/watch?v=ekgvWeHidJs&ab_channel=MachineLearningStreetTalk
+1676703587|1676703528|www.deeplearning.ai|Long-Term Agentic Memory with LangGraph - DeepLearning.AI|/short-courses/long-term-agentic-memory-with-langgraph/
+1676703590|1676703528|x.com|x.com/home|/home
+1676703593|1676703528|chatgpt.com|Advanced NLP techniques|/c/6893b778-8f08-8326-a9b4-2899e8a459ff
+1676703596|1676703528|www.youtube.com|(174) Python 3.12 Generic Types Explained - YouTube|/watch?v=q6ujWWaRdbA&ab_channel=ArjanCodes
+1676703599|1676703528|www.google.com|cincinnati temperature now - Szukaj w Google|/search?q=cincinnati+temperature+now&oq=cincinnati+temp&gs_lcrp=EgZjaHJvbWUqCAgCEAAYFhgeMgYIABBFGDkyBggBEAAYAzIICAIQABgWGB4yCAgDEAAYFhgeMggIBBAAGBYYHjIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB4yCggJEAAYChgWGB7SAQg3MDA5ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8
+1676703602|1676703528|github.com|refactor · martinc999/inter@0b0fe63|/martinc999/inter/commit/0b0fe637c6dae70d055a7b2d19a844aed24407fa
+1676703605|1676703528|chatgpt.com|Konsultacja dotycząca Diclac 100|/c/6897ae10-69a8-8328-b367-c674ca9c34e1
+1676703608|1676703528|huggingface.co|janhq/Jan-v1-4B-GGUF · Hugging Face|/janhq/Jan-v1-4B-GGUF
+1676703611|1676703528|localhost|You are an AI radiology assist... • Open WebUI|/c/729d9378-d232-4178-9206-788a4f0fe18f
+1676703614|1676703528|www.msn.com|Lawina komentarzy po skandalu na placu Piłsudskiego|/pl-pl/wiadomosci/polska/lawina-komentarzy-po-skandalu-na-placu-pi%C5%82sudskiego/ar-AA1K2lQm?ocid=winp2fp&cvid=e3a781143a9b4549cdce4664703604f4&ei=29#comments
+1676703617|1676703528|www.youtube.com|(177) YouTube|/
+1676703620|1676703528|en.wikipedia.org|Magadan - Wikipedia|/wiki/Magadan
+1676703623|1676703528|www.facebook.com|(12) Facebook|/
+1676703626|1676703528|www.youtube.com|(30) YouTube|/
+1676703629|1676703528|www.youtube.com|(10) Jew SCHOOLS Muslim Influencer in Gaza Debate — Then DESTROYS Him on Islam | Qorantos - YouTube|/watch?v=CAJedC6rfAc&ab_channel=IsraelAdvocacyMovement
+1676703632|1676703528|www.deeplearning.ai|DSPy: Build and Optimize Agentic Apps - DeepLearning.AI|/short-courses/dspy-build-optimize-agentic-apps/
+1676703635|1676703528|learn.deeplearning.ai|DSPy: Build and Optimize Agentic Apps - DeepLearning.AI|/courses/dspy-build-optimize-agentic-apps/lesson/bsrk7/dspy-programming---signatures-and-modules
+1676703638|1676703528|s172-29-79-122p8888.lab-aws-production.deeplearning.ai|504 Gateway Time-out|/tree/L2
+1676703641|1676703528|s172-29-79-122p8888.lab-aws-production.deeplearning.ai|504 Gateway Time-out|/edit/L2/requirements.txt
+1676703644|1676703528|dspy.ai|Entity Extraction - DSPy|/tutorials/entity_extraction/
+1676703647|1676703528|grok.com|Adjusting pyproject.toml for uv compatibility - Grok|/chat/40b5cd19-98c1-4d98-82d4-02c703324881
+1676703650|1676703528|www.google.com|54000*4,5% / 12 - Szukaj w Google|/search?q=54000*4%2C5%25+%2F+12&sca_esv=0341e61adf0435df&sxsrf=AE3TifM9KezgUVTbAdGKyMfmnCZqR_DvGA%3A1756733566792&ei=fqC1aNqNMMOvwPAPqoaUyAg&ved=0ahUKEwjaxNrB1rePAxXDFxAIHSoDBYkQ4dUDCBA&uact=5&oq=54000*4%2C5%25+%2F+12&gs_lp=Egxnd3Mtd2l6LXNlcnAiDzU0MDAwKjQsNSUgLyAxMkiQpAFQ46EBWNeiAXACeACQAQCYAVagAakBqgEBMrgBA8gBAPgBAZgCAKACAJgDAIgGAZIHAKAHhwGyBwC4BwDCBwDIBwA&sclient=gws-wiz-serp
+1676703653|1676703528|wiadomosci.gazeta.pl|Zełenski uderza w Rosję za atak na amerykańską firmę i alarmuje ws. dronów. 'Bardzo wymowny cios'|/polityka/7,198013,32194129,zelenski-uderza-w-rosje-i-alarmuje-ws-dronow-bardzo-wymowny.html#do_w=484&do_v=1316&do_st=RS&do_sid=1720&do_a=1720&do_upid=1316_ti&do_utid=32194129&do_uvid=1755804156343&s=BoxOpImg1
+1676703656|1676703528|www.msn.com|NEWS Telewizji Republika: ABW i SKW planują wejście do Pałacu Prezydenckiego. Chodzi o szefa BBN|/pl-pl/wiadomosci/polska/news-telewizji-republika-abw-i-skw-planuj%C4%85-wej%C5%9Bcie-do-pa%C5%82acu-prezydenckiego-chodzi-o-szefa-bbn/ar-AA1KCMmV?ocid=winp2fp&cvid=a78f696dcffa4be6bf4969ace94ce10e&ei=13
+1676703659|1676703528|grok.com|Grok|/
+1676704464|1676703528|platformadlaenergii.pl|Spółdzielnie Energetyczne - Platforma dla Energii|/
+1676703665|1676703528|www.youtube.com|NEW DEADLIFT RECORD 💪 - YouTube|/shorts/N8n8pvJxvV8
+1676703668|1676703528|www.academia.edu|(19) Academia.edu|/
+1676703671|1676703528|www.academia.edu|(19) Procedural Memory and Know-How|/130124673/Procedural_Memory_and_Know_How?auto=download&auto_download_source=social-news
+1676703674|1676703528|nieruchomoscikowr.gov.pl|Kalkulator Spółdzielni Energetycznych|/renaldo/
+1676703677|1676703528|spoldzielnia-energetyczna.pl|Materiały szkoleniowe | Spółdzielnia energetyczna|/materialy-szkoleniowe
+1676703680|1676703528|grok.com|Pompy ciepła: zastąpienie pieca gazowego - Grok|/c/ba07e593-d15f-4867-8b2b-e10bd661658f
+1676703683|1676703528|www.youtube.com|(30) Jaką pompę ciepła wybrać? POMPA CIEPŁA wszystko co MUSISZ WIEDZIEĆ ZANIM KUPISZ - YouTube|/watch?v=aVZdfLgwGqc
+1676703687|1676703528||Techniczne Standardy Komunikacji Biznesowej: Atrybuty Charakterystyki PP - walidacje|/C:/docs/com/47_cooperative/PSE%20OIRE/Zalacznik_nr_5_Atrybuty_charakterystyki_PP_-_walidacje.pdf
+1676703688|1676703528|multimed.pl|Rezonans magnetyczny całego ciała|/badania/rezonans-magnetyczny/rezonans-magnetyczny-calego-ciala
+1676703691|1676703528|multimed.pl|Rezonans magnetyczny Warszawa|/badania/rezonans-magnetyczny
+1676703694|1676703528|chatgpt.com|Cechy węzła w MRI|/share/68d832da-0be8-8007-93d1-431190e1f13c
+1676704476|1676703528|newtab|Nowa karta|/
+1676704480|1676703528|www.google.com|Pracownia Patomorfologii i Cytologii PAWEŁ KURZAWA (BIOPSJE)|/local/place/fid/0x47045b3e8de37295:0x2e8fb4c1c9d1d6c6/photosphere?iu=https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid%3Dh-YQFhQVfHZdLGi7bTA0cg%26cb_client%3Dsearch.gws-prod.gps%26yaw%3D143.48834%26pitch%3D0%26thumbfov%3D100%26w%3D0%26h%3D0&ik=CAISFmgtWVFGaFFWZkhaZExHaTdiVEEwY2c%3D&sa=X&ved=2ahUKEwjtqLf364KQAxVcBNsEHeYDOWMQpx96BAhJEBA
+1676704477|1676703528|www.kliniki.pl|A-PAT, Poznań | Kliniki.pl|/a-pat/
+1676704483|1676703528|www.komputerswiat.pl|Atak na jedną z największych rafinerii Rosji. Użyto nieznanej broni|/aktualnosci/militaria/atak-na-jedna-z-najwiekszych-rafinerii-rosji-uzyto-nieznanej-broni/19zyrtq
+1676704420|1676703528|maths.com.pl|Jak działa transformator w sztucznej inteligencji?|/jak-dziala-transformator-w-sztucznej-inteligencji/
+1676703698|1676703697|mail.google.com|kwestionariusz właściwy dla bremborowicz - martinc999@gmail.com - Gmail|/mail/u/0/#search/br%C4%99borowicz/FMfcgxmNvjKJXkbmKCMtRmdKnkLHcVCW
+1676703702|1676703697|www.linkedin.com|(10) Feed | LinkedIn|/feed/?highlightedUpdateType=SHARED_BY_YOUR_NETWORK&highlightedUpdateUrn=urn%3Ali%3Aactivity%3A7378507218083737600
+1676704467|1676703697|www.theepochtimes.com|FBI Releases New Video, Photos of ‘Person of Interest’ in Charlie Kirk Assassination | The Epoch Times|/us/charlie-kirk-shot-during-event-at-university-5913179?utm_source=morningbriefnoe&src_src=morningbriefnoe&utm_campaign=mb-2025-09-12&src_cmp=mb-2025-09-12&utm_medium=email&est=QB24b7BcMJu5OooWk78TH6TpAHzERVrpqcaqXAjsJvL6hem0gRbtObW118AmzF7K
+1676703708|1676703697|www.paypal.com|E-płatności, wysyłaj pieniądze i akceptuj płatności | PayPal PL|/pl/home
+1676703711|1676703697|www.amazon.com|Place Your Order - Amazon Checkout|/checkout/p/p-106-6229412-4273813/spc?pipelineType=Chewbacca&hasWorkingJavascript=1
+1676703714|1676703697|aleo.com|Firma ROMAN FĄS "ADMIROM", Puszczykowo - NIP, REGON, opinie, dotacje unijne - Dane z CEIDG - Biurowymi | ALEO.com|/pl/firma/roman-fas-admirom-puszczykowo
+1676703717|1676703697|system.aliorbank.pl|Alior Online – bankowość internetowa Alior Banku|/sign-out
+1676703720|1676703697|newtab|Nowa karta|/
+1676703721|1676703697|www.google.com|jaki jest standard wysokosci mieszkań w bloku z 1999 roku - Szukaj w Google|/search?q=jaki+jest+standard+wysokosci+mieszka%C5%84+w+bloku+z+1999+roku&oq=jaki+jest+standard+wysokosci+mieszka%C5%84+w+bloku+z+1999+roku&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIKCAEQABiABBiiBDIKCAIQABiABBiiBDIKCAMQABiABBiiBDIKCAQQABiABBiiBDIKCAUQABiABBiiBNIBCTE2OTk1ajBqOagCALACAQ&sourceid=chrome&ie=UTF-8
+1676703724|1676703697|www.mediaexpert.pl|MIELE W1 WWA120 WCS 8kg 1400 obr Active Pralka - niskie ceny i opinie w Media Expert|/agd/pralki-i-suszarki/pralki/pralka-miele-w1-wwa120-wcs-8kg-1400-obr-active?gad_source=1&gad_campaignid=17292892487&gbraid=0AAAAADoIO6-ffmvKYUWep9NiXvS8y6if3&gclid=CjwKCAjw7_DEBhAeEiwAWKiCCw81xRezzpXrQO6I5Y1hJq25FlioPS1kNp7EAfqVtEJHR9ZGr_JAvhoCRMoQAvD_BwE
+1676703727|1676703697|chatgpt.com|Naprawa sufitu podwieszanego|/c/689cdabe-bb10-8328-adc9-12ada960bc31
+1676703730|1676703697|www.znanylekarz.pl|Dr n. med. Tomasz Blok - neurochirurg | ZnanyLekarz.pl|/tomasz-blok/neurochirurg/poznan#addresses-section
+1676703733|1676703697|play.hbomax.com|And Just Like That... • HBO Max|/show/b9c27771-247a-459d-b751-85460d3fd5a2
+1676703736|1676703697|github.com|emcie-co/parlant: LLM agents built for control. Designed for real-world use. Deployed in minutes.|/emcie-co/parlant?tab=readme-ov-file
+1676703739|1676703697|thepalindrome.org|The Roadmap of Mathematics for Machine Learning|/p/the-roadmap-of-mathematics-for-machine-learning
+1676703742|1676703697|www.youtube.com|Protocols vs ABCs in Python - When to Use Which One? - YouTube|/watch?v=dryNwWvSd4M
+1676703745|1676703697|discuss.huggingface.co|Response: ({"detail":"Not Found"}) - Models - Hugging Face Forums|/t/response-detail-not-found/25434/3
+1676703748|1676703697|chatgpt.com|Pochodna z definicji|/c/68a73268-4138-8329-9511-24878d6b51b1
+1676703751|1676703697|claude.ai|Claude|/new
+1676703754|1676703697|www.samharris.org|Sam Harris | #430 - “More From Sam”: Trump, Gavin Newsom, Class War, DOGE, & Rapid Fire Questions|/podcasts/making-sense-episodes/430-more-from-sam-trump-gavin-newsom-class-war-doge-rapid-fire-questions
+1676703757|1676703697|x.com|(2) Główna / X|/home
+1676703760|1676703697|www.facebook.com|(3) Facebook|/
+1676703763|1676703697|claude.ai|Invoice Extraction with Pydantic AI - Claude|/chat/7b2ce861-0f9f-421c-bed8-2539813db8a3
+1676703766|1676703697|www.google.com|bizarr - Szukaj w Google|/search?q=bizarr&oq=bizarr&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQLhiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQLhiABDIHCAYQABiABDIHCAcQLhiABDIHCAgQABiPAtIBCDE0MTZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+1676703769|1676703697|www.facebook.com|(2) Live Music: Iga Iglewska - Niku Beach | Facebook|/events/1103691035026596?acontext=%7B%22event_action_history%22%3A[%7B%22extra_data%22%3A%22%22%2C%22mechanism%22%3A%22surface%22%2C%22surface%22%3A%22groups_highlight_units%22%7D%2C%7B%22extra_data%22%3A%22%22%2C%22mechanism%22%3A%22your_upcoming_events_unit%22%2C%22surface%22%3A%22bookmark%22%7D%2C%7B%22extra_data%22%3A%22%22%2C%22mechanism%22%3A%22your_upcoming_events_unit%22%2C%22surface%22%3A%22bookmark%22%7D]%2C%22ref_notif_type%22%3Anull%7D
+1676703772|1676703697|www.youtube.com|(2) The 13 Best Treatments for Knee Pain From Chondromalacia Patella - YouTube|/watch?v=45MVYbf3tH0&t=2256s&ab_channel=ElPasoManualPhysicalTherapy
+1676703775|1676703697|www.youtube.com|(2) The Gaza Debate You'll Never See on Piers Morgan - YouTube|/watch?v=VZgosDcv614&ab_channel=IsraelAdvocacyMovement
+1676703778|1676703697|www.amazon.com|Amazon.com: Modvel Compression Knee Brace for Women & Men, 2-Pack Knee Brace for Running Knee Pain, Knee Support Compression Sleeve, Workout Sports Knee Braces for Meniscus Tear, ACL & Arthritis Pain Relief : Health & Household|/knee-braces-pain-joint-sleeves/dp/B08JGP1WYM?crid=OROGKLHK9NK5&dib=eyJ2IjoiMSJ9.MliOAKSMMDuOzFn15RlYb4a0xhS2smoaVLa7XvyKt_HZFzUOgUt73Yj8o1q0pPlPGcwJP911oD58ijz8P2u4ygsC8YmIriULx2aSQlVLDOvrcGA-QsjOCCatib-ITWsEXP-9XF_8Eobh-Q0jfRDHUOJVeiSGrf6rDRUv_Mq-TqBEO4f7qwsh9YtKjtMXVPwGefl-z7qJ8HC0yAsAQTk9oKCgJLuuBM8OFurw_0PSqEY.KILRU-5HJ1nKjimFpjulZ_HJoSLm70TUJhOwv44YqVs&dib_tag=se&keywords=knee%2Bsleeves&qid=1755641749&sprefix=%2Caps%2C129&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&linkCode=sl1&tag=epmpt-20&linkId=e6f5807f99833478f09680fd9559d374&language=en_US&ref_=as_li_ss_tl
+1676703781|1676703697|newtab|Nowa karta|/
+1676703782|1676703697|www.google.com|rękawy na kolana - Szukaj w Google|/search?q=r%C4%99kawy+na+kolana&oq=r%C4%99kawy+na+kolana&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIKCAEQABgKGBYYHjIICAIQABgWGB4yCggDEAAYgAQYogQyBwgEEAAY7wUyCggFEAAYgAQYogQyCggGEAAYgAQYogQyCggHEAAYgAQYogTSAQgzNjc0ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8
+1676703785|1676703697|allegro.pl|Sprawdź zawartość Twojego koszyka na Allegro.pl|/koszyk
+1676703788|1676703697|www.google.com|kora maanam szansa na sukces - Szukaj w Google|/search?sca_esv=d4c3277b19e45af9&sxsrf=AE3TifNzmamzjSrWDJvNVD1LfGi930f4og:1755984388860&udm=7&fbs=AIIjpHwW-0r_Aj4UyfJvqQzQzjQGITTmC230_MNxN_VvYo5ocBioNjs2eU9dWE6kP5lXYjcp7-u-z7lno7Honqy9ETn-z1PwUXoAITDNawwGpZcUI_TgCgP6e-CVXn9POckmw74hUdojkcDkPzjdJ56ohuiIj5OIWrmdK2thPN_G6-GOOI6DDbRaEhApcdX013scV4xHXpRNPJO-z_dQgi6phR8uuFQB8Q&q=kora+maanam+szansa+na+sukces&sa=X&ved=2ahUKEwi9uOrN76GPAxWlFBAIHUmCF-sQtKgLegQIExAB&biw=1751&bih=1370&dpr=1#ip=1
+1676703791|1676703697|www.youtube.com|(16) Circuits Finally Made Sense When I Saw This One Diagram - YouTube|/watch?v=rzLKns787Uk&ab_channel=AlitheDazzling
+1676703794|1676703697|www.deepseek.com|DeepSeek | 深度求索|/
+1676703797|1676703697|chat.deepseek.com|DeepSeek|/a/chat/s/eacd01ae-ff54-43e1-b854-57d022c9e1c4
+1676703800|1676703697|chat.deepseek.com|DeepSeek|/
+1676703803|1676703697|grok.com|Efficient Road Network Pathfinding - Grok|/c/65a5ff51-3a82-4e91-ac69-c09e78589368
+1676703806|1676703697|ceur-ws.org|paper_13.pdf|/Vol-1313/paper_13.pdf
+1676703809|1676703697|www.enterprisedb.com|EDB: Open-Source, Enterprise Postgres Database Management|/downloads/postgres-postgresql-downloads
+1676703812|1676703697|www.msn.com|Jest reakcja Ukrainy na słowa Nawrockiego. Wydali oświadczenie|/pl-pl/wiadomosci/polska/jest-reakcja-ukrainy-na-s%C5%82owa-nawrockiego-wydali-o%C5%9Bwiadczenie/ar-AA1Mb5m3?ocid=winp2fp&cvid=68bff524c2f9481e9084a33488033524&ei=12
+1676703815|1676703697|www.facebook.com|Film | Facebook|/watch/?mibextid=rS40aB7S9Ucbxw6v&v=657007253620851
+1676703818|1676703697|fdown.net|Download Facebook Videos Online|/download.php
+1676703821|1676703697|nio.gov.pl|Nowy model opieki onkologicznej w Polsce: Specjalistyczne Ośrodki Leczenia Onkologicznego (SOLO) - Narodowy Instytut Onkologii|/nowy-model-opieki-onkologicznej-w-polsce-specjalistyczne-osrodki-leczenia-onkologicznego-solo/?utm_source=chatgpt.com
+1676703824|1676703697|www.nfz.gov.pl|Wykaz świadczeniodawców zakwalifikowanych do Krajowej Sieci Onkologicznej / Biuletyn Informacji Publicznej Wielkopolskiego OW NFZ / Narodowy Fundusz Zdrowia (NFZ) – finansujemy zdrowie Polaków|/biuletyn-informacji-publicznej-wielkopolskiego-ow-nfz/wykaz-swiadczeniodawcow-zakwalifikowanych-do-krajowej-sieci-onkologicznej-/
+1676703827|1676703697|pacjent.radpoint.pl|Portal Pacjenta | TK/25/5493|/portal/result/908ccc47-874f-4a43-8fef-518fdd07293c
+1676703830|1676703697|pacjent.radpoint.pl|pdf|/ppl/api/v1/orders/908ccc47-874f-4a43-8fef-518fdd07293c/pdf
+1676704493|1676703697|www.facebook.com|(4) Facebook|/
+1676703863|1676703697|www.zus.pl|Dokumenty wysłane|/portal/eplMain.npi#EPL0015
+1676703866|1676703697|www.wmeble-serwis.pl|Czyszczenie tapicerki skórzanej | czyszczenie, renowacja, naprawa skóry, plastików samochodowych Poznań|/realizacje/czyszczenie-tapicerki-skorzanej
+1676703869|1676703697|flags|Experiments|/
+1676703872|1676703697|components|Komponenty|/
+1676703875|1676703697|gemini.google.com|Google Gemini|/app/ffd7c99ce1b4cc5e
+1676703878|1676703697|www.youtube.com|(23) Gemini Nano locally in Chrome - test it out today! - YouTube|/watch?v=gJ36dPkt7Go
+1676703881|1676703697|localhost|🇵🇱 PlantUML Schema Generatio... • Open WebUI|/c/46dabc90-383d-4e7f-943d-292e82fb64c0
+1676703884|1676703697|github.com|Is there a tutorial how to update a pip install · open-webui/open-webui · Discussion #7261|/open-webui/open-webui/discussions/7261
+1676703887|1676703697||Techniczne Standardy Komunikacji Biznesowej: Atrybuty Charakterystyki PP - walidacje|/C:/docs/com/47_cooperative/PSE%20OIRE/Zalacznik_nr_5_Atrybuty_charakterystyki_PP_-_walidacje.pdf
+1676703888|1676703697|grok.com|Spółdzielnie energetyczne w Polsce - Grok|/c/0c728a7f-74a4-4e1b-bd23-fdcdc1c06922
+1676703891|1676703697|play.google.com|Mój Licznik 2.0 – Aplikacje w Google Play|/store/apps/details?id=pl.energa.mojlicznik&hl=pl
+1676703894|1676703697|mojlicznik.energa-operator.pl|Mapa strony - Portal Klienta|/dp/MainSiteMap.do
+1676703897|1676703697|mojlicznik.energa-operator.pl|Pytania i odpowiedzi - Portal Klienta|/dp/MainFaq.do
+1676703900|1676703697|spoldzielnia-energetyczna.pl|Spółdzielnia energetyczna | Lokalna energia dla lokalnych potrzeb|/
+1676703903|1676703697|ebok.enea.pl|eBOK - ENEA S.A.|/logowanie
+1676703906|1676703697|www.msn.com|MSN | Spersonalizowane wiadomości, najważniejsze nagłówki, aktualności na żywo i nie tylko|/pl-pl?ocid=winp2fp
+1676703909|1676703697|www.msn.com|MSN | Spersonalizowane wiadomości, najważniejsze nagłówki, aktualności na żywo i nie tylko|/pl-pl?ocid=winp2fp
+1676703912|1676703697|www.facebook.com|(7) Facebook|/
+1676703915|1676703697|www.colinmcginn.net|John Searle - Colin McGinn|/john-searle/
+1676703918|1676703697|www.facebook.com|(1) Martin Ciupa - Sentience and Salience: Their Absence in AI... | Facebook|/martin.ciupa/posts/pfbid02Cmz1e9D5hzfbopB3v3jqr5uv8GKioz8hc9hEH8d2cjdunKx1asFMwXoRFE8LEJNhl
+1676703921|1676703697|www.youtube.com|World Press Review Searle - YouTube|/results?search_query=World+Press+Review+Searle
+1676703924|1676703697|en.wikipedia.org|John Searle - Wikipedia|/wiki/John_Searle
+1676703927|1676703697|www.google.com|Jennifer Hudin - Szukaj w Google|/search?sca_esv=219388647f983b16&sxsrf=AE3TifOs3lNqMW90cjbyYg_j3ZiSRa1CiQ:1759182472439&udm=2&fbs=AIIjpHwW-0r_Aj4UyfJvqQzQzjQGITTmC230_MNxN_VvYo5ocBioNjs2eU9dWE6kP5lXYjfPmjKR_C6dtvDnjI0mGicejQrXVZnAcjkoTZ3uOwP71Haz4-hzqX1acbXuDAUp0iJQ4pyxOpvrjFA_Yn7NAEFi-WFIKVUMFxYh-n8rCq1zBF5eIgK5MXhEX2VMoJEyJKTSsxcU45BwSlOeY-jpkYcKOt_G6w&q=Jennifer+Hudin&sa=X&ved=2ahUKEwjTrfWy-f6PAxWWSvEDHb-8JOAQtKgLegQIDhAB&biw=2444&bih=1214&dpr=1.1#vhid=sW45U4v_VsBUAM&vssid=mosaic
+1676703930|1676703697|www.youtube.com|Jennifer Hudin Rijeka Social Ontology 2017 - YouTube|/watch?v=ztSABS2JvJY
+1676703933|1676703697|wsl.localhost|Mockup: eBOK — Transakcje|/Ubuntu-22.04/home/marcin/repos/energy-cooperative/ux/index.html
+1676704622|1676703697|extensions|Rozszerzenia - Tab Scanner|/?id=emgodmnfanollicdfddcgbehbkhelijk
+1676704645|1676703697|grok.com|Grok|/
+1676704642|1676703697|www.ncbi.nlm.nih.gov|Mucinous Breast Carcinoma - StatPearls - NCBI Bookshelf|/books/NBK538334/
+1676704623|1676703697|pmc.ncbi.nlm.nih.gov|Prognosis according to the timing of recurrence in breast cancer - PMC|/articles/PMC9830048/
+1676704496|1676703697|www.cureus.com|Dormancy Leading to Late Recurrence in Breast Cancer: A Case of Hormone Receptor-Positive Supraclavicular Metastasis 10 Years After the Initial Treatment | Cureus|/articles/296269-dormancy-leading-to-late-recurrence-in-breast-cancer-a-case-of-hormone-receptor-positive-supraclavicular-metastasis-10-years-after-the-initial-treatment#!/
+1676704648|1676703697|newtab|Nowa karta|/
+1676704649|1676703697|www.nature.com|Mucin-1: a promising pan-cancer therapeutic target | npj Precision Oncology|/articles/s41698-025-01016-2?utm_source=chatgpt.com
+1676704530|1676703697|onkomapa.pl|Uniwersytecki Szpital Kliniczny w Poznaniu (dawniej SK im. H. Święcickiego UM Poznaniu) - Alivia Onkomapa|/placowka/Uniwersytecki+Szpital+Kliniczny+w+Poznaniu+%2528dawniej+SK+im.+H.+%25C5%259Awi%25C4%2599cickiego+UM+Poznaniu%2529/964
+1676704549|1676703697|onkomapa.pl|Instytut Onkologii Uniwersytetu Medycznego w Poznaniu (dawna Katedra i Klinika Onkologii) - Alivia Onkomapa|/placowka/Instytut+Onkologii+Uniwersytetu+Medycznego+w+Poznaniu+%2528dawna+Katedra+i+Klinika+Onkologii%2529/8
+1676704552|1676703697|mail.google.com|kwestionariusz właściwy dla bremborowicz - martinc999@gmail.com - Gmail|/mail/u/0/#search/br%C4%99borowicz/FMfcgxmNvjKJXkbmKCMtRmdKnkLHcVCW?projector=1&messagePartId=0.1
+1676704559|1676703697|www.google.com|Physician’s name: ....................................................................... Institute / Address: ..................................................................... - Szukaj w Google|/search?q=Physician%E2%80%99s+name%3A+.......................................................................+Institute+%2F+Address%3A+.....................................................................&oq=Physician%E2%80%99s+name%3A+.......................................................................+Institute+%2F+Address%3A+.....................................................................&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBBzkzNmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8
+1676704652|1676703697|oncompass.pl|O konsultacji - Oncompass Medicine — Pomoc w wyborze spersonalizowanego leczenia|/o-konsultacji
+1676704565|1676703697|www.skpp.edu.pl|Szybka terapia onkologiczna DILO | Szpital Kliniczny Przemienienia Pańskiego UM w Poznaniu|/szybka_terapia_onkologiczna.html
+1676704568|1676703697|www.google.com|Pielęgniarka senologiczna koordynująca - Szukaj w Google|/search?q=Piel%C4%99gniarka+senologiczna+koordynuj%C4%85ca&sourceid=chrome&ie=UTF-8
+1676704655|1676703697|www.gazeta.pl|Gazeta.pl - Polska i świat - wiadomości | informacje | wydarzenia|/0,0.html
+1676704658|1676703697|newtab|Nowa karta|/
+1676704579|1676703697|www.perplexity.ai|Help me to find modern and promising terapies for : [Mucinous Breast...|/search/help-me-to-find-modern-and-pro-28jWxeufTDG1AdLCedfBTA
+1676704668|1676703697|trial.medpath.com|Palbociclib Shows Promise in Treating GNAS-Mutated Appendix Cancer|/news/e6308739c4c03377/study-breast-cancer-drug-shows-potential-for-rare-appendix-cancer
+1676704659|1676703697|www.icr.ac.uk|Next-generation breast cancer drug targets tumours before they grow|/about-us/icr-news/detail/next-generation-breast-cancer-drug-targets-tumours--before-they-have-a-chance-to-grow
+1676704662|1676703697|translate.google.com|Tłumacz Google|/?sl=auto&tl=pl&text=A%20powerful%20new%20drug%20for%20advanced%20breast%20cancer%20can%20be%20used%20to%20treat%20emerging%20tumours%2C%20months%20before%20they%20have%20a%20chance%20to%20grow%2C%20helping%20to%20keep%20patients%20well%20for%20longer%20and%20delaying%20the%20need%20for%20later-line%20therapies%20including%20chemotherapy.%20%20Results%20of%20a%20global%20study%2C%20funded%20by%20AstraZeneca%20and%20co-led%20by%20researchers%20at%C2%A0The%20Institute%20of%20Cancer%20Research%2C%20London%2C%20The%20Royal%20Marsden%20NHS%20Foundation%20Trust%20and%20Institut%20Curie%2C%20Paris%2C%20were%20presented%20at%20the%20American%20Society%20of%20Clinical%20Oncology%20(ASCO)%20annual%20meeting%C2%A0in%20Chicago%20on%201%20June%202025.%20%20The%20results%20found%20that%20patients%20with%20advanced%20hormone%20receptor%20positive%20(HR%20)%2C%20human%20epidermal%20growth%20factor%20receptor%202%20negative%20(HER2-)%20breast%20cancer%20who%20were%20given%20the%20new%20drug%2C%20called%20camizestrant%2C%20in%20combination%20with%20a%20CDK4&op=translate
+1676704665|1676703697|badaniakliniczne.pl|Camizestrant – Zastosowanie w terapii i aktualne badania kliniczne|/lek/camizestrant/
+1676704671|1676703697|www.google.com|strzykawka 5 ml apteka - Szukaj w Google|/search?q=strzykawka+5+ml+apteka&sca_esv=69badf5206a10cf0&sxsrf=AE3TifPM4x8QQaL1yvjMO3aeWr2HMUWaxQ%3A1759346730136&ei=KoDdaL_8B8uGxc8P9sWJcA&ved=0ahUKEwi_uYun3YOQAxVLQ_EDHfZiAg4Q4dUDCBA&uact=5&oq=strzykawka+5+ml+apteka&gs_lp=Egxnd3Mtd2l6LXNlcnAiFnN0cnp5a2F3a2EgNSBtbCBhcHRla2EyBhAAGAcYHjIGEAAYBxgeMgUQABiABDIIEAAYBRgHGB4yCBAAGAUYBxgeMggQABiABBiiBDIIEAAYgAQYogRIkhJQ8AlY5gtwAXgBkAEAmAGvAaAB1QKqAQMwLjK4AQPIAQD4AQGYAgOgAuACwgIKEAAYRxjWBBiwA8ICBhAAGAUYHpgDAIgGAZAGCJIHAzEuMqAH7gayBwMwLjK4B9sCwgcDMC4zyAcG&sclient=gws-wiz-serp
+1676704706|1676703697|newtab|Nowa karta|/
+1676704714|1676703697|www.linkedin.com|(16) Maria Sklodowska-Curie National Research Institute of Oncology: Overview | LinkedIn|/company/nio-pib/
+1676704629|1676703697|nio.gov.pl|22 nowe terapie onkologiczne na liście refundacyjnej – przełom dla pacjentów. | NIO|/22-nowe-terapie-onkologiczne-na-liscie-refundacyjnej--przelom-dla-pacjentow
+1676704717|1676703697|www.google.com|dr Ewa Szombara - Szukaj w Google|/search?q=dr+Ewa+Szombara&sourceid=chrome&ie=UTF-8
+1676704723|1676703697|mail.google.com|Odebrane (934) - martinc999@gmail.com - Gmail|/mail/u/0/#inbox
+1676703935|1676703934|github.com|rednote-hilab/dots.ocr: Multilingual Document Layout Parsing in a Single Vision-Language Model|/rednote-hilab/dots.ocr
+1676703939|1676703934|www.youtube.com|(16) Wunderwaffe Ukrainy? Super-rakiety Flamingo odmienią losy wojny? — Marek Budzisz i Piotr Zychowicz - YouTube|/watch?v=D_rv3o0oC6M&ab_channel=HISTORIAREALNA
+1676703948|1676703934|mail.google.com|Odebrane (934) - martinc999@gmail.com - Gmail|/mail/u/0/#inbox
+1676703951|1676703934|devpost.com|AI Tabpage manager | Devpost|/software/ai-tabpage-manager?ref_content=my-projects-tab&ref_feature=my_projects
+1676703954|1676703934|www.theepochtimes.com|Utah Governor: Charges Against Kirk’s Suspected Assassin to Be Filed on Sept. 16 | The Epoch Times|/us/cox-charges-against-charlie-kirks-suspected-assassin-to-be-filed-on-sept-16-post-5914874?utm_source=rtnewsnoe&src_src=rtnewsnoe&utm_campaign=rtbreaking-2025-09-15-1&src_cmp=rtbreaking-2025-09-15-1&utm_medium=email&utm_content=access0&est=a%2BaOjpQ6z%2Fdszuv2qk0yiNSVKnDCrOuN7hYKnvrWPQrJ9nCJ4VP%2B1I4M3hhmNF8H
+1676703957|1676703934|www.meetup.com|AI & Tech Talks #9, Mon, Oct 6, 2025, 6:00 PM | Meetup|/pearson-ai-tech/events/310952149/?eventOrigin=group_similar_events
+1676703960|1676703934|justjoin.it|Senior IT Analyst - ALTEN Polska|/job-offer/alten-polska-senior-it-analyst-warszawa-analytics
+1676703963|1676703934|form.erecruiter.pl|Formularz aplikacyjny - Senior IT Analyst|/form/f8f0d26ca1d44e06b55349d5c2aa1979/thank-you
+1676703966|1676703934|colab.research.google.com|dot_ocr.ipynb - Colab|/drive/1e4VAJ3Xa0yu1aqv9-nYi4tKYX4osJn6N#scrollTo=BO_3JlMnwclE
+1676703969|1676703934|grok.com|Zarobki seniorów w bankowości IT - Grok|/chat/d4d4242e-5a51-4ca4-b440-4f08dc448234
+1676703972|1676703934|zarobky.pl|Alten Polska | Najnowsze wynagrodzenia - Sierpień 2025 - Zarobky.pl|/firma/Alten%20Polska/wynagrodzenia
+1676703975|1676703934|www.hbomax.com|Witaj ponownie | HBO Max|/pl/pl/lapsed
+1676703978|1676703934|www.linkedin.com|(18) Feed | LinkedIn|/feed/
+1676703981|1676703934|www.linkedin.com|(18) Notifications | LinkedIn|/notifications/?filter=all
+1676703984|1676703934|www.facebook.com|(3) Facebook|/
+1676703987|1676703934|api.whatsapp.com|Udostępnij w WhatsAppie|/send/?text=https%3A%2F%2Fwww.facebook.com%2Fnickeldevelopment%2Fposts%2Fpfbid0udiHxpqeB2KJde9hW9LuZYxb9EAG6f1TRp7YpDCpz1dDX5RgXDmbpWqN6iPejEbul&type=custom_url&app_absent=0
+1676703990|1676703934|www.altenpolska.pl|ALTEN Polska - lider w zakresie inżynierii i usług IT - Alten Poland|/
+1676703993|1676703934|claude.ai|Python PDF Extraction Async Error - Claude|/chat/e3836af2-3374-497f-98f2-7420480640a2
+1676703996|1676703934|www.onet.pl|Pilna decyzja Binjamina Netanjahu. Chce "natychmiastowych negocjacji" - Wiadomości|/informacje/onetwiadomosci/pilna-decyzja-netanjahu-chce-natychmiastowych-negocjacji/6knw4j8,79cfc278
+1676703999|1676703934|www.olx.pl|polanka - Poznań - sprawdź kategorię Wynajem|/nieruchomosci/mieszkania/wynajem/poznan/q-polanka/?srsltid=AfmBOoqYLbtkjw0AVi8JiMNNRxXajWUFnZjSlvBmK6AkjUSjpyYmm92m
+1676704002|1676703934|www.otodom.pl|2 pokoje, mieszkanie na wynajem - Poznań, Nowe Miasto - 60845555 • www.otodom.pl|/pl/oferta/bezposrednio-wynajme-jasne-mieszkanie-ul-polanka-ID47iHW?_ga=2.263883340.1585282728.1755803657-765835246.1749633956
+1676704005|1676703934|www.otodom.pl|2 pokoje, mieszkanie na wynajem - Poznań, Nowe Miasto - 60845555 • www.otodom.pl|/pl/oferta/bezposrednio-wynajme-jasne-mieszkanie-ul-polanka-ID47iHW?_ga=2.90295642.1585282728.1755803657-765835246.1749633956
+1676704008|1676703934|www.otodom.pl|2 pokoje, mieszkanie na wynajem - Poznań, Nowe Miasto - 60845555 • www.otodom.pl|/pl/oferta/bezposrednio-wynajme-jasne-mieszkanie-ul-polanka-ID47iHW?_ga=2.61384428.1585282728.1755803657-765835246.1749633956
+1676704011|1676703934|www.facebook.com|Facebook|/
+1676704014|1676703934|wiadomosci.gazeta.pl|Tragiczny wypadek na autostradzie A2. Kamery nagrały chwilę, gdy ciężarówka wjechała w biletomat|/polska/7,198073,32197996,tragiczny-wypadek-na-autostradzie-a2-kamery-nagraly-jak-ciezarowka.html#do_w=450&do_v=1463&do_st=RS&do_sid=2325&do_a=2325&s=BoxCzytImg1&do_upid=1463_ti&do_utid=32197996&do_uvid=1756048271088
+1676704017|1676703934|claude.ai|Protocol Interface for AI Extraction Scripts - Claude|/chat/bbf664dc-81f9-4b10-9f7e-4440a37aa9aa
+1676704020|1676703934|docs.pydantic.dev|Validation Errors - Pydantic|/2.10/errors/validation_errors/#missing
+1676704023|1676703934|www.hbomax.com|Witaj ponownie | HBO Max|/pl/pl/lapsed
+1676704026|1676703934|www.youtube.com|Crypto Scams (Full Episode) | Trafficked with Mariana Van Zeller | Nat Geo - YouTube|/watch?v=7hq_w_L2vn4
+1676704029|1676703934|www.onet.pl|Karol Nawrocki zdecydował. Zawetował kolejne ustawy - Wiadomości|/informacje/onetwiadomosci/karol-nawrocki-zdecydowal-zawetowal-kolejne-ustawy/vg2r9g7,79cfc278
+1676704032|1676703934|www.google.com|siedzisko z klęcznikiem do biurka - Szukaj w Google|/search?q=siedzisko+z+kl%C4%99cznikiem+do+biurka&oq=siedzisko+z+kl%C4%99cznikiem+do+biurka&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCTEwMzM0ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8
+1676704035|1676703934|www.google.com|Klękosiad - Szukaj w Google|/search?q=Kl%C4%99kosiad&oq=Kl%C4%99kosiad&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIHCAEQABiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIGCAUQRRg9MgYIBhBFGD0yBggHEEUYPdIBBzgzN2owajSoAgawAgHxBbWjHWS1s96d&sourceid=chrome&ie=UTF-8
+1676704038|1676703934|kenoko.pl|Klękosiad lniany szałwiowy HOZERU | 5 Lat Gwarancji | Kenoko|/pl/products/klekosiad-lniany-szalwiowy-hozeru-504?gad_source=1&gad_campaignid=21910052763&gbraid=0AAAAAocqcR8Z30K0muo7suQS_50MKMVdp&gclid=CjwKCAjwk7DFBhBAEiwAeYbJsZuR8Z21x4UBb6nCajZ2q4ViZVxpzQmG3tJT25x2amC7Mn1PeTRnAhoC5yAQAvD_BwE
+1676704041|1676703934|www.ceneo.pl|Black Point Klękosiad O'Kneel Szary Lniany + Szary Lniany Pokrowiec Poznań - Opinie i atrakcyjne ceny na Ceneo.pl|/159703130;02316.htm
+1676704044|1676703934|arxiv.org|Deep Think with Confidence|/pdf/2508.15260v1
+1676704047|1676703934|www.temu.com|Miernik Wilgotności Ścian – Bezpłatny zwrot w ciągu 90 dni – Temu|/pl/search_result.html?search_key=miernik%20wilgotno%C5%9Bci%20%C5%9Bcian&search_method=suggest&refer_page_el_sn=200252&srch_enter_source=top_search_entrance_13554&sprefix=miernik%20wilgotno%C5%9Bci%20&_x_vst_scene=adg&_x_ads_sub_channel=shopping&_x_ns_prz_type=-1&_x_ns_sku_id=17592641508749&_x_ns_gid=601099631246950&_x_ads_channel=google&_x_gmc_account=5583656541&_x_login_type=Google&_x_ns_gg_lnk_type=adr&_x_ads_account=1703989576&_x_ads_set=22523813509&_x_ads_id=182134080387&_x_ads_creative_id=750605852095&_x_ns_source=g&_x_ns_gclid=CjwKCAjwk7DFBhBAEiwAeYbJsa5jWJWfblWyoYE1ZqIunJfT4d3gK8zeLNSQINamlLa4dgcdEM7Y6xoCZk0QAvD_BwE&_x_ns_placement=&_x_ns_match_type=&_x_ns_ad_position=&_x_ns_product_id=5583656541-17592641508749&_x_ns_target=&_x_ns_devicemodel=&_x_ns_wbraid=CkAKCAjw8KrFBhAtEjAAMeAHEefr0WO8Fmn7hRoTi1yW4oNmcVWr2IGm_i2S_euZlynposz8BRBWuj1nEHIaApnD&_x_ns_gbraid=0AAAAAo4mICFyCLrFBenSz-fq9Ij0Hje0U&_x_ns_targetid=pla-2412425488274&refer_page_name=kuiper&refer_page_id=13554_1756133946388_2li0hzm4r3&refer_page_sn=13554&_x_sessn_id=ulyvxatogk&is_back=1
+1676704050|1676703934|www.temu.com|miernik wilgotności miernik temperatury i wilgotności - Temu Poland|/pl/-cyfrowy-miernik-wilgotno%C5%9Bci--dla-drewna-i-%C5%9Bcian-wysoka-czu%C5%82o%C5%9B%C4%87-nieniszcz%C4%85cy-wy%C5%9Bwietlacz-w-kolorze-hd-%C5%82atwy-w-u%C5%BCyciu-z-alarmem-g%C5%82%C4%99boko%C5%9B%C4%87-pomiaru-20-40mm-czarny-miernik-wilgotno%C5%9Bci-drewna-g-601100207701340.html?_oak_name_id=1415622774537606398&_oak_mp_inf=ENz66uKo1ogBGiA0MjA3ZjY4MGE0NmU0NGU1YWU0YTQxMzQ4M2YxOWRiNSCnldSPjjM%3D&top_gallery_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2Ffancy%2F9abcfac7-0ca1-415e-bf24-d7de5ade0c73.jpg&spec_gallery_id=76931&refer_page_sn=10009&refer_source=0&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=MTMxNTA&_oak_gallery_order=1018844648%2C189892613%2C717902523%2C117350071%2C941515754&search_key=miernik%20wilgotno%C5%9Bci%20%C5%9Bcian&refer_page_el_sn=200049&_x_vst_scene=adg&_x_ads_sub_channel=shopping&_x_ns_prz_type=-1&_x_ns_sku_id=17592641508749&_x_ns_gid=601099631246950&_x_ads_channel=google&_x_gmc_account=5583656541&_x_login_type=Google&_x_ns_gg_lnk_type=adr&_x_ads_account=1703989576&_x_ads_set=22523813509&_x_ads_id=182134080387&_x_ads_creative_id=750605852095&_x_ns_source=g&_x_ns_gclid=CjwKCAjwk7DFBhBAEiwAeYbJsa5jWJWfblWyoYE1ZqIunJfT4d3gK8zeLNSQINamlLa4dgcdEM7Y6xoCZk0QAvD_BwE&_x_ns_placement=&_x_ns_match_type=&_x_ns_ad_position=&_x_ns_product_id=5583656541-17592641508749&_x_ns_target=&_x_ns_devicemodel=&_x_ns_wbraid=CkAKCAjw8KrFBhAtEjAAMeAHEefr0WO8Fmn7hRoTi1yW4oNmcVWr2IGm_i2S_euZlynposz8BRBWuj1nEHIaApnD&_x_ns_gbraid=0AAAAAo4mICFyCLrFBenSz-fq9Ij0Hje0U&_x_ns_targetid=pla-2412425488274&_x_sessn_id=ulyvxatogk&refer_page_name=search_result&refer_page_id=10009_1756137589787_dqnto1zd3n
+1676704053|1676703934|dspy.ai|Entity Extraction - DSPy|/tutorials/entity_extraction/
+1676704056|1676703934|www.youtube.com|(2) YouTube|/
+1676704059|1676703934|grok.com|Fixing CoNLL-2003 Dataset Loading Error - Grok|/chat/277b6857-31fa-4d9d-b67d-e568401e744d
+1676704062|1676703934|claude.ai|DSPy Module Import Error Fix - Claude|/chat/1a26f5f9-f007-4700-9097-33725d3686f5
+1676704065|1676703934|www.youtube.com|(3) DSPy + Nuxt Project - Extract Information - YouTube|/watch?v=iAPfIZ-gAGc&ab_channel=Bphil
+1676704068|1676703934|www.go4as400.com|go4as400 - RPG video tutorial|/as400-videos/RPGVideoDemo.aspx
+1676704071|1676703934|www.go4as400.com|AS400 / IBM i Tutorial - Chapter 1 - IBM i Introduction|/as400-videos/RPGVideoDemo001.html
+1676704074|1676703934|www.go4as400.com|AS400 / IBM i Tutorial - Chapter 1 - IBM i Introduction|/as400-videos/RPGVideoDemo001.html
+1676704077|1676703934|www.itjungle.com|PUB400: Your Free IBM i Playground - IT Jungle|/2024/03/04/pub400-your-free-ibm-i-playground/
+1676704080|1676703934|www.pub400.com|PUB400.COM - Your public IBM i server|/
+1676704083|1676703934|pub400.com|PUB400.COM signup|/cgi/signup.nd/start
+1676704086|1676703934|www.go4as400.com|AS400 introduction-go4as400.com|/chapterload.aspx?cid=1
+1676704089|1676703934|www.go4as400.com|Library -Go4As400.com|/chapterload.aspx?cid=2
+1676704092|1676703934|www.glassdoor.com|61 cobol Jobs in United States, August 2025 | Glassdoor|/Job/us-cobol-jobs-SRCH_IL.0,2_IN1_KO3,8.htm?remoteWorkType=1
+1676704095|1676703934|www.facebook.com|(6) Facebook|/
+1676704098|1676703934|www.youtube.com|Can We Survive AI?: A Conversation with Eliezer Yudkowsky and Nate Soares (Episode #434) - YouTube|/watch?v=JxdelVTzjJs
+1676704101|1676703934|chatgpt.com|Job offers estimate COBOL AS/400|/c/68b06d67-9cc0-8320-a2c3-3a40848c025d
+1676704104|1676703934|kingjr.github.io|Jean-Rémi KING|/
+1676704107|1676703934|arxiv.org|2502.07429|/pdf/2502.07429
+1676704110|1676703934|www.google.com|gaslithing - Szukaj w Google|/search?q=gaslithing&oq=gaslithing&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIMCAEQABgKGLEDGIAEMgkIAhAAGAoYgAQyCQgDEAAYChiABDIJCAQQABgKGIAEMgkIBRAAGAoYgAQyDAgGEC4YChjUAhiABDIMCAcQLhgKGNQCGIAEMgkICBAAGAoYgAQyCQgJEAAYChiABNIBCDQ1OTlqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+1676704113|1676703934|www.aquanet.pl|EBOK | Aquanet S.A.|/dla-klienta/zalatw-sprawe/ebok/
+1676704116|1676703934|www.onet.pl|"Nie pozwolę". Radosław Sikorski ostro o słowach Marcina Przydacza - Wiadomości|/informacje/onetwiadomosci/nie-pozwole-radoslaw-sikorski-ostro-o-slowach-marcina-przydacza/vtbtvkq,79cfc278
+1676704119|1676703934|x.com|(1) Radosław Sikorski 🇵🇱🇪🇺 w serwisie X: „Prezydent ma konstytucyjne prawo i obowiązek mianować albo odmówić mianowania ambasadora a minister spraw zagranicznych zgodnie z ustawą ma prawo złożyć o to wniosek. Nie pozwolę ani na odbieranie rządowi jego kompetencji ani na ponowne upartyjnienie polskiej służby” / X|/sikorskiradek/status/1968693830263173346?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1968693830263173346%7Ctwgr%5Ec2b973ce4b266f9c233f458b9d137f71ecd21e81%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fpulsembed.eu%2Fp2em%2FShKbqYtLT%2F
+1676704122|1676703934|calendar.google.com|Kalendarz Google - wrzesień 2025|/calendar/u/0/r/month/2025/9/1
+1676704125|1676703934|docs.google.com|Concurrence - Dokumenty Google|/document/d/1nEdc4UuUvNV4tlcs9FKi6cSdArWATVjFd_frpMtTCLw/edit?tab=t.0
+1676704128|1676703934|docs.google.com|FORM_REVIEW_EN-OTH 2025 - Marcin Cichosz - Dokumenty Google|/document/d/1Fhdr4wGp2U9JuyQAoM4FT5FQlOi1ozotWoBLRKAooQg/edit?tab=t.0
+1676704131|1676703934|www.google.com|glocalization - Szukaj w Google|/search?q=glocalization&oq=glocalization&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIGCAEQABgeMgYIAhAAGB4yBggDEAAYHjIGCAQQABgeMgYIBRAAGB4yBggGEAAYHjIGCAcQABgeMgYICBAAGB4yBggJEAAYHtIBCDQxODdqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+1676704134|1676703934|grok.com|Streaming Wars: Ukraine's Cultural Shift - Grok|/c/5fbcb864-7843-46d2-86e0-e5e2a29f3f8d
+1676704137|1676703934|www.kyivpost.com|Netflix releases first feature film with Ukrainian dubbing|/post/7006
+1676704140|1676703934|kyivindependent.com|Ukraine - The Kyiv Independent|/tag/ukraine/
+1676704143|1676703934|www.youtube.com|(30) Debil. Studium przypadku. Dr Aleksandra Sarna i Jan Piński - YouTube|/watch?v=9WSPB1uNkjA&t=946s
+1676704146|1676703934|www.sportcal.com|Megogo keeps UEFA club rights in Ukraine for 2024-27 cycle - Sportcal|/media/megogo-keeps-uefa-club-rights-in-ukraine-for-2024-27-cycle/?cf-view
+1676704149|1676703934|en.interfax.com.ua|Ukrainian OTT platform SWEET.TV is for introduction of liability for viewing pirated content, restriction of operation of Russian streaming services in country|/news/press-conference/767821.html
+1676704152|1676703934|grok.com|Logistic Regression in Streaming Preferences - Grok|/c/e99f7402-dec1-4c88-995b-1acd1426d25f
+1676704155|1676703934|www.youtube.com|YouTube|/
+1676704158|1676703934|mail.google.com|🛎️ Ex-OpenAI CTO Launches Tinker - martinc999@gmail.com - Gmail|/mail/u/0/#inbox/FMfcgzQcpwwLnBfHVXFTRDnmmnjrntDv
+1676704161|1676703934|www.instagram.com|(1) Instagram|/maropalin/
+1676704164|1676703934|www.linkedin.com|(10) Post | LinkedIn|/posts/damtokarczyk_bran%C5%BCa-it-prze%C5%BCywa-dzi%C5%9B-brutalne-zderzenie-activity-7378312485616926722-JSN7/?utm_source=share&utm_medium=member_android&rcm=ACoAAABg8CsB55zqTSM1VDmx66yE6NjXG8576cs
+1676704470|1676703934|meet.google.com|Google Meet|/landing
+1676704170|1676703934|www.google.com|damian lewandowski ux - Szukaj w Google|/search?q=damian+lewandowski+ux&sca_esv=13677aa2df667dbd&sxsrf=AE3TifN3noTEQn_dGtnV6EbtsFiRPTmRnw%3A1759236334117&ei=7tDbaLz6BpmowPAPx5jSyAI&ved=0ahUKEwi8qZWGwoCQAxUZFBAIHUeMFCkQ4dUDCBA&uact=5&oq=damian+lewandowski+ux&gs_lp=Egxnd3Mtd2l6LXNlcnAiFWRhbWlhbiBsZXdhbmRvd3NraSB1eDIFECEYoAEyBRAhGKABSP0OUP0DWJkMcAF4AJABAJgBgwGgAcYCqgEDMS4yuAEDyAEA-AEBmAIEoALuAsICCBAAGIAEGLADwgIJEAAYBxgeGLADwgIFEAAYgATCAg4QLhiABBjHARivARiOBcICBhAAGBYYHsICCBAAGIAEGKIEwgIFEAAY7wWYAwCIBgGQBgqSBwMyLjKgB8YMsgcDMS4yuAffAsIHBzAuMS4xLjLIBxs&sclient=gws-wiz-serp
+1676704473|1676703934|www.sport.pl|Potężna awantura na korcie. Gauff reaguje na słowa Bencic. 'Mówiłam jej' Tenis - Sport.pl|/tenis/7,64987,32289937,potezna-awantura-na-korcie-gauff-reaguje-na-slowa-bencic-mowilam.html#e=RelRecImg5
+1676704177|1676704176|garymarcus.substack.com|Things are so desperate at OpenAI that Sam Altman is starting to sound like Gary Marcus|/p/things-are-so-desperate-at-openai?img=https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0c51da4f-2845-42c3-86f2-1a16b7ef0b86_2050x1120.jpeg&open=false
+1676704181|1676704176|www.facebook.com|(1) Facebook|/reel/705129279237564
+1676704184|1676704176|journals.sagepub.com|Critically Reviewing Literature: A Tutorial for New Researchers - Karen V. Fernandez, 2019|/doi/10.1016/j.ausmj.2019.05.001
+1676704187|1676704176|grok.com|Fixing OCR Script Token Limit Issue - Grok|/chat/be60ac0f-6184-4528-99b7-0fb9dc315e75
+1676704190|1676704176|claude.ai|Claude|/chat/97987566-d7dc-4335-8450-82ac20d295ba
+1676704194|1676704176|mail.google.com|Wyniki wyszukiwania - martinc999@gmail.com - Gmail|/mail/u/0/#search/lukasz.tylkowski%40spirvent.pl
+1676704787|1676704176|docs.google.com|Aplikacja Uczestnika Spółdzielni Energetycznej XYZ: - Dokumenty Google|/document/d/1hqjLTkaWq1ovH6ni42YVrKesXyDsSIQxpg8p2ayhSEA/edit?tab=t.0#heading=h.hoe2u0nhoar0
+1676704197|1676704176|www.linkedin.com|(8) Feed | LinkedIn|/feed/
+1676704200|1676704176|samharris.substack.com|(4) Making Sense #432 - The Undoing of America - Sam Harris|/p/making-sense-432-the-undoing-of-america?utm_source=podcast-email&publication_id=471923&post_id=172092869&utm_campaign=email-play-on-substack&utm_content=watch_now_button&r=91rvq&triedRedirect=true&utm_medium=email
+1676704203|1676704176|link.springer.com|Tracking norms: a plea for a normative digital philosophy of science | Synthese|/article/10.1007/s11229-025-05200-6
+1676704206|1676704176|github.com|martinc999/cobol: A Python project: cobol|/martinc999/cobol
+1676704209|1676704176|en.wikipedia.org|2018–2019 Gaza border protests - Wikipedia|/wiki/2018%E2%80%932019_Gaza_border_protests?utm_source=chatgpt.com
+1676704212|1676704176|x.com|(1) Remek Kinas w serwisie X: „Przyszedł czas podsumowania pierwszych testów na ZbyHP Z8 Fury G5, nowości od HP wyposażonej w 4 karty Nvidia RTX PRO 6000 Max-Q, którą mam ogromną przyjemność już od ponad miesiąca użytkować (jeszcze raz podziękowania dla HP Inc Polska). Popatrzcie na film: jak wyciągnąć https://t.co/9RnH7OLzPs” / X|/KinasRemek/status/1972947234607034621
+1676704216|1676704215|www.youtube.com|(30) Building Intelligent AI Agents with Open Source LLMs | smolagents - YouTube|/watch?v=BGltHLInYDg
+1676704220|1676704215|mail.google.com|Gmail|/mail/u/0/#search/chrome+/FMfcgzQcpnQgZmnFWQqQdSWxfDSztgSH
+1676704223|1676704215|googlechromeai2025.devpost.com|Google Chrome Built-in AI Challenge 2025 : Innovate with Intelligence: Build the Future of the Web with Gemini Nano and Chrome AI. - Devpost|/rules
+1676704226|1676704215|extensions|Rozszerzenia - Tab Scanner|/?id=emgodmnfanollicdfddcgbehbkhelijk
+1676704227|1676704215|gemini.google.com|Google Gemini|/app/952bb41bfb9e4664
+1676704230|1676704215|on-device-internals|On-device Internals|/
+1676704846|1676704215|grok.com|Konferencja o nowotworach neuroendokrynnych GEP-NEN - Grok|/c/d31b29a4-b60f-4a3a-ac12-9ed4ba6a449b
+1676704232|1676704231|docs.google.com|ZwiązekWspólnaEnergiaSpółdzielnie19092025 - Prezentacje Google|/presentation/d/15kWB7jM499yKraBCP9c0nQqvyqw2I6YEiZFTHARYGuk/edit?slide=id.g35b792679b7_0_0#slide=id.g35b792679b7_0_0
+1676704236|1676704231|www.pse.pl|2a853080-db69-433e-ae31-31c848c2c444|/documents/20182/2a853080-db69-433e-ae31-31c848c2c444
+1676704239|1676704231|x.com|(1) Główna / X|/home
+1676704242|1676704231|on-device-internals|On-device Internals|/
+1676704245|1676704231|github.com|webmachinelearning/prompt-api: 💬 A proposal for a web API for prompting browser-provided language models|/webmachinelearning/prompt-api
+1676704248|1676704231|x.com|(1) Helutka II konto -sierpień 2024 w serwisie X: „Gdy resztkami sił,dobijasz do piątku a tu ,ze śmiechu ledwo łapiesz oddech. 📢📢📢📢📢📢📢📢📢📢📢📢📢 https://t.co/yQ8BXwFRR9” / X|/MB06902598/status/1968661717375709611
+1676704251|1676704231|grok.com|Relacje w polskim systemie energetycznym - Grok|/c/9b736e47-1a55-4393-94ab-594f46ddb663
+1676704254|1676704231|www.youtube.com|(23) Response to Matt Walsh: Cancel This - YouTube|/watch?v=9uZOLtdIA7Y
+1676704257|1676704231|enarche.pl|Od Darwina do DNA. Debata wokół teorii inteligentnego projektu » Fundacja En Arche|/produkt/od-darwina-do-dna-debata-wokol-teorii-inteligentnego-projektu/?srsltid=AfmBOoomZiw_N-savxcnGZjv4iD9riRZwzhJ8G89xCsXRDCdQR_yegL0
+1676704260|1676704231|www.primevideo.com|Prime Video: Prime Target - Season 1|/region/eu/detail/0HF1Z85FCP8C1G4NFLIOW3R24L/ref=atv_3p_amz_c_xAFIVv_brws_9_5?jic=112%7CCglhcHBsZXR2cGwSDHN1YnNjcmlwdGlvbho5YW16bjEuZHYuY2hhbm5lbFRpZXIuODAyZTkzNTgtNDk1MS00ZDQ1LWVlODYtOTdkMzZlYjEwOTQz
+1676704263|1676704231|www.amazon.pl|Moje członkostwo w programie Amazon Prime|/gp/primecentral/ref=atv_set_ya_mem_edt_on_amz
+1676704266|1676704231|www.amazon.pl|Moje członkostwo w programie Amazon Prime|/gp/primecentral/ref=atv_set_ya_mem_edt_on_amz
+1676704269|1676704231|www.facebook.com|(9) Facebook|/
+1676704272|1676704231|sport.feji.io|Shohei Ohtaпi Doυbles Dowп: Dodgers Sυperstar’s Remark oп Charlie Kirk Sparks Natioпwide Debate… – LUCKIHIHI|/posts/shohei-ohtani-doubles-down-dodgers-remark-charlie-kirk-sparks-nationwide-debate-luckihihi-van123
+1676704275|1676704231|www.google.com|fiber-cell philosophy - Szukaj w Google|/search?q=fiber-celll+philosophy&sca_esv=8f37aa539897307f&sxsrf=AE3TifPXhD0nRFwx94qqFUjmxg2tHkdlLg%3A1758312743290&ei=J7nNaMe9Edz9wPAPg8HJoQs&oq=fiber-celll+philoso&gs_lp=Egxnd3Mtd2l6LXNlcnAiE2ZpYmVyLWNlbGxsIHBoaWxvc28qAggAMgcQIRigARgKMgcQIRigARgKSNw6UJ8FWKIwcAN4AJABAJgBfaABzAiqAQM2LjW4AQPIAQD4AQGYAg6gApIJwgIJEAAYsAMYBxgewgIOEC4YgAQYsAMYxwEYrwHCAgQQABgewgIGEAAYChgewgILEC4YgAQYxwEYrwHCAhoQLhiABBjHARivARiXBRjcBBjeBBjgBNgBAcICBxAjGLACGCfCAg0QLhiABBjHARgNGK8BwgIGEAAYDRgewgIcEC4YgAQYxwEYDRivARiXBRjcBBjeBBjgBNgBAcICCBAAGAoYDRgewgIIEAAYBRgNGB7CAgYQABgWGB6YAwCIBgGQBgy6BgYIARABGBSSBwM4LjagB9k-sgcDNS42uAf-CMIHBTAuNy43yAc2&sclient=gws-wiz-serp
+1676704278|1676704231|docs.google.com|Concurrence - Dokumenty Google|/document/d/1nEdc4UuUvNV4tlcs9FKi6cSdArWATVjFd_frpMtTCLw/edit?tab=t.0
+1676704281|1676704231|localhost|Please find all sentences that... | Open WebUI|/c/444121e0-416a-4387-975d-660636a3d8a8
+1676704284|1676704231|www.google.com|tesla ile do 100 - Szukaj w Google|/search?q=tesla+ile+do+100&oq=tesla+do+100+&gs_lcrp=EgZjaHJvbWUqCAgDEAAYFhgeMgoIABBFGBYYHhg5MgcIARAAGIAEMggIAhAAGBYYHjIICAMQABgWGB4yCggEEAAYChgWGB4yCAgFEAAYFhgeMggIBhAAGBYYHjIICAcQABgWGB4yCAgIEAAYFhgeMgoICRAAGAoYFhge0gEINjc3NWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8
+1676704287|1676704231|grok.com|Relacje w polskim systemie energetycznym - Grok|/c/9b736e47-1a55-4393-94ab-594f46ddb663
+1676704290|1676704231|www.teraz-srodowisko.pl|CSIRE nadchodzi wielkimi krokami – szansa dla rynku energii i OZE|/aktualnosci/CSIRE-rynek-energii-OZE-13324.html
+1676704293|1676704231|www.google.com|dostęp do danych licznika zdalnego odczytu enea - Szukaj w Google|/search?q=dost%C4%99p+do+danych+licznika+zdalnego+odczytu+enea&sca_esv=9262f80ffd90b9fa&sxsrf=AE3TifNHpTqJ-BU1wj5zIHwRsqSqg1W0Fg%3A1758466762133&ei=yhLQaPzlB_mnwPAP0KmawQc&ved=0ahUKEwj88tKVj-qPAxX5ExAIHdCUJngQ4dUDCBA&uact=5&oq=dost%C4%99p+do+danych+licznika+zdalnego+odczytu+enea&gs_lp=Egxnd3Mtd2l6LXNlcnAiMGRvc3TEmXAgZG8gZGFueWNoIGxpY3puaWthIHpkYWxuZWdvIG9kY3p5dHUgZW5lYTIIECEYoAEYwwRIuTpQlw5YyzNwAXgAkAEAmAGLAaABpRCqAQQ1LjE0uAEDyAEA-AEBmAIRoAK8DsICChAAGLADGNYEGEfCAgcQIxiwAhgnwgIIEAAYBRgNGB7CAggQABiiBBiJBcICCBAAGIAEGKIEwgIFEAAY7wWYAwCIBgGQBgiSBwQ0LjEzoAfCVLIHBDMuMTO4B7cOwgcGMC43LjEwyAcy&sclient=gws-wiz-serp
+1676704296|1676704231|mojlicznik.energa-operator.pl|Logowanie - Portal Klienta|/dp/UserLogin.do
+1676704299|1676704231|energa-operator.pl|Strona główna | Energa-Operator S.A.|/
+1676704302|1676704231|www.facebook.com|(17) Facebook|/prusblog
+1676704305|1676704231|www.youtube.com|Charlie Kirk was WORSE than you think - YouTube|/watch?v=4wFf75NKNc4
+1676704308|1676704231|www.linkedin.com|(17) Post | LinkedIn|/posts/jakubjeziorny_dwa-tygodnie-bez-dost%C4%99pu-do-internetu-na-activity-7374405961232392194-ujZc/?utm_source=share&utm_medium=member_ios&rcm=ACoAAABf0XEBqK7It0jSgblSDlqk93DKqa1akAc
+1676704311|1676704231|calendar.google.com|Kalendarz Google - wrzesień 2025|/calendar/u/0/r/month
+1676704314|1676704231|meet.google.com|Google Meet|/landing?authuser=0
+1676704317|1676704231|chatgpt.com|Cechy węzła w MRI|/share/68d832da-0be8-8007-93d1-431190e1f13c
+1676704320|1676704231|x.com|(1) Santiago w serwisie X: „Knowledge graphs for representing information are unbeatable. After this, you will never build a RAG system without knowledge graphs. It will take you five lines of code to build a knowledge graph with your data. I recorded a video to show you how you can do this. I used https://t.co/1jQ6Gejczq” / X|/svpino/status/1971594493259599897
+1676704876|1676704323|mail.google.com|Odebrane (934) - martinc999@gmail.com - Gmail|/mail/u/0/#inbox
+1676704793|1676704323|www.datacamp.com|DataCamp's $1 Sale!|/promo/october-monthly-sale-2025?utm_source=customerio&utm_medium=email&utm_campaign=251002_1-oct25odp-t2_2-b2c_3-all_4-na_5-na_6-na_7-le_8-emal-ci_9-na_10-oct25odp_11-email&utm_content=blast&dc_euid=15075048
+1676704790|1676704323|meet.google.com|Google Meet|/landing
+1676704675|1676704323|wsl.localhost|Mockup: eBOK — Transakcje|/Ubuntu-22.04/home/marcin/repos/energy-cooperative/ux/index.html
+1676704863|1676704323|localhost|JavaScript Tab Categorization • Open WebUI|/c/fb51b95d-88ca-4db3-a50a-39b3cbc0fb25
+1676704866|1676704323|newtab|Nowa karta|/
+1676704346|1676704690|docs.google.com|22 wrz 2025 | Łukasz - zadania - Dokumenty Google|/document/d/12AMq4NrGIoI6pGAKB4-9g4JL52a1U_962VQIbVHcjQI/edit?tab=t.0
+1676704711|1676704690|www.google.com|4*8*150 - Szukaj w Google|/search?q=4*8*150&sca_esv=90ccd5d0cf3c32a1&sxsrf=AE3TifNPz9vNhf1UW8EM7nvREy_iNgK60Q%3A1759402844819&ei=XFveaKXoMcGI7NYPrZ_VgQw&ved=0ahUKEwilhtSsroWQAxVBBNsEHa1PNcAQ4dUDCBA&uact=5&oq=4*8*150&gs_lp=Egxnd3Mtd2l6LXNlcnAiBzQqOCoxNTAyBhAAGAcYHjIGEAAYBxgeMgYQABgHGB4yCBAAGAgYBxgeMggQABgIGAcYHjIIEAAYCBgHGB4yCBAAGAgYBxgeMggQABgIGAcYHjIKEAAYCBgHGB4YCjIIEAAYCBgHGB5IlA9QqgxYuQ1wAngAkAEAmAFkoAHCAaoBAzEuMbgBA8gBAPgBAZgCBKAC1wHCAgkQABgHGB4YsAPCAgcQABgeGLADmAMAiAYBkAYKkgcDMy4xoAfTCbIHAzEuMbgHygHCBwUwLjIuMsgHEA&sclient=gws-wiz-serp
+1676704324|1676704702|www.youtube.com|(30) Poor Attempt To Debunk 5 Atheist Arguments - YouTube|/watch?v=n21nn4if08Q
+1676704732|1676704760|www.vipbox.lc|VIPBox Diamond Court: Jasmine Paolini vs Amanda Anisimova - Video 2 Streaming Online - VIPBox|/tennis/diamond-court-jasmine-paolini-vs-amanda-anisimova-2-live
+1676704759|1676704770|wsl.localhost|Mockup: eBOK — Transakcje|/Ubuntu-22.04/home/marcin/repos/energy-cooperative/ux/index.html
+1676704777|1676704770|mail.google.com|Odebrane (934) - martinc999@gmail.com - Gmail|/mail/u/0/#inbox
+1676704834|1676704770|googlechromeai2025.devpost.com|Google Chrome Built-in AI Challenge 2025 : Innovate with Intelligence: Build the Future of the Web with Gemini Nano and Chrome AI. - Devpost|/rules
+1676704869|1676704770|www.msn.com|Kolejna operacja rosyjskiego wywiadu w Polsce. „Jeszcze groźniejszy akt terroru”|/pl-pl/wiadomosci/polska/kolejna-operacja-rosyjskiego-wywiadu-w-polsce-jeszcze-gro%C5%BAniejszy-akt-terroru/ar-AA1NIJ9p?ocid=winp2fp&cvid=43f1401b603a4e198357a3f414b4f7ab&ei=8
+1676704826|1676704770|claude.ai|Refactoring tab categorization script - Claude|/chat/319cddb7-6287-48be-bb1f-d43289b5650e
+1676704881|1676704770|extensions|Rozszerzenia - Tab Scanner|/?id=emgodmnfanollicdfddcgbehbkhelijk

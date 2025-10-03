@@ -230,7 +230,7 @@ class CategoryManager {
         }
 
         // Extract formatted strings from allResults with category information using res.categories
-        const mappingArray = allResults.flatMap(res => 
+        const mappingArray = allResults.flatMap(res =>
             res.tabInfoList.map((t, tabIndex) => {
                 // Use the category from res.categories based on tab index
                 const categoryIndex = tabIndex % res.categories.length;
@@ -238,7 +238,7 @@ class CategoryManager {
                 return `${t.formatted}\\${category}`;
             })
         );
-        
+
         console.log('CategoryManager: Extracted mapping array with categories:', mappingArray.length, 'entries');
 
         const content = mappingArray.join('\n');
@@ -256,48 +256,6 @@ class CategoryManager {
         });
 
         console.log(`CategoryManager: Triggered download for mapping file with ${mappingArray.length} entries including categories.`);
-    }
-
-    // Enhanced downloadMapping with header and detailed format using res.categories
-    downloadDetailedMapping(allResults, categories, filenamePrefix = 'detailed-categorization') {
-        if (!allResults || allResults.length === 0) {
-            console.log('CategoryManager: No mapping data to download.');
-            return;
-        }
-
-        const header = `# Tab Categorization Mapping
-# Format: tabId\\windowId\\domain\\title\\urlPath\\assignedCategory
-# Generated: ${new Date().toISOString()}
-# Total Categories: ${categories ? categories.length : 'N/A'}
-${categories ? `# Categories: ${categories.join(', ')}` : ''}
-
-`;
-
-        // Extract formatted strings from allResults with category information using res.categories
-        const mappingArray = allResults.flatMap(res => 
-            res.tabInfoList.map((t, tabIndex) => {
-                // Use the category from res.categories based on tab index
-                const categoryIndex = tabIndex % res.categories.length;
-                const category = res.categories[categoryIndex] || 'Unknown';
-                return `${t.formatted}\\${category}`;
-            })
-        );
-
-        const content = header + mappingArray.join('\n');
-        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-
-        chrome.downloads.download({
-            url: url,
-            filename: `${filenamePrefix}-${Date.now()}.txt`,
-            saveAs: false
-        }, () => {
-            if (chrome.runtime.lastError) {
-                console.error('CategoryManager: Detailed mapping download failed:', chrome.runtime.lastError);
-            }
-        });
-
-        console.log(`CategoryManager: Triggered detailed mapping download with ${mappingArray.length} entries.`);
     }
 
     mergeCategories(categorySets) {

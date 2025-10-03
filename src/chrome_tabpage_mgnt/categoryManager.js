@@ -13,7 +13,7 @@ class CategoryManager {
         if (this.aiManager.isAIAvailable) {
             console.log('CategoryManager: AI is available, generating AI-based categories');
             const result = await this.processAllTabsInChunks('predefined', null, progressCallback);
-            console.log('CategoryManager: Final merged AI categories:', result.categories.join('|'));
+            console.log('CategoryManager: Final merged AI categories:', result.categories.join('\\'));
             return result;
         } else {
             console.log('CategoryManager: AI not available, using fallback categories');
@@ -27,18 +27,11 @@ class CategoryManager {
     async generateDiscoverCategories(prompt, progressCallback = null) {
         console.log('CategoryManager: generateDiscoverCategories() called with prompt:', prompt);
 
-        if (this.aiManager.isAIAvailable) {
-            console.log('CategoryManager: AI is available, generating custom categories');
-            const result = await this.processAllTabsInChunks('custom', prompt, progressCallback);
-            console.log('CategoryManager: Final merged custom AI categories:', result.categories.join('|'));
-            return result;
-        } else {
-            console.log('CategoryManager: AI not available, using fallback categories');
-            return {
-                categories: this.generateFallbackCategories(),
-                groupedTabs: {}
-            };
-        }
+        console.log('CategoryManager: AI not available, using fallback categories');
+        return {
+            categories: this.generateFallbackCategories(),
+            groupedTabs: {}
+        };
     }
 
     generateFallbackCategories() {
@@ -118,7 +111,7 @@ class CategoryManager {
                 const url = new URL(tab.url);
                 const url_ext = url.pathname + url.search + url.hash;
                 return {
-                    formatted: `${tab.id}|${tab.windowId}|${tab.domain}|${tab.title}|${url_ext}`,
+                    formatted: `${tab.id}\\${tab.windowId}\\${tab.domain}\\${tab.title}\\${url_ext}`,
                     tabObject: tab
                 };
             });
@@ -161,9 +154,8 @@ class CategoryManager {
         const allResults = (await this.processInParallel(chunks, processChunk, concurrencyLimit))
             .filter(res => res !== null);
 
-        // Download mapping file
-        const fullMapping = allResults.flatMap(res => res.tabInfoList.map(t => t.formatted));
-        console.log('CategoryManager: Full mapping to be downloaded:', fullMapping);
+        // Download mapping file with allResults - now includes categories from res.categories
+        console.log('CategoryManager: Downloading mapping with allResults including categories');
         this.downloadMapping(allResults);
 
         if (progressCallback) {
@@ -182,10 +174,10 @@ class CategoryManager {
         }
 
         const mergedCategories = this.mergeCategories(allCategorySets);
-        
+
         // Group tabInfo objects by their assigned categories
         const groupedTabs = this.groupTabsByCategories(allResults, mergedCategories);
-        
+
         console.log('CategoryManager: Final result with grouped tabs:', {
             categories: mergedCategories,
             groupedTabsKeys: Object.keys(groupedTabs)
@@ -199,7 +191,7 @@ class CategoryManager {
 
     groupTabsByCategories(results, categories) {
         console.log('CategoryManager: Grouping tabs by categories');
-        
+
         const grouped = {};
         categories.forEach(cat => grouped[cat] = []);
 
@@ -211,14 +203,14 @@ class CategoryManager {
                 // Assign to the first category from this result, or distribute evenly
                 const categoryIndex = tabIndex % assignedCategories.length;
                 const assignedCategory = assignedCategories[categoryIndex];
-                
+
                 // Find matching category in merged list (case-insensitive)
-                const matchingCategory = categories.find(cat => 
+                const matchingCategory = categories.find(cat =>
                     cat.toLowerCase().trim() === assignedCategory.toLowerCase().trim()
                 ) || categories[0];
 
                 grouped[matchingCategory].push(tabInfo.tabObject);
-                
+
                 console.log(`CategoryManager: Assigned tab "${tabInfo.tabObject.title}" to "${matchingCategory}"`);
             });
         });
@@ -231,11 +223,23 @@ class CategoryManager {
         return grouped;
     }
 
-    downloadMapping(mappingArray, filenamePrefix = 'categorization-mapping') {
-        if (!mappingArray || mappingArray.length === 0) {
+    downloadMapping(allResults, filenamePrefix = 'categorization-mapping') {
+        if (!allResults || allResults.length === 0) {
             console.log('CategoryManager: No mapping data to download.');
             return;
         }
+
+        // Extract formatted strings from allResults with category information using res.categories
+        const mappingArray = allResults.flatMap(res => 
+            res.tabInfoList.map((t, tabIndex) => {
+                // Use the category from res.categories based on tab index
+                const categoryIndex = tabIndex % res.categories.length;
+                const category = res.categories[categoryIndex] || 'Unknown';
+                return `${t.formatted}\\${category}`;
+            })
+        );
+        
+        console.log('CategoryManager: Extracted mapping array with categories:', mappingArray.length, 'entries');
 
         const content = mappingArray.join('\n');
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
@@ -251,7 +255,49 @@ class CategoryManager {
             }
         });
 
-        console.log(`CategoryManager: Triggered download for mapping file.`);
+        console.log(`CategoryManager: Triggered download for mapping file with ${mappingArray.length} entries including categories.`);
+    }
+
+    // Enhanced downloadMapping with header and detailed format using res.categories
+    downloadDetailedMapping(allResults, categories, filenamePrefix = 'detailed-categorization') {
+        if (!allResults || allResults.length === 0) {
+            console.log('CategoryManager: No mapping data to download.');
+            return;
+        }
+
+        const header = `# Tab Categorization Mapping
+# Format: tabId\\windowId\\domain\\title\\urlPath\\assignedCategory
+# Generated: ${new Date().toISOString()}
+# Total Categories: ${categories ? categories.length : 'N/A'}
+${categories ? `# Categories: ${categories.join(', ')}` : ''}
+
+`;
+
+        // Extract formatted strings from allResults with category information using res.categories
+        const mappingArray = allResults.flatMap(res => 
+            res.tabInfoList.map((t, tabIndex) => {
+                // Use the category from res.categories based on tab index
+                const categoryIndex = tabIndex % res.categories.length;
+                const category = res.categories[categoryIndex] || 'Unknown';
+                return `${t.formatted}\\${category}`;
+            })
+        );
+
+        const content = header + mappingArray.join('\n');
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        chrome.downloads.download({
+            url: url,
+            filename: `${filenamePrefix}-${Date.now()}.txt`,
+            saveAs: false
+        }, () => {
+            if (chrome.runtime.lastError) {
+                console.error('CategoryManager: Detailed mapping download failed:', chrome.runtime.lastError);
+            }
+        });
+
+        console.log(`CategoryManager: Triggered detailed mapping download with ${mappingArray.length} entries.`);
     }
 
     mergeCategories(categorySets) {
@@ -298,7 +344,7 @@ class CategoryManager {
 
     analyzeDomains() {
         const domains = this.tabManager.tabs.map(tab => tab.domain.toLowerCase());
-        
+
         return {
             hasWork: domains.some(d => ['docs', 'office', 'teams', 'slack', 'gmail'].some(w => d.includes(w))),
             hasSocial: domains.some(d => ['facebook', 'twitter', 'instagram', 'linkedin'].some(s => d.includes(s))),
@@ -339,7 +385,7 @@ class CategoryManager {
         }));
 
         const tabDescriptions = tabsData.map(tab =>
-            `${tab.index}: id:${tab.id}|windowId:${tab.windowId}|"${tab.title}"|${tab.domain}`
+            `${tab.index}: id:${tab.id}\\windowId:${tab.windowId}\\"${tab.title}"\\${tab.domain}`
         ).join('\n');
 
         const prompt = `You are a browser tab categorization expert. Analyze ALL the following browser tabs and create a mapping between each tab and the most appropriate category.

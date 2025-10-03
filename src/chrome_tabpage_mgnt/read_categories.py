@@ -29,7 +29,7 @@ def read_categorization_file(file_path: str) -> pd.DataFrame | None:
         # - header=None: Indicates the file has no header row.
         # - names=column_names: Assigns our defined names to the columns.
         # - on_bad_lines='warn': Warns about malformed lines instead of failing.
-        df = pd.read_csv(file_path, sep="|", header=None, names=column_names, on_bad_lines="warn")
+        df = pd.read_csv(file_path, sep="\\", header=None, names=column_names, on_bad_lines="warn")
         print(f"Successfully read {len(df)} records from '{file_path}'")
         return df
     except Exception as e:
@@ -82,7 +82,7 @@ def print_sorted_category_list(df: pd.DataFrame):
     print("=" * 60)
 
     # Get value counts and sort by category name (index)
-    category_counts = df["category"].value_counts().sort_index()
+    category_counts = df["category"].value_counts()
 
     # Print each category with its count
     for category, count in category_counts.items():
@@ -98,7 +98,7 @@ def print_sorted_category_list(df: pd.DataFrame):
 if __name__ == "__main__":
     # Use the path to the file provided in the context.
     # Update this path if your file is located elsewhere.
-    file_to_read = "/home/marcin/repos/chrome-tabpage-mgnt/categorization-mapping-1759438683424.txt"
+    file_to_read = "/home/marcin/repos/chrome-tabpage-mgnt/categorization-mapping-1759502345885.txt"
 
     # Call the function to read the file into a DataFrame
     categorization_df = read_categorization_file(file_to_read)

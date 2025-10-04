@@ -145,6 +145,23 @@ class TabManager {
     }
   }
 
+  async closeTabs(tabIds) {
+    try {
+      // Remove tabs from the Chrome browser
+      await chrome.tabs.remove(tabIds);
+      
+      // Update internal tabs array to reflect the closed tabs
+      this.tabs = this.tabs.filter(tab => !tabIds.includes(tab.id));
+      this.filteredTabs = this.filteredTabs.filter(tab => !tabIds.includes(tab.id));
+      
+      console.log(`Successfully closed ${tabIds.length} tabs`);
+      return true;
+    } catch (error) {
+      console.error('Failed to close tabs:', error);
+      throw error;
+    }
+  }
+
   getStatistics() {
     const windowCount = new Set(this.tabs.map(tab => tab.windowId)).size;
     const pinnedCount = this.tabs.filter(tab => tab.isPinned).length;

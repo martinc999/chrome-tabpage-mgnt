@@ -68,20 +68,15 @@ class ModalManager {
     container.style.display = 'none';
 
     try {
-      // NEW: generatePredefinedCategories now returns {categories, groupedTabs}
       const result = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
       
       console.log('CategoryManager result:', result);
 
-      // Check if we got groupedTabs from the AI process
       let finalCategorizedTabs;
       
       if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
-        // AI already grouped the tabs during generation
-        console.log('Using AI-grouped tabs from generation phase');
         finalCategorizedTabs = result.groupedTabs;
       } else {
-        // Fallback or AI didn't group - use categorizeTabs
         console.log('No grouped tabs from generation, categorizing now...');
         categoryList.style.display = 'none';
         container.style.display = 'block';
@@ -133,20 +128,15 @@ class ModalManager {
     this.showDiscoverCategoryProcessing();
 
     try {
-      // NEW: generateDiscoverCategories now returns {categories, groupedTabs}
       const result = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
       
       console.log('CategoryManager discover result:', result);
 
-      // Check if we got groupedTabs from the AI process
       let finalCategorizedTabs;
       
       if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
-        // AI already grouped the tabs during generation
-        console.log('Using AI-grouped tabs from generation phase');
         finalCategorizedTabs = result.groupedTabs;
       } else {
-        // Fallback or AI didn't group - use categorizeTabs
         console.log('No grouped tabs from generation, categorizing now...');
         container.style.display = 'block';
         container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';

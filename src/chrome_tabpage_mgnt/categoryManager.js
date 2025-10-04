@@ -8,6 +8,28 @@ class CategoryManager {
         this.TAB_CATEGORY_CACHE_KEY = 'tabCategories';
     }
 
+    async clearCategoryCache() {
+        console.log('CategoryManager: Clearing category cache');
+        
+        return new Promise((resolve) => {
+            chrome.storage.local.remove(this.TAB_CATEGORY_CACHE_KEY, () => {
+                console.log('CategoryManager: Category cache cleared successfully');
+                resolve(true);
+            });
+        });
+    }
+
+    async getCacheSize() {
+        return new Promise((resolve) => {
+            chrome.storage.local.get(this.TAB_CATEGORY_CACHE_KEY, (data) => {
+                const cache = data[this.TAB_CATEGORY_CACHE_KEY] || {};
+                const size = Object.keys(cache).length;
+                console.log(`CategoryManager: Current cache size: ${size} entries`);
+                resolve(size);
+            });
+        });
+    }
+
     async generatePredefinedCategories(progressCallback = null) {
         console.log('CategoryManager: generatePredefinedCategories() called');
 

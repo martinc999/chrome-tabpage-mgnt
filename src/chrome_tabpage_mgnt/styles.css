@@ -659,3 +659,27 @@ body {
   color: #666;
   min-width: 40px;
 }
+
+.cache-info {
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+#clearCacheBtn {
+  background: #f8f9fa;
+  border: 1px solid #dadce0;
+  color: #5f6368;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+#clearCacheBtn:hover {
+  background: #fce8e6;
+  border-color: #f28b82;
+  color: #d93025;
+}

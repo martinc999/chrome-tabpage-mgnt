@@ -17,6 +17,7 @@
   <div class="toolbar">
     <button id="predefinedCategoriesBtn">Predefined Categories</button>
     <button id="discoverCategoriesBtn">Discover Categories</button>
+    <button id="clearCacheBtn" title="Clear category cache">🗑️ Clear Cache</button>
   </div>
   
   <div class="search-container">
@@ -71,6 +72,24 @@
         </div>
         
         <div id="discoverCategoryTree" class="category-tree" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cache Clear Confirmation Modal -->
+  <div id="clearCacheModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Clear Category Cache</h3>
+        <button class="close-btn" id="closeClearCacheModal">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to clear the category cache?</p>
+        <p class="cache-info">This will remove all saved category assignments. Next categorization will process all tabs from scratch.</p>
+        <div class="button-group" style="justify-content: flex-end; margin-top: 20px;">
+          <button class="secondary-btn" id="cancelClearCache">Cancel</button>
+          <button id="confirmClearCache" style="background: #ea4335;">Clear Cache</button>
+        </div>
       </div>
     </div>
   </div>

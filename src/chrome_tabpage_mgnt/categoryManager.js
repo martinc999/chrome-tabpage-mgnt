@@ -5,6 +5,7 @@ class CategoryManager {
         this.tabManager = tabManager;
         this.aiManager = aiManager;
         console.log('CategoryManager: Constructor completed');
+        this.TAB_CATEGORY_CACHE_KEY = 'tabCategories';
     }
 
     async generatePredefinedCategories(progressCallback = null) {
@@ -92,100 +93,162 @@ class CategoryManager {
 
         const allTabs = this.tabManager.tabs;
         const totalTabs = allTabs.length;
-        const chunkSize = 1;
-        const totalChunks = Math.ceil(totalTabs / chunkSize);
 
-        console.log(`CategoryManager: Processing ${totalTabs} tabs with concurrency limit.`);
-
-        const chunks = [];
-        for (let i = 0; i < totalChunks; i++) {
-            const startIndex = i * chunkSize;
-            const endIndex = Math.min(startIndex + chunkSize, totalTabs);
-            chunks.push(allTabs.slice(startIndex, endIndex));
-        }
-
-        let processedTabs = 0;
-
-        const processChunk = async (chunk, index) => {
-            const tabInfoList = chunk.map(tab => {
-                const url = new URL(tab.url);
-                const url_ext = url.pathname + url.search + url.hash;
-                return {
-                    formatted: `${tab.id}\\${tab.windowId}\\${tab.domain}\\${tab.title}\\${url_ext}`,
-                    tabObject: tab
-                };
+        // Load cache from chrome.storage.local
+        let cache = await new Promise((resolve) => {
+            chrome.storage.local.get(this.TAB_CATEGORY_CACHE_KEY, (data) => {
+                resolve(data[this.TAB_CATEGORY_CACHE_KEY] || {});
             });
+        });
 
-            const tabInfo = tabInfoList.map(t => t.formatted).join('\n');
-
-            try {
-                console.log(`CategoryManager: Processing chunk ${index + 1}/${totalChunks}`);
-
-                let result;
-                if (mode === 'predefined') {
-                    result = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
-                } else if (mode === 'custom') {
-                    result = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
-                }
-
-                console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, result.categories);
-
-                processedTabs += chunk.length;
-                if (progressCallback) {
-                    const progress = Math.round((processedTabs / totalTabs) * 100);
-                    progressCallback(progress, processedTabs, totalTabs);
-                }
-
-                return {
-                    categories: result.categories,
-                    tabInfoList: tabInfoList
-                };
-
-            } catch (error) {
-                console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
-                return {
-                    categories: ['Unknown'],
-                    tabInfoList: tabInfoList
-                };
+        // Split tabs into known (cached) and unknown
+        const knownTabs = [];
+        const unknownTabs = [];
+        for (const tab of allTabs) {
+            const key = `${tab.id}_${tab.windowId}_${encodeURIComponent(tab.title)}_${tab.domain}`;
+            if (cache[key]) {
+                tab.cachedCategory = cache[key];
+                knownTabs.push(tab);
+            } else {
+                unknownTabs.push(tab);
             }
-        };
-
-        const concurrencyLimit = 1;
-        const allResults = (await this.processInParallel(chunks, processChunk, concurrencyLimit))
-            .filter(res => res !== null);
-
-        // Download mapping file with allResults - now includes categories from res.categories
-        console.log('CategoryManager: Downloading mapping with allResults including categories');
-        this.downloadMapping(allResults);
-
-        if (progressCallback) {
-            progressCallback(100, totalTabs, totalTabs);
         }
 
-        const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
-        console.log('CategoryManager: All chunks processed. Category sets collected:', allCategorySets.length);
+        console.log(`CategoryManager: ${knownTabs.length} known tabs from cache, ${unknownTabs.length} unknown tabs to process.`);
 
-        if (allCategorySets.length === 0) {
-            console.log('CategoryManager: No categories generated, falling back');
-            return {
-                categories: this.generateFallbackCategories(),
-                groupedTabs: {}
+        let newCategories = [];
+        let newGroupedTabs = {};
+        let processedTabs = knownTabs.length;
+
+        if (unknownTabs.length > 0) {
+            const chunkSize = 1;
+            const totalChunks = Math.ceil(unknownTabs.length / chunkSize);
+
+            console.log(`CategoryManager: Processing ${unknownTabs.length} unknown tabs with concurrency limit.`);
+
+            const chunks = [];
+            for (let i = 0; i < totalChunks; i++) {
+                const startIndex = i * chunkSize;
+                const endIndex = Math.min(startIndex + chunkSize, unknownTabs.length);
+                chunks.push(unknownTabs.slice(startIndex, endIndex));
+            }
+
+            const processChunk = async (chunk, index) => {
+                const tabInfoList = chunk.map(tab => {
+                    const url = new URL(tab.url);
+                    const url_ext = url.pathname + url.search + url.hash;
+                    return {
+                        formatted: `${tab.id}\\${tab.windowId}\\${tab.domain}\\${tab.title}\\${url_ext}`,
+                        tabObject: tab
+                    };
+                });
+
+                const tabInfo = tabInfoList.map(t => t.formatted).join('\n');
+
+                try {
+                    console.log(`CategoryManager: Processing chunk ${index + 1}/${totalChunks}`);
+
+                    let result;
+                    if (mode === 'predefined') {
+                        result = await this.aiManager.generateCategoriesFromTabNames(tabInfo);
+                    } else if (mode === 'custom') {
+                        result = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
+                    }
+
+                    console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, result.categories);
+
+                    processedTabs += chunk.length;
+                    if (progressCallback) {
+                        const progress = Math.round((processedTabs / totalTabs) * 100);
+                        progressCallback(progress, processedTabs, totalTabs);
+                    }
+
+                    return {
+                        categories: result.categories,
+                        tabInfoList: tabInfoList
+                    };
+
+                } catch (error) {
+                    console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
+                    return {
+                        categories: ['Unknown'],
+                        tabInfoList: tabInfoList
+                    };
+                }
             };
+
+            const concurrencyLimit = 1;
+            const allResults = (await this.processInParallel(chunks, processChunk, concurrencyLimit))
+                .filter(res => res !== null);
+
+            // Download mapping file with allResults for unknown tabs
+            console.log('CategoryManager: Downloading mapping with allResults including categories for unknown tabs');
+            this.downloadMapping(allResults);
+
+            const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
+            console.log('CategoryManager: All chunks processed. Category sets collected:', allCategorySets.length);
+
+            if (allCategorySets.length === 0) {
+                newCategories = this.generateFallbackCategories();
+                newGroupedTabs = {};
+            } else {
+                newCategories = this.mergeCategories(allCategorySets);
+                newGroupedTabs = this.groupTabsByCategories(allResults, newCategories);
+            }
+
+            // Update cache with new assignments
+            const updates = {};
+            Object.entries(newGroupedTabs).forEach(([category, tabs]) => {
+                tabs.forEach(tab => {
+                    const key = `${tab.id}_${tab.windowId}_${encodeURIComponent(tab.title)}_${tab.domain}`;
+                    updates[key] = category;
+                });
+            });
+            if (Object.keys(updates).length > 0) {
+                cache = { ...cache, ...updates };
+                await new Promise((resolve) => {
+                    chrome.storage.local.set({ [this.TAB_CATEGORY_CACHE_KEY]: cache }, () => {
+                        resolve();
+                    });
+                });
+                console.log('CategoryManager: Updated cache with new tab categories.');
+            }
+        } else {
+            if (progressCallback) {
+                progressCallback(100, totalTabs, totalTabs);
+            }
         }
 
-        const mergedCategories = this.mergeCategories(allCategorySets);
+        // Group known tabs
+        const knownGroupedTabs = {};
+        knownTabs.forEach(tab => {
+            const category = tab.cachedCategory;
+            if (!knownGroupedTabs[category]) {
+                knownGroupedTabs[category] = [];
+            }
+            knownGroupedTabs[category].push(tab);
+        });
 
-        // Group tabInfo objects by their assigned categories
-        const groupedTabs = this.groupTabsByCategories(allResults, mergedCategories);
+        // Merge grouped tabs
+        const finalGroupedTabs = { ...knownGroupedTabs };
+        Object.entries(newGroupedTabs).forEach(([category, tabs]) => {
+            if (!finalGroupedTabs[category]) {
+                finalGroupedTabs[category] = [];
+            }
+            finalGroupedTabs[category].push(...tabs);
+        });
+
+        // Merge categories: unique list from all used categories
+        const finalCategories = [...new Set([...newCategories, ...Object.keys(knownGroupedTabs)])];
 
         console.log('CategoryManager: Final result with grouped tabs:', {
-            categories: mergedCategories,
-            groupedTabsKeys: Object.keys(groupedTabs)
+            categories: finalCategories,
+            groupedTabsKeys: Object.keys(finalGroupedTabs)
         });
 
         return {
-            categories: mergedCategories,
-            groupedTabs: groupedTabs
+            categories: finalCategories,
+            groupedTabs: finalGroupedTabs
         };
     }
 

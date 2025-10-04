@@ -195,24 +195,6 @@ class CategoryManager {
                 newCategories = this.mergeCategories(allCategorySets);
                 newGroupedTabs = this.groupTabsByCategories(allResults, newCategories);
             }
-
-            // Update cache with new assignments
-            const updates = {};
-            Object.entries(newGroupedTabs).forEach(([category, tabs]) => {
-                tabs.forEach(tab => {
-                    const key = `${tab.id}_${tab.windowId}_${encodeURIComponent(tab.title)}_${tab.domain}`;
-                    updates[key] = category;
-                });
-            });
-            if (Object.keys(updates).length > 0) {
-                cache = { ...cache, ...updates };
-                await new Promise((resolve) => {
-                    chrome.storage.local.set({ [this.TAB_CATEGORY_CACHE_KEY]: cache }, () => {
-                        resolve();
-                    });
-                });
-                console.log('CategoryManager: Updated cache with new tab categories.');
-            }
         } else {
             if (progressCallback) {
                 progressCallback(100, totalTabs, totalTabs);
@@ -245,6 +227,30 @@ class CategoryManager {
             categories: finalCategories,
             groupedTabsKeys: Object.keys(finalGroupedTabs)
         });
+
+        // Clean and update cache: recreate cache with only current tabs
+        const updatedCache = {};
+        allTabs.forEach(tab => {
+            const key = `${tab.id}_${tab.windowId}_${encodeURIComponent(tab.title)}_${tab.domain}`;
+            // Find category for this tab from finalGroupedTabs
+            let category = null;
+            for (const [cat, tabs] of Object.entries(finalGroupedTabs)) {
+                if (tabs.some(t => t.id === tab.id)) {
+                    category = cat;
+                    break;
+                }
+            }
+            if (category) {
+                updatedCache[key] = category;
+            }
+        });
+
+        await new Promise((resolve) => {
+            chrome.storage.local.set({ [this.TAB_CATEGORY_CACHE_KEY]: updatedCache }, () => {
+                resolve();
+            });
+        });
+        console.log('CategoryManager: Cleaned and updated cache with current tab categories.');
 
         return {
             categories: finalCategories,

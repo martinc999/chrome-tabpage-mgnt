@@ -683,3 +683,49 @@ body {
   border-color: #f28b82;
   color: #d93025;
 }
+
+/* Add these styles to your existing CSS file */
+
+.category-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.move-category-to-window-btn {
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.move-category-to-window-btn:hover {
+  background: #3367d6;
+}
+
+.move-category-to-window-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.close-category-tabs-btn {
+  background: #ea4335;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-category-tabs-btn:hover {
+  background: #d33426;
+}

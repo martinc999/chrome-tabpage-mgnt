@@ -175,7 +175,12 @@ class ModalManager {
             <span class="category-toggle">▼</span>
             <span class="category-name">${categoryName}</span>
             <span class="category-count">(${tabs.length})</span>
-            <button class="close-category-tabs-btn" title="Close all tabs in this category" data-category-name="${this.escapeHtml(categoryName)}">×</button>
+            <div class="category-actions">
+              <button class="move-category-to-window-btn" title="Move all tabs to new window with tab group" data-category-name="${this.escapeHtml(categoryName)}">
+                🪟 Move to New Window
+              </button>
+              <button class="close-category-tabs-btn" title="Close all tabs in this category" data-category-name="${this.escapeHtml(categoryName)}">×</button>
+            </div>
           </div>
           <div class="category-content">
             ${tabs.map(tab => this.renderCategoryTab(tab)).join('')}
@@ -206,10 +211,13 @@ class ModalManager {
   }
 
   attachCategoryEventListeners(container) {
+    console.log('Attaching category event listeners to container:', container.id);
+    
+    // Handle category header clicks for toggling
     container.querySelectorAll('.category-header').forEach(header => {
       header.addEventListener('click', (e) => {
-        // Prevent toggling when the close button is clicked
-        if (e.target.classList.contains('close-category-tabs-btn')) {
+        // Prevent toggling when action buttons are clicked
+        if (e.target.closest('.category-actions')) {
           return;
         }
         const content = header.nextElementSibling;
@@ -225,6 +233,7 @@ class ModalManager {
       });
     });
 
+    // Handle tab item clicks
     container.querySelectorAll('.category-tab-item').forEach(item => {
       item.addEventListener('click', () => {
         const tabId = parseInt(item.dataset.tabId);
@@ -232,13 +241,103 @@ class ModalManager {
       });
     });
 
+    // Handle close category tabs button
     container.querySelectorAll('.close-category-tabs-btn').forEach(button => {
       button.addEventListener('click', (e) => {
         e.stopPropagation();
+        e.preventDefault();
         const categoryName = button.dataset.categoryName;
+        console.log('Close category button clicked:', categoryName);
         this.handleCloseCategoryTabs(categoryName, container);
       });
     });
+
+    // Handle move to window button
+    container.querySelectorAll('.move-category-to-window-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const categoryName = button.dataset.categoryName;
+        console.log('Move category button clicked:', categoryName);
+        this.handleMoveCategoryToWindow(categoryName, container);
+      });
+    });
+
+    console.log('Event listeners attached successfully');
+  }
+
+  async handleMoveCategoryToWindow(categoryName, container) {
+    console.log('handleMoveCategoryToWindow called for:', categoryName);
+    
+    const isPredefined = container.id === 'predefinedCategoryTree';
+    const cache = isPredefined ? this.predefinedCache : this.discoverCache;
+
+    if (!cache.categorizedTabs || !cache.categorizedTabs[categoryName]) {
+      console.error('Could not find tabs for category:', categoryName, cache);
+      this.showNotification('Error: Could not find tabs for this category', 'error');
+      return;
+    }
+
+    const tabsToMove = cache.categorizedTabs[categoryName];
+    const tabIdsToMove = tabsToMove.map(tab => tab.id);
+
+    console.log(`Found ${tabsToMove.length} tabs to move for category: ${categoryName}`, tabsToMove);
+
+    if (!confirm(`Move all ${categoryName} tabs (${tabsToMove.length} tabs) to a new window with a tab group?`)) {
+      return;
+    }
+
+    try {
+      const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Moving...';
+        button.disabled = true;
+      }
+
+      console.log('Calling tabManager.moveTabsToWindow...');
+      
+      // Use TabManager to move tabs
+      const result = await this.tabManager.moveTabsToWindow(tabIdsToMove, categoryName);
+      
+      console.log('moveTabsToWindow result:', result);
+      
+      if (result.success) {
+        console.log('Successfully moved tabs, updating UI...');
+        
+        // Remove the category from cache and UI
+        delete cache.categorizedTabs[categoryName];
+        const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`)?.parentElement;
+        if (categoryGroup) {
+          categoryGroup.remove();
+        }
+
+        // Show success notification
+        const message = result.tabGroup 
+          ? `Successfully moved ${tabsToMove.length} tabs to new window with "${categoryName}" tab group`
+          : `Successfully moved ${tabsToMove.length} tabs to new window`;
+        
+        this.showNotification(message, 'success');
+        
+        // Update statistics
+        if (window.tabAnalyzer?.uiManager) {
+          window.tabAnalyzer.uiManager.updateStatistics();
+        }
+      } else {
+        throw new Error('Move operation returned success: false');
+      }
+
+    } catch (error) {
+      console.error(`Failed to move tabs for category ${categoryName}:`, error);
+      this.showNotification(`Error moving tabs: ${error.message}`, 'error');
+      
+      // Reset button state
+      const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
+      if (button) {
+        button.textContent = '🪟 Move to New Window';
+        button.disabled = false;
+      }
+    }
   }
 
   showDiscoverCategoryProcessing() {
@@ -309,6 +408,16 @@ class ModalManager {
     } catch (error) {
       console.error(`Failed to close tabs for category ${categoryName}:`, error);
       alert(`An error occurred while closing tabs for ${categoryName}.`);
+    }
+  }
+
+  showNotification(message, type = 'info') {
+    // Use the main TabAnalyzer's notification system if available
+    if (window.tabAnalyzer && typeof window.tabAnalyzer.showNotification === 'function') {
+      window.tabAnalyzer.showNotification(message, type);
+    } else {
+      // Fallback notification
+      alert(`${type.toUpperCase()}: ${message}`);
     }
   }
 }

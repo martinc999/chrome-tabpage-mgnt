@@ -205,7 +205,7 @@ class CategoryManager {
 
             // Download mapping file with allResults for unknown tabs
             console.log('CategoryManager: Downloading mapping with allResults including categories for unknown tabs');
-            this.downloadMapping(allResults);
+            // this.downloadMapping(allResults);
 
             const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
             console.log('CategoryManager: All chunks processed. Category sets collected:', allCategorySets.length);
@@ -336,15 +336,15 @@ class CategoryManager {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
 
-        chrome.downloads.download({
-            url: url,
-            filename: `${filenamePrefix}-${Date.now()}.txt`,
-            saveAs: false
-        }, () => {
-            if (chrome.runtime.lastError) {
-                console.error('CategoryManager: Download failed:', chrome.runtime.lastError);
-            }
-        });
+        // chrome.downloads.download({
+        //     url: url,
+        //     filename: `${filenamePrefix}-${Date.now()}.txt`,
+        //     saveAs: false
+        // }, () => {
+        //     if (chrome.runtime.lastError) {
+        //         console.error('CategoryManager: Download failed:', chrome.runtime.lastError);
+        //     }
+        // });
 
         console.log(`CategoryManager: Triggered download for mapping file with ${mappingArray.length} entries including categories.`);
     }

@@ -9,25 +9,12 @@ class ModalManager {
       categories: null,
       categorizedTabs: null
     };
-    this.discoverCache = {
-      prompt: '',
-      tabsCount: 0,
-      categories: null,
-      categorizedTabs: null
-    };
   }
 
   setupModalEventHandlers() {
     // Modal controls
     document.getElementById('predefinedCategoriesBtn')?.addEventListener('click', () => this.openPredefinedCategoriesModal());
-    document.getElementById('discoverCategoriesBtn')?.addEventListener('click', () => this.openDiscoverCategoriesModal());
 
-    // Predefined categories modal
-    document.getElementById('closePredefinedCategoriesModal')?.addEventListener('click', () => this.closeModal('predefinedCategoriesModal'));
-
-    // Discover categories modal
-    document.getElementById('closeDiscoverCategoriesModal')?.addEventListener('click', () => this.closeModal('discoverCategoriesModal'));
-    document.getElementById('generateDiscoverCategories')?.addEventListener('click', () => this.generateDiscoverCategories());
 
     // Close modals on outside click
     window.addEventListener('click', (e) => {
@@ -46,9 +33,6 @@ class ModalManager {
     await this.generatePredefinedCategories();
   }
 
-  async openDiscoverCategoriesModal() {
-    document.getElementById('discoverCategoriesModal').style.display = 'flex';
-  }
 
   async generatePredefinedCategories() {
     const container = document.getElementById('predefinedCategoryTree');
@@ -104,64 +88,6 @@ class ModalManager {
     }
   }
 
-  async generateDiscoverCategories() {
-    const prompt = document.getElementById('discoverPromptInput')?.value?.trim();
-    if (!prompt) {
-      alert('Please enter a prompt to discover categories');
-      return;
-    }
-
-    const container = document.getElementById('discoverCategoryTree');
-    const currentTabsCount = this.tabManager.tabs.length;
-
-    // Check cache
-    if (this.discoverCache.tabsCount === currentTabsCount && 
-        this.discoverCache.prompt === prompt && 
-        this.discoverCache.categorizedTabs) {
-      console.log('Using cached discover categories.');
-      document.getElementById('discoverCategoryStatus').style.display = 'none';
-      container.style.display = 'block';
-      this.renderCategoryTree(this.discoverCache.categorizedTabs, container, `Discovered Categories: "${prompt}" (Cached)`);
-      return;
-    }
-
-    this.showDiscoverCategoryProcessing();
-
-    try {
-      const result = await this.categoryManager.generateDiscoverCategories(prompt, this.updateProgress.bind(this));
-      
-      console.log('CategoryManager discover result:', result);
-
-      let finalCategorizedTabs;
-      
-      if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
-        finalCategorizedTabs = result.groupedTabs;
-      } else {
-        console.log('No grouped tabs from generation, categorizing now...');
-        container.style.display = 'block';
-        container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
-        
-        finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
-      }
-
-      // Update cache
-      this.discoverCache = {
-        prompt: prompt,
-        tabsCount: currentTabsCount,
-        categories: result.categories,
-        categorizedTabs: finalCategorizedTabs
-      };
-
-      // Render the tree
-      document.getElementById('discoverCategoryStatus').style.display = 'none';
-      container.style.display = 'block';
-      this.renderCategoryTree(finalCategorizedTabs, container, `Discovered Categories: "${prompt}"`);
-
-    } catch (error) {
-      console.error('Discover category generation failed:', error);
-      this.showDiscoverCategoryError('Failed to discover categories. Please try again.');
-    }
-  }
 
   renderCategoryTree(categorizedTabs, container, title) {
     let html = `<div class="category-tree-root">${title}</div>`;
@@ -269,8 +195,7 @@ class ModalManager {
   async handleMoveCategoryToWindow(categoryName, container) {
     console.log('handleMoveCategoryToWindow called for:', categoryName);
     
-    const isPredefined = container.id === 'predefinedCategoryTree';
-    const cache = isPredefined ? this.predefinedCache : this.discoverCache;
+    const cache = this.predefinedCache;
 
     if (!cache.categorizedTabs || !cache.categorizedTabs[categoryName]) {
       console.error('Could not find tabs for category:', categoryName, cache);
@@ -340,29 +265,14 @@ class ModalManager {
     }
   }
 
-  showDiscoverCategoryProcessing() {
-    document.getElementById('discoverCategoryStatus').style.display = 'block';
-    document.getElementById('discoverCategoryTree').style.display = 'none';
-  }
-
-  showDiscoverCategoryError(message) {
-    document.getElementById('discoverCategoryStatus').style.display = 'none';
-    document.getElementById('discoverCategoryTree').innerHTML = `<div class="error-message">${message}</div>`;
-    document.getElementById('discoverCategoryTree').style.display = 'block';
-  }
 
   updateProgress(progress, processed, total) {
     const categoryList = document.getElementById('predefinedCategoryList');
-    const discoverCategoryStatus = document.getElementById('discoverCategoryStatus');
 
     const message = `🤖 AI analyzing your tabs... (${processed}/${total} tabs, ${progress}%)`;
 
     if (categoryList && categoryList.style.display !== 'none') {
       categoryList.innerHTML = `<div class="loading">${message}</div>`;
-    }
-
-    if (discoverCategoryStatus && discoverCategoryStatus.style.display !== 'none') {
-      discoverCategoryStatus.innerHTML = `<div class="loading">${message}</div>`;
     }
   }
 
@@ -382,8 +292,7 @@ class ModalManager {
       return;
     }
 
-    const isPredefined = container.id === 'predefinedCategoryTree';
-    const cache = isPredefined ? this.predefinedCache : this.discoverCache;
+    const cache = this.predefinedCache;
 
     if (!cache.categorizedTabs || !cache.categorizedTabs[categoryName]) {
       console.error('Could not find tabs for category:', categoryName);

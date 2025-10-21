@@ -168,110 +168,141 @@ class TabManager {
   // tabManager.js - Based on working window creation version
   async moveTabsToWindow(tabIds, categoryName) {
     try {
-      console.log(`Moving ${tabIds.length} tabs to new window for category: ${categoryName}`);
-      
       if (tabIds.length === 0) {
         throw new Error('No tabs to move');
       }
 
-      // Step 1: Create new window with first tab (this worked before)
-      const firstTabId = tabIds[0];
-      const remainingTabIds = tabIds.slice(1);
-      
-      console.log('Creating new window with first tab:', firstTabId);
-      const newWindow = await chrome.windows.create({
-        tabId: firstTabId,
-        focused: true
-      });
-      
-      console.log('New window created successfully:', newWindow.id);
-      const movedTabs = [await chrome.tabs.get(firstTabId)];
+      // Check if a group with this name already exists
+      const existingGroups = await chrome.tabGroups.query({ title: categoryName });
 
-      // Step 2: Move remaining tabs to the new window
-      if (remainingTabIds.length > 0) {
-        console.log('Moving remaining tabs:', remainingTabIds);
-        try {
-          const additionalMovedTabs = await chrome.tabs.move(remainingTabIds, {
-            windowId: newWindow.id,
-            index: -1
-          });
+      if (existingGroups.length > 0) {
+        // Group exists, move tabs to it
+        const targetGroup = existingGroups[0];
+        const targetWindowId = targetGroup.windowId;
+        console.log(`Moving ${tabIds.length} tabs to existing group "${categoryName}" in window ${targetWindowId}`);
 
-          // Handle response
-          if (Array.isArray(additionalMovedTabs)) {
-            additionalMovedTabs.forEach(tab => movedTabs.push(tab));
-          } else {
-            movedTabs.push(additionalMovedTabs);
-          }
-        } catch (moveError) {
-          console.error('Error moving remaining tabs:', moveError);
-          // Continue with tabs we successfully moved
-        }
-      }
+        // Move tabs to the window of the existing group
+        const movedTabsResult = await chrome.tabs.move(tabIds, { windowId: targetWindowId, index: -1 });
+        const movedTabIds = Array.isArray(movedTabsResult) ? movedTabsResult.map(t => t.id) : [movedTabsResult.id];
 
-      console.log('All tabs moved to new window:', movedTabs.length);
-
-      // Step 3: Wait a moment for window to stabilize
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Step 4: Get current state of the new window
-      const currentTabsInWindow = await chrome.tabs.query({ windowId: newWindow.id });
-      console.log('Current tabs in window:', currentTabsInWindow.length);
-
-      // Step 5: Create tab group (NEW - carefully added)
-      let tabGroup = null;
-      if (currentTabsInWindow.length > 0) {
-        console.log('Attempting to create tab group...');
+        // Add tabs to the existing group
+        await chrome.tabs.group({
+          groupId: targetGroup.id,
+          tabIds: movedTabIds
+        });
         
-        try {
-          const tabIdsToGroup = currentTabsInWindow.map(tab => tab.id);
-          console.log('Tab IDs to group:', tabIdsToGroup);
+        // Focus the window
+        await chrome.windows.update(targetWindowId, { focused: true });
 
-          // Method 1: Use tabs.group API
-          if (chrome.tabs.group) {
-            try {
-              console.log('Using chrome.tabs.group API');
-              const groupId = await chrome.tabs.group({
-                tabIds: tabIdsToGroup
-              });
-              
-              console.log('Group created with ID:', groupId);
-              
-              // Update group properties
-              await chrome.tabGroups.update(groupId, {
-                title: categoryName,
-                color: 'blue'
-              });
-              
-              tabGroup = await chrome.tabGroups.get(groupId);
-              console.log('Tab group created successfully:', tabGroup);
-              
-            } catch (groupError) {
-              console.error('tabs.group failed:', groupError);
-              // Continue without group
+        // Update internal state
+        movedTabIds.forEach(tabId => {
+            const existingTab = this.tabs.find(t => t.id === tabId);
+            if (existingTab) {
+                existingTab.windowId = targetWindowId;
             }
+        });
+
+        console.log(`Successfully moved ${movedTabIds.length} tabs to existing group.`);
+        const movedTabs = await Promise.all(movedTabIds.map(id => chrome.tabs.get(id)));
+        const targetWindow = await chrome.windows.get(targetWindowId);
+
+        return {
+          success: true,
+          movedTabs,
+          newWindow: targetWindow, // Not a new window, but returning for consistency
+          tabGroup: targetGroup
+        };
+
+      } else {
+        // Group does not exist, create a new window and group
+        console.log(`Moving ${tabIds.length} tabs to new window for category: ${categoryName}`);
+        
+        const firstTabId = tabIds[0];
+        const remainingTabIds = tabIds.slice(1);
+        
+        console.log('Creating new window with first tab:', firstTabId);
+        const newWindow = await chrome.windows.create({
+          tabId: firstTabId,
+          focused: true
+        });
+        
+        console.log('New window created successfully:', newWindow.id);
+        const movedTabs = [await chrome.tabs.get(firstTabId)];
+
+        if (remainingTabIds.length > 0) {
+          console.log('Moving remaining tabs:', remainingTabIds);
+          try {
+            const additionalMovedTabs = await chrome.tabs.move(remainingTabIds, {
+              windowId: newWindow.id,
+              index: -1
+            });
+
+            if (Array.isArray(additionalMovedTabs)) {
+              additionalMovedTabs.forEach(tab => movedTabs.push(tab));
+            } else {
+              movedTabs.push(additionalMovedTabs);
+            }
+          } catch (moveError) {
+            console.error('Error moving remaining tabs:', moveError);
           }
-        } catch (error) {
-          console.error('Tab group creation failed:', error);
-          // Don't throw - grouping is optional
         }
+
+        console.log('All tabs moved to new window:', movedTabs.length);
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const currentTabsInWindow = await chrome.tabs.query({ windowId: newWindow.id });
+        console.log('Current tabs in window:', currentTabsInWindow.length);
+
+        let tabGroup = null;
+        if (currentTabsInWindow.length > 0) {
+          console.log('Attempting to create tab group...');
+          
+          try {
+            const tabIdsToGroup = currentTabsInWindow.map(tab => tab.id);
+            console.log('Tab IDs to group:', tabIdsToGroup);
+
+            if (chrome.tabs.group) {
+              try {
+                console.log('Using chrome.tabs.group API');
+                const groupId = await chrome.tabs.group({
+                  tabIds: tabIdsToGroup
+                });
+                
+                console.log('Group created with ID:', groupId);
+                
+                await chrome.tabGroups.update(groupId, {
+                  title: categoryName,
+                  color: 'blue'
+                });
+                
+                tabGroup = await chrome.tabGroups.get(groupId);
+                console.log('Tab group created successfully:', tabGroup);
+                
+              } catch (groupError) {
+                console.error('tabs.group failed:', groupError);
+              }
+            }
+          } catch (error) {
+            console.error('Tab group creation failed:', error);
+          }
+        }
+
+        movedTabs.forEach(tab => {
+          const existingTab = this.tabs.find(t => t.id === tab.id);
+          if (existingTab) {
+            existingTab.windowId = newWindow.id;
+          }
+        });
+
+        console.log(`Successfully moved ${movedTabs.length} tabs to new window`);
+        return {
+          success: true,
+          movedTabs,
+          newWindow,
+          tabGroup
+        };
       }
-
-      // Step 6: Update internal state
-      movedTabs.forEach(tab => {
-        const existingTab = this.tabs.find(t => t.id === tab.id);
-        if (existingTab) {
-          existingTab.windowId = newWindow.id;
-        }
-      });
-
-      console.log(`Successfully moved ${movedTabs.length} tabs to new window`);
-      return {
-        success: true,
-        movedTabs,
-        newWindow,
-        tabGroup
-      };
-
     } catch (error) {
       console.error('Failed to move tabs to new window:', error);
       throw error;

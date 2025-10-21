@@ -14,6 +14,8 @@ class ModalManager {
   setupModalEventHandlers() {
     // Modal controls
     document.getElementById('predefinedCategoriesBtn')?.addEventListener('click', () => this.openPredefinedCategoriesModal());
+    document.getElementById('simplifyCategoriesBtn')?.addEventListener('click', () => this.handleSimplifyCategories());
+    document.getElementById('createAllGroupsBtn')?.addEventListener('click', () => this.handleCreateAllGroups());
 
 
     // Close modals on outside click
@@ -42,11 +44,13 @@ class ModalManager {
     // Check cache
     if (this.predefinedCache.tabsCount === currentTabsCount && this.predefinedCache.categorizedTabs) {
       console.log('Using cached predefined categories.');
+      document.getElementById('predefinedCategoriesFooter').style.display = 'flex';
       categoryList.style.display = 'none';
       container.style.display = 'block';
       this.renderCategoryTree(this.predefinedCache.categorizedTabs, container, 'Predefined Categories (Cached)');
       return;
     }
+    document.getElementById('predefinedCategoriesFooter').style.display = 'none';
 
     categoryList.innerHTML = '<div class="loading">🤖 AI analyzing your tabs...</div>';
     container.style.display = 'none';
@@ -79,11 +83,13 @@ class ModalManager {
       // Render the tree
       categoryList.style.display = 'none';
       container.style.display = 'block';
+      document.getElementById('predefinedCategoriesFooter').style.display = 'flex';
       this.renderCategoryTree(finalCategorizedTabs, container, 'Predefined Categories');
 
     } catch (error) {
       console.error('Category generation failed:', error);
       categoryList.innerHTML = '<div class="error">Failed to categorize tabs. Please try again.</div>';
+      document.getElementById('predefinedCategoriesFooter').style.display = 'none';
       container.style.display = 'none';
     }
   }
@@ -328,5 +334,17 @@ class ModalManager {
       // Fallback notification
       alert(`${type.toUpperCase()}: ${message}`);
     }
+  }
+
+  handleSimplifyCategories() {
+    // TODO: Implement logic for simplifying categories
+    console.log('Simplify Categories button clicked');
+    this.showNotification('Funkcjonalność "Simplify" nie jest jeszcze zaimplementowana.', 'info');
+  }
+
+  handleCreateAllGroups() {
+    // TODO: Implement logic for creating all groups
+    console.log('Create All Groups button clicked');
+    this.showNotification('Funkcjonalność "Create all groups" nie jest jeszcze zaimplementowana.', 'info');
   }
 }

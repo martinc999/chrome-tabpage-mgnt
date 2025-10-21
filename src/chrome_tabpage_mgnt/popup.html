@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="header">
     <h2>Tab Scanner</h2>
     <button id="refreshButton">🔄 Refresh</button>
   </div>
-  
+
   <div class="stats">
     <span id="tabCount">Loading tabs...</span>
   </div>
-  
+
   <div class="toolbar">
     <button id="predefinedCategoriesBtn">Predefined Categories</button>
+    <button id="discoverCategoriesBtn">Discover Categories</button>
     <button id="clearCacheBtn" title="Clear category cache">🗑️ Clear Cache</button>
   </div>
-  
+
   <div class="search-container">
     <input type="text" id="searchInput" placeholder="Search tabs..." />
   </div>
-  
+
   <div id="tabsList" class="tabs-container">
     <div class="loading">Scanning tabs...</div>
   </div>
-  
+
   <!-- Predefined Categories Modal -->
   <div id="predefinedCategoriesModal" class="modal">
     <div class="modal-content">
@@ -38,16 +41,48 @@
         <div class="ai-category-info">
           <p>AI will analyze your tab titles and assign them to predefined categories.</p>
         </div>
-        
+
         <div id="predefinedCategoryList">
           <div class="category-item">Ready to analyze your tabs...</div>
         </div>
-        
+
         <div id="predefinedCategoryTree" class="category-tree" style="display: none;"></div>
+      </div>
+      <div class="modal-footer" id="predefinedCategoriesFooter"
+        style="display: none; justify-content: flex-end; padding: 10px 20px; border-top: 1px solid #eee;">
+        <button id="simplifyCategoriesBtn" class="secondary-btn" style="margin-right: 10px;">Simplify</button>
+        <button id="createAllGroupsBtn">Create all groups</button>
       </div>
     </div>
   </div>
-  
+
+  <!-- Discover Categories Modal -->
+  <div id="discoverCategoriesModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Discover Categories</h3>
+        <button class="close-btn" id="closeDiscoverCategoriesModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="ai-category-info">
+          <p>Enter a prompt to discover new categories for your tabs:</p>
+        </div>
+
+        <div class="prompt-section">
+          <textarea id="discoverPromptInput"
+            placeholder="E.g., 'Group my tabs by project' or 'Categorize by urgency'"></textarea>
+          <button id="generateDiscoverCategories">Generate Categories</button>
+        </div>
+
+        <div id="discoverCategoryStatus" class="status-message" style="display: none;">
+          <div class="loading-spinner"></div>
+          <span>AI is discovering categories...</span>
+        </div>
+
+        <div id="discoverCategoryTree" class="category-tree" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Cache Clear Confirmation Modal -->
   <div id="clearCacheModal" class="modal">
@@ -58,7 +93,8 @@
       </div>
       <div class="modal-body">
         <p>Are you sure you want to clear the category cache?</p>
-        <p class="cache-info">This will remove all saved category assignments. Next categorization will process all tabs from scratch.</p>
+        <p class="cache-info">This will remove all saved category assignments. Next categorization will process all tabs
+          from scratch.</p>
         <div class="button-group" style="justify-content: flex-end; margin-top: 20px;">
           <button class="secondary-btn" id="cancelClearCache">Cancel</button>
           <button id="confirmClearCache" style="background: #ea4335;">Clear Cache</button>
@@ -66,7 +102,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Update script imports -->
   <script src="tabManager.js"></script>
   <script src="aiLogger.js"></script>
@@ -74,6 +110,7 @@
   <script src="categoryManager.js"></script>
   <script src="uiManager.js"></script>
   <script src="modalManager.js"></script>
-  <script src="main.js"></script>  
+  <script src="main.js"></script>
 </body>
+
 </html>

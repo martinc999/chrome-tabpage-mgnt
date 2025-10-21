@@ -18,6 +18,21 @@ class AIManager {
       for (let i = 0; i < retryCount; i++) {
         try {
           console.log('AIManager: Initializing AI session...');
+
+          // Get existing tab group titles to use as dynamic examples
+          let categoryExamples = "0: Coding\n1: Data Science\n2: Social Media\n3: Development\n4: News/AI";
+          try {
+            const groups = await chrome.tabGroups.query({});
+            const existingGroupTitles = groups.map(g => g.title).filter(t => t && t.trim() !== '');
+            if (existingGroupTitles.length > 0) {
+              // Create a unique set of titles
+              const uniqueTitles = [...new Set(existingGroupTitles)];
+              categoryExamples = uniqueTitles.map((title, i) => `${i}: ${title}`).join('\n');
+            }
+          } catch (e) {
+            console.warn("Could not query tab groups to generate dynamic examples, using static list.", e);
+          }
+
           const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
 
 **Primary Goal:** Create the most relevant set of category names that efficiently groups the *entire batch* of tabs.
@@ -33,18 +48,15 @@ class AIManager {
 3.**Category Granularity:**
 * Keep category names **concise** (1-3 words) and **specific** to the content (e.g., use 'Machine Learning' instead of 'Coding' or 'Research').
 * **Minimize Redundancy:** Use a limited, consolidated set of categories for the entire batch. Use one term like **'Development'** instead of multiple overlapping terms. The total number of unique categories should typically not exceed **10** for a batch of 20 elements.
+* **Prefer Existing Categories:** If the provided examples are relevant, prefer them over creating new ones.
 
 4.**Output Format (STRICT):** Respond **ONLY** with a strictly formatted list of index-to-category mappings.
 * The output must be a sequence of lines, where each line contains the tab's **index** (starting from 0), a **colon**, and a **single space**, followed by the **Category Name**.
 * **NO** introductory text, **NO** headers, **NO** trailing punctuation, and **NO** bullet points.
 * The index **must** be present for every element in the batch (0 to N-1, where N is the total number of tabs).
 
-**Example of Desired Output:**
-0: Coding
-1: Data Science
-2: Social Media
-3: Development
-4: News/AI`;
+**Example of Desired Output (use these as inspiration):**
+${categoryExamples}`;
           this.systemPrompt = systemPromptContent;
           this.aiSession = await LanguageModel.create({
             temperature: 0.2,
@@ -138,6 +150,7 @@ class AIManager {
    * @returns {Array} Array of category names
    */
   async generateCategoriesFromTabNames(tabNames) {
+    console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category generation');
     }
@@ -183,6 +196,7 @@ class AIManager {
    * @returns {Array} Array of category names
    */
   async generateCategoriesWithCustomPrompt(customPrompt, tabNames) {
+    console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category generation');
     }
@@ -226,6 +240,7 @@ class AIManager {
    * @returns {Array} Array of category names
    */
   async generateLimitedCategories(tabNames, maxCategories = 5) {
+    console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category generation');
     }

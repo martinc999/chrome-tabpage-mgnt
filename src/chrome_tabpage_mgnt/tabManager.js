@@ -12,8 +12,10 @@ class TabManager {
 
       for (const window of windows) {
         for (const tab of window.tabs) {
-          const tabData = await this.enrichTabData(tab, window.id);
-          this.tabs.push(tabData);
+          if (tab.groupId === -1) {
+            const tabData = await this.enrichTabData(tab, window.id);
+            this.tabs.push(tabData);
+          }
         }
       }
 

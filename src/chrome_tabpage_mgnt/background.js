@@ -4,6 +4,20 @@ chrome.runtime.onInstalled.addListener(() => {
     title: "Options",
     contexts: ["action"]
   });
+
+  // Set default categories on installation
+  chrome.storage.sync.get('predefinedCategories', (data) => {
+    if (!data.predefinedCategories) {
+      const defaultCategories = [
+        "Coding",
+        "Data Science",
+        "Social Media",
+        "Development",
+        "News/AI"
+      ];
+      chrome.storage.sync.set({ predefinedCategories: defaultCategories });
+    }
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {

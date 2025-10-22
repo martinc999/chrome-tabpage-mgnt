@@ -20,18 +20,43 @@ class AIManager {
           console.log('AIManager: Initializing AI session...');
 
           // Get existing tab group titles to use as dynamic examples
-          let categoryExamples = "0: Coding\n1: Data Science\n2: Social Media\n3: Development\n4: News/AI";
+          let exampleCategories = [];
+
+          // Get categories from plugin options
+          const { predefinedCategories } = await chrome.storage.sync.get('predefinedCategories');
+          if (predefinedCategories && predefinedCategories.length > 0) {
+              exampleCategories.push(...new Set(predefinedCategories));
+          }
+
+          // Get categories from existing tab groups
           try {
             const groups = await chrome.tabGroups.query({});
             const existingGroupTitles = groups.map(g => g.title).filter(t => t && t.trim() !== '');
             if (existingGroupTitles.length > 0) {
-              // Create a unique set of titles
               const uniqueTitles = [...new Set(existingGroupTitles)];
-              categoryExamples = uniqueTitles.map((title, i) => `${i}: ${title}`).join('\n');
+              uniqueTitles.forEach(title => {
+                  if (!exampleCategories.includes(title)) {
+                      exampleCategories.push(title);
+                  }
+              });
             }
           } catch (e) {
-            console.warn("Could not query tab groups to generate dynamic examples, using static list.", e);
+            console.warn("Could not query tab groups to generate dynamic examples.", e);
           }
+
+          // If no categories from storage or tab groups, use hardcoded defaults
+          if (exampleCategories.length === 0) {
+              exampleCategories = [
+                  "Coding",
+                  "Data Science",
+                  "Social Media",
+                  "Development",
+                  "News/AI"
+              ];
+          }
+
+          // Format for the prompt
+          const categoryExamples = exampleCategories.map((cat, i) => `${i}: ${cat}`).join('\n');
 
           const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
 

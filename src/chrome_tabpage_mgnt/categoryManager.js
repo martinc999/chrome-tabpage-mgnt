@@ -10,7 +10,7 @@ class CategoryManager {
 
     async clearCategoryCache() {
         console.log('CategoryManager: Clearing category cache');
-        
+
         return new Promise((resolve) => {
             chrome.storage.local.remove(this.TAB_CATEGORY_CACHE_KEY, () => {
                 console.log('CategoryManager: Category cache cleared successfully');
@@ -478,6 +478,45 @@ class CategoryManager {
         }
 
         return categories[0];
+    }
+
+    async simplifyCategoriesAI(categorizedTabs) {
+        console.log('CategoryManager: simplifyCategoriesAI() called');
+        const currentCategories = Object.keys(categorizedTabs);
+
+        if (currentCategories.length < 2) {
+            console.log('Not enough categories to simplify.');
+            return {
+                simplifiedTabs: categorizedTabs,
+                simplifiedCategories: currentCategories
+            };
+        }
+
+        // Get the mapping from old to new categories from the AI
+        const categoryMap = await this.aiManager.simplifyCategoryList(currentCategories);
+        console.log('AI simplification map:', categoryMap);
+
+        const simplifiedTabs = {};
+        const newCategorySet = new Set();
+
+        // Re-group tabs based on the new mapping
+        for (const oldCategory in categoryMap) {
+            if (categorizedTabs[oldCategory]) {
+                const newCategory = categoryMap[oldCategory];
+                newCategorySet.add(newCategory);
+
+                if (!simplifiedTabs[newCategory]) {
+                    simplifiedTabs[newCategory] = [];
+                }
+                simplifiedTabs[newCategory].push(...categorizedTabs[oldCategory]);
+            }
+        }
+
+        console.log('Simplified categories result:', simplifiedTabs);
+        return {
+            simplifiedTabs: simplifiedTabs,
+            simplifiedCategories: Array.from(newCategorySet)
+        };
     }
 }
 

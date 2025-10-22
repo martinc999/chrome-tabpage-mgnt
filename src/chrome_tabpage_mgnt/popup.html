@@ -18,7 +18,6 @@
 
   <div class="toolbar">
     <button id="predefinedCategoriesBtn">Predefined Categories</button>
-    <button id="discoverCategoriesBtn">Discover Categories</button>
     <button id="clearCacheBtn" title="Clear category cache">🗑️ Clear Cache</button>
   </div>
 
@@ -52,34 +51,6 @@
         style="display: none; justify-content: flex-end; padding: 10px 20px; border-top: 1px solid #eee;">
         <button id="simplifyCategoriesBtn" class="secondary-btn" style="margin-right: 10px;">Simplify</button>
         <button id="createAllGroupsBtn">Create all groups</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Discover Categories Modal -->
-  <div id="discoverCategoriesModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Discover Categories</h3>
-        <button class="close-btn" id="closeDiscoverCategoriesModal">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="ai-category-info">
-          <p>Enter a prompt to discover new categories for your tabs:</p>
-        </div>
-
-        <div class="prompt-section">
-          <textarea id="discoverPromptInput"
-            placeholder="E.g., 'Group my tabs by project' or 'Categorize by urgency'"></textarea>
-          <button id="generateDiscoverCategories">Generate Categories</button>
-        </div>
-
-        <div id="discoverCategoryStatus" class="status-message" style="display: none;">
-          <div class="loading-spinner"></div>
-          <span>AI is discovering categories...</span>
-        </div>
-
-        <div id="discoverCategoryTree" class="category-tree" style="display: none;"></div>
       </div>
     </div>
   </div>

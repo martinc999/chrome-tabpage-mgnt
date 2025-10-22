@@ -57,11 +57,11 @@ class ModalManager {
 
     try {
       const result = await this.categoryManager.generatePredefinedCategories(this.updateProgress.bind(this));
-      
+
       console.log('CategoryManager result:', result);
 
       let finalCategorizedTabs;
-      
+
       if (result.groupedTabs && Object.keys(result.groupedTabs).length > 0) {
         finalCategorizedTabs = result.groupedTabs;
       } else {
@@ -69,7 +69,7 @@ class ModalManager {
         categoryList.style.display = 'none';
         container.style.display = 'block';
         container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
-        
+
         finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
       }
 
@@ -144,7 +144,7 @@ class ModalManager {
 
   attachCategoryEventListeners(container) {
     console.log('Attaching category event listeners to container:', container.id);
-    
+
     // Handle category header clicks for toggling
     container.querySelectorAll('.category-header').forEach(header => {
       header.addEventListener('click', (e) => {
@@ -198,9 +198,9 @@ class ModalManager {
     console.log('Event listeners attached successfully');
   }
 
-  async handleMoveCategoryToWindow(categoryName, container) {
+  async handleMoveCategoryToWindow(categoryName, container, showConfirmation = true) {
     console.log('handleMoveCategoryToWindow called for:', categoryName);
-    
+
     const cache = this.predefinedCache;
 
     if (!cache.categorizedTabs || !cache.categorizedTabs[categoryName]) {
@@ -214,7 +214,7 @@ class ModalManager {
 
     console.log(`Found ${tabsToMove.length} tabs to move for category: ${categoryName}`, tabsToMove);
 
-    if (!confirm(`Move all ${categoryName} tabs (${tabsToMove.length} tabs) to a new window with a tab group?`)) {
+    if (showConfirmation && !confirm(`Move all ${categoryName} tabs (${tabsToMove.length} tabs) to a new window with a tab group?`)) {
       return;
     }
 
@@ -227,15 +227,15 @@ class ModalManager {
       }
 
       console.log('Calling tabManager.moveTabsToWindow...');
-      
+
       // Use TabManager to move tabs
       const result = await this.tabManager.moveTabsToWindow(tabIdsToMove, categoryName);
-      
+
       console.log('moveTabsToWindow result:', result);
-      
+
       if (result.success) {
         console.log('Successfully moved tabs, updating UI...');
-        
+
         // Remove the category from cache and UI
         delete cache.categorizedTabs[categoryName];
         const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`)?.parentElement;
@@ -244,12 +244,12 @@ class ModalManager {
         }
 
         // Show success notification
-        const message = result.tabGroup 
+        const message = result.tabGroup
           ? `Successfully moved ${tabsToMove.length} tabs to new window with "${categoryName}" tab group`
           : `Successfully moved ${tabsToMove.length} tabs to new window`;
-        
+
         this.showNotification(message, 'success');
-        
+
         // Update statistics
         if (window.tabAnalyzer?.uiManager) {
           window.tabAnalyzer.uiManager.updateStatistics();
@@ -261,7 +261,8 @@ class ModalManager {
     } catch (error) {
       console.error(`Failed to move tabs for category ${categoryName}:`, error);
       this.showNotification(`Error moving tabs: ${error.message}`, 'error');
-      
+
+
       // Reset button state
       const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
       if (button) {
@@ -269,6 +270,7 @@ class ModalManager {
         button.disabled = false;
       }
     }
+    return;
   }
 
 
@@ -336,10 +338,41 @@ class ModalManager {
     }
   }
 
-  handleSimplifyCategories() {
-    // TODO: Implement logic for simplifying categories
+  async handleSimplifyCategories() {
     console.log('Simplify Categories button clicked');
-    this.showNotification('Funkcjonalność "Simplify" nie jest jeszcze zaimplementowana.', 'info');
+    const simplifyBtn = document.getElementById('simplifyCategoriesBtn');
+    const originalBtnText = simplifyBtn.textContent;
+    simplifyBtn.disabled = true;
+    simplifyBtn.textContent = 'Simplifying...';
+
+    try {
+      const currentCategorizedTabs = this.predefinedCache.categorizedTabs;
+
+      if (!currentCategorizedTabs || Object.keys(currentCategorizedTabs).length < 2) {
+        this.showNotification('Not enough categories to simplify.', 'info');
+        return;
+      }
+
+      // Call the new method in categoryManager
+      const simplifiedResult = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs);
+
+      // Update cache
+      this.predefinedCache.categorizedTabs = simplifiedResult.simplifiedTabs;
+      this.predefinedCache.categories = simplifiedResult.simplifiedCategories;
+
+      // Re-render the tree
+      const container = document.getElementById('predefinedCategoryTree');
+      this.renderCategoryTree(this.predefinedCache.categorizedTabs, container, 'Predefined Categories (Simplified)');
+
+      this.showNotification('Categories have been simplified.', 'success');
+
+    } catch (error) {
+      console.error('Error simplifying categories:', error);
+      this.showNotification(`Failed to simplify categories: ${error.message}`, 'error');
+    } finally {
+      simplifyBtn.disabled = false;
+      simplifyBtn.textContent = originalBtnText;
+    }
   }
 
   handleCreateAllGroups() {

@@ -60,7 +60,7 @@ ${categoryExamples}`;
           this.systemPrompt = systemPromptContent;
           this.aiSession = await LanguageModel.create({
             temperature: 0.2,
-            topK: 1, 
+            topK: 1,
             outputLanguage: 'en',
             initialPrompts: [{
               role: "system",
@@ -287,6 +287,61 @@ ${categoryExamples}`;
   async generateThematicCategories(tabNames, theme) {
     const customPrompt = `Generate category names specifically for ${theme}-related browser tabs. Focus on categories that would be most relevant for ${theme} activities and organization.`;
     return await this.generateCategoriesWithCustomPrompt(customPrompt, tabNames);
+  }
+
+  /**
+   * Asks the AI to simplify a list of categories.
+   * @param {string[]} categories - The list of category names to simplify.
+   * @returns {Promise<Object>} A mapping from old category names to new, simplified ones.
+   */
+  async simplifyCategoryList(categories) {
+    if (!this.isAIAvailable || !this.aiSession) {
+      throw new Error('AI not available for category simplification.');
+    }
+
+    const categoryListString = categories.map(c => `- ${c}`).join('\n');
+
+    const prompt = `You are an expert at organizing information. Your task is to simplify the following list of browser tab categories by merging similar or related items.
+
+**Instructions:**
+1.  Analyze the provided list of categories.
+2.  Identify categories that can be grouped under a more general, common name (e.g., 'React Dev' and 'Vue Dev' could become 'Web Development').
+3.  If a category is already distinct and general enough, keep its name.
+4.  Respond **ONLY** with a JSON object that maps every old category to a new (or same) category name.
+
+**Example Input:**
+- React Development
+- Customer Support Tickets
+- Vue.js Project
+- Zendesk Queue
+
+**Example Output (JSON format ONLY):**
+{
+  "React Development": "Web Development",
+  "Customer Support Tickets": "Support",
+  "Vue.js Project": "Web Development",
+  "Zendesk Queue": "Support"
+}
+
+**Categories to simplify:**
+${categoryListString}`;
+
+    const response = await this.prompt(prompt);
+    this.logger.log("Simplify Categories Prompt", prompt, response);
+
+    // Extract the JSON part of the response to handle cases where the AI adds extra text
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("AI response for simplification did not contain a JSON object. Response:", response);
+      throw new Error("AI response did not contain a valid JSON object.");
+    }
+
+    try {
+      return JSON.parse(jsonMatch[0]);
+    } catch (e) {
+      console.error("Failed to parse extracted JSON from AI response:", jsonMatch[0], e);
+      throw new Error("Invalid JSON format in AI response after extraction.");
+    }
   }
 
   // Add a method to check browser compatibility

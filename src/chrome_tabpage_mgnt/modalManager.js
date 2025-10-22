@@ -45,13 +45,13 @@ class ModalManager {
     // Check cache
     if (this.predefinedCache.tabsCount === currentTabsCount && this.predefinedCache.categorizedTabs) {
       console.log('Using cached predefined categories.');
-      document.getElementById('predefinedCategoriesFooter').style.display = 'flex';
+      document.getElementById('predefinedCategoriesActions').style.display = 'flex';
       categoryList.style.display = 'none';
       container.style.display = 'block';
       this.renderCategoryTree(this.predefinedCache.categorizedTabs, container, 'Predefined Categories (Cached)');
       return;
     }
-    document.getElementById('predefinedCategoriesFooter').style.display = 'none';
+    document.getElementById('predefinedCategoriesActions').style.display = 'none';
 
     categoryList.innerHTML = '<div class="loading">🤖 AI analyzing your tabs...</div>';
     container.style.display = 'none';
@@ -84,13 +84,13 @@ class ModalManager {
       // Render the tree
       categoryList.style.display = 'none';
       container.style.display = 'block';
-      document.getElementById('predefinedCategoriesFooter').style.display = 'flex';
+      document.getElementById('predefinedCategoriesActions').style.display = 'flex';
       this.renderCategoryTree(finalCategorizedTabs, container, 'Predefined Categories');
 
     } catch (error) {
       console.error('Category generation failed:', error);
       categoryList.innerHTML = '<div class="error">Failed to categorize tabs. Please try again.</div>';
-      document.getElementById('predefinedCategoriesFooter').style.display = 'none';
+      document.getElementById('predefinedCategoriesActions').style.display = 'none';
       container.style.display = 'none';
     }
   }
@@ -355,12 +355,33 @@ class ModalManager {
       }
 
       const existingGroupTitles = await this.tabManager.getTabGroupTitles();
-      // Call the new method in categoryManager
-      const simplifiedResult = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs, existingGroupTitles);
+      const { simplifiedTabs, simplifiedCategories, categoryMap } = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs, existingGroupTitles);
+
+      // Check if any actual simplification occurred
+      const hasChanges = Object.keys(categoryMap).some(oldCat => categoryMap[oldCat] !== oldCat);
+
+      if (!hasChanges) {
+        this.showNotification('No significant simplifications proposed by AI.', 'info');
+        return;
+      }
+
+      // Prepare confirmation message
+      let confirmationMessage = 'AI proposes the following category simplifications:\n\n';
+      for (const oldCat in categoryMap) {
+        if (categoryMap[oldCat] !== oldCat) { // Only show actual changes
+          confirmationMessage += `"${oldCat}" -> "${categoryMap[oldCat]}"\n`;
+        }
+      }
+      confirmationMessage += '\nDo you want to apply these changes?';
+
+      if (!confirm(confirmationMessage)) {
+        this.showNotification('Category simplification cancelled.', 'info');
+        return;
+      }
 
       // Update cache
-      this.predefinedCache.categorizedTabs = simplifiedResult.simplifiedTabs;
-      this.predefinedCache.categories = simplifiedResult.simplifiedCategories;
+      this.predefinedCache.categorizedTabs = simplifiedTabs;
+      this.predefinedCache.categories = simplifiedCategories;
 
       // Re-render the tree
       const container = document.getElementById('predefinedCategoryTree');

@@ -489,6 +489,8 @@ class CategoryManager {
             return {
                 simplifiedTabs: categorizedTabs,
                 simplifiedCategories: currentCategories
+                ,
+                categoryMap: {} // Return empty map if no simplification needed
             };
         }
 
@@ -515,7 +517,8 @@ class CategoryManager {
         console.log('Simplified categories result:', simplifiedTabs);
         return {
             simplifiedTabs: simplifiedTabs,
-            simplifiedCategories: Array.from(newCategorySet)
+            simplifiedCategories: Array.from(newCategorySet),
+            categoryMap: categoryMap // Return the map for user confirmation
         };
     }
 }

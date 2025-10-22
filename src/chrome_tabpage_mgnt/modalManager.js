@@ -102,9 +102,9 @@ class ModalManager {
     Object.entries(categorizedTabs).forEach(([categoryName, tabs]) => {
       if (tabs.length === 0) return;
 
-      html += `
+      html += /*html*/`
         <div class="category-group">
-          <div class="category-header" data-category="${categoryName}">
+          <div class="category-header" data-category="${this.escapeHtml(categoryName)}">
             <span class="category-toggle">▼</span>
             <span class="category-name">${categoryName}</span>
             <span class="category-count">(${tabs.length})</span>
@@ -166,6 +166,43 @@ class ModalManager {
       });
     });
 
+    // Handle category renaming
+    container.querySelectorAll('.category-name').forEach(nameSpan => {
+      nameSpan.addEventListener('dblclick', () => {
+        const oldName = nameSpan.textContent;
+        nameSpan.setAttribute('contenteditable', 'true');
+        nameSpan.setAttribute('data-original-name', oldName);
+        nameSpan.focus();
+        document.execCommand('selectAll', false, null); // Select all text
+
+        const onFinishEditing = (e) => {
+          nameSpan.removeEventListener('blur', onFinishEditing);
+          nameSpan.removeEventListener('keydown', onKeyDown);
+          nameSpan.setAttribute('contenteditable', 'false');
+
+          const newName = nameSpan.textContent.trim();
+          if (e.key !== 'Escape' && newName !== oldName) {
+            this.handleRenameCategory(nameSpan, oldName, newName);
+          } else {
+            nameSpan.textContent = oldName; // Revert on escape or no change
+          }
+        };
+
+        const onKeyDown = (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.target.blur();
+          } else if (e.key === 'Escape') {
+            e.target.blur();
+          }
+        };
+
+        nameSpan.addEventListener('blur', onFinishEditing);
+        nameSpan.addEventListener('keydown', onKeyDown);
+      });
+    });
+
+
     // Handle tab item clicks
     container.querySelectorAll('.category-tab-item').forEach(item => {
       item.addEventListener('click', () => {
@@ -197,6 +234,46 @@ class ModalManager {
     });
 
     console.log('Event listeners attached successfully');
+  }
+
+  handleRenameCategory(nameSpanElement, oldName, newName) {
+    console.log(`Attempting to rename category from "${oldName}" to "${newName}"`);
+
+    // Validation
+    if (!newName) {
+      this.showNotification('Category name cannot be empty.', 'error');
+      nameSpanElement.textContent = oldName;
+      return;
+    }
+
+    if (this.predefinedCache.categorizedTabs[newName]) {
+      this.showNotification(`Category "${newName}" already exists.`, 'error');
+      nameSpanElement.textContent = oldName;
+      return;
+    }
+
+    // Update cache: categorizedTabs
+    this.predefinedCache.categorizedTabs[newName] = this.predefinedCache.categorizedTabs[oldName];
+    delete this.predefinedCache.categorizedTabs[oldName];
+
+    // Update cache: categories array
+    const categoryIndex = this.predefinedCache.categories.indexOf(oldName);
+    if (categoryIndex > -1) {
+      this.predefinedCache.categories[categoryIndex] = newName;
+    } else {
+      this.predefinedCache.categories.push(newName);
+    }
+
+    // Update DOM attributes to keep things consistent without a full re-render
+    const header = nameSpanElement.closest('.category-header');
+    if (header) {
+      header.dataset.category = newName;
+      header.querySelector('.move-category-to-window-btn').dataset.categoryName = newName;
+      header.querySelector('.close-category-tabs-btn').dataset.categoryName = newName;
+    }
+
+    this.showNotification(`Category renamed to "${newName}"`, 'success');
+    console.log('Category renamed successfully. New cache:', this.predefinedCache);
   }
 
   async handleMoveCategoryToWindow(categoryName, container, showConfirmation = true) {
@@ -243,13 +320,6 @@ class ModalManager {
         if (categoryGroup) {
           categoryGroup.remove();
         }
-
-        // Show success notification
-        const message = result.tabGroup
-          ? `Successfully moved ${tabsToMove.length} tabs to new window with "${categoryName}" tab group`
-          : `Successfully moved ${tabsToMove.length} tabs to new window`;
-
-        this.showNotification(message, 'success');
 
         // Update statistics
         if (window.tabAnalyzer?.uiManager) {
@@ -398,9 +468,58 @@ class ModalManager {
     }
   }
 
-  handleCreateAllGroups() {
-    // TODO: Implement logic for creating all groups
+  async handleCreateAllGroups() {
     console.log('Create All Groups button clicked');
-    this.showNotification('Funkcjonalność "Create all groups" nie jest jeszcze zaimplementowana.', 'info');
+    const categorizedTabs = this.predefinedCache.categorizedTabs;
+    const container = document.getElementById('predefinedCategoryTree');
+
+    if (!categorizedTabs || Object.keys(categorizedTabs).length === 0) {
+      this.showNotification('No categories to create groups for.', 'info');
+      return;
+    }
+
+    const categoryCount = Object.keys(categorizedTabs).length;
+    if (!confirm(`Are you sure you want to create groups for all ${categoryCount} categories? This will move tabs to new or existing windows.`)) {
+      return;
+    }
+
+    const createAllBtn = document.getElementById('createAllGroupsBtn');
+    const originalBtnText = createAllBtn.textContent;
+    createAllBtn.disabled = true;
+    createAllBtn.textContent = 'Creating...';
+
+    let successCount = 0;
+    let errorCount = 0;
+
+    // Create a copy of the keys to iterate over, as the underlying collection will be modified.
+    const categoriesToProcess = [...Object.keys(categorizedTabs)];
+
+    for (const categoryName of categoriesToProcess) {
+      const tabsToMove = categorizedTabs[categoryName];
+      if (!tabsToMove || tabsToMove.length === 0) continue;
+
+      try {
+        // Re-use the single category move logic
+        await this.handleMoveCategoryToWindow(categoryName, container, false); // Pass false to skip confirmation
+        successCount++;
+      } catch (error) {
+        console.error(`Failed to create group for category ${categoryName}:`, error);
+        errorCount++;
+      }
+    }
+
+    createAllBtn.disabled = false;
+    createAllBtn.textContent = originalBtnText;
+
+    if (errorCount > 0) {
+      this.showNotification(`Finished creating groups. Success: ${successCount}, Failed: ${errorCount}.`, 'error');
+    } else {
+      this.showNotification(`Successfully created all ${successCount} tab groups.`, 'success');
+    }
+
+    // Close modal if all categories were processed
+    if (Object.keys(this.predefinedCache.categorizedTabs).length === 0) {
+      this.closeModal('predefinedCategoriesModal');
+    }
   }
 }

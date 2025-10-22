@@ -9,7 +9,12 @@ class AILogger {
         }
     }
 
-    log(systemPrompt, prompt, response) {
+    async log(systemPrompt, prompt, response) {
+        const { loggingEnabled } = await chrome.storage.sync.get('loggingEnabled');
+        if (!loggingEnabled) {
+            return;
+        }
+
         // Log to console for immediate debugging visibility
         console.groupCollapsed(`AI Interaction Log: ${systemPrompt.substring(0, 100).replace(/\n/g, ' ')}...`);
         console.log('System Prompt:', systemPrompt);

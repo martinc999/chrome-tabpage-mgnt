@@ -3,6 +3,10 @@
   "name": "Tab Scanner",
   "version": "1.0",
   "description": "Scan and list all open tabs across Chrome windows with AI-powered analysis",
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -18,7 +22,8 @@
     "downloads",
     "storage",
     "tabGroups",
-    "windows"
+    "windows",
+    "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"

@@ -151,11 +151,11 @@ class TabManager {
     try {
       // Remove tabs from the Chrome browser
       await chrome.tabs.remove(tabIds);
-      
+
       // Update internal tabs array to reflect the closed tabs
       this.tabs = this.tabs.filter(tab => !tabIds.includes(tab.id));
       this.filteredTabs = this.filteredTabs.filter(tab => !tabIds.includes(tab.id));
-      
+
       console.log(`Successfully closed ${tabIds.length} tabs`);
       return true;
     } catch (error) {
@@ -190,16 +190,16 @@ class TabManager {
           groupId: targetGroup.id,
           tabIds: movedTabIds
         });
-        
+
         // Focus the window
         await chrome.windows.update(targetWindowId, { focused: true });
 
         // Update internal state
         movedTabIds.forEach(tabId => {
-            const existingTab = this.tabs.find(t => t.id === tabId);
-            if (existingTab) {
-                existingTab.windowId = targetWindowId;
-            }
+          const existingTab = this.tabs.find(t => t.id === tabId);
+          if (existingTab) {
+            existingTab.windowId = targetWindowId;
+          }
         });
 
         console.log(`Successfully moved ${movedTabIds.length} tabs to existing group.`);
@@ -216,16 +216,16 @@ class TabManager {
       } else {
         // Group does not exist, create a new window and group
         console.log(`Moving ${tabIds.length} tabs to new window for category: ${categoryName}`);
-        
+
         const firstTabId = tabIds[0];
         const remainingTabIds = tabIds.slice(1);
-        
+
         console.log('Creating new window with first tab:', firstTabId);
         const newWindow = await chrome.windows.create({
           tabId: firstTabId,
           focused: true
         });
-        
+
         console.log('New window created successfully:', newWindow.id);
         const movedTabs = [await chrome.tabs.get(firstTabId)];
 
@@ -257,7 +257,7 @@ class TabManager {
         let tabGroup = null;
         if (currentTabsInWindow.length > 0) {
           console.log('Attempting to create tab group...');
-          
+
           try {
             const tabIdsToGroup = currentTabsInWindow.map(tab => tab.id);
             console.log('Tab IDs to group:', tabIdsToGroup);
@@ -268,17 +268,17 @@ class TabManager {
                 const groupId = await chrome.tabs.group({
                   tabIds: tabIdsToGroup
                 });
-                
+
                 console.log('Group created with ID:', groupId);
-                
+
                 await chrome.tabGroups.update(groupId, {
                   title: categoryName,
                   color: 'blue'
                 });
-                
+
                 tabGroup = await chrome.tabGroups.get(groupId);
                 console.log('Tab group created successfully:', tabGroup);
-                
+
               } catch (groupError) {
                 console.error('tabs.group failed:', groupError);
               }
@@ -318,5 +318,19 @@ class TabManager {
       windowCount,
       pinnedCount
     };
+  }
+
+  async getTabGroupTitles() {
+    try {
+      if (chrome.tabGroups && typeof chrome.tabGroups.query === 'function') {
+        const groups = await chrome.tabGroups.query({});
+        const titles = groups.map(g => g.title).filter(t => t && t.trim() !== '');
+        return [...new Set(titles)];
+      }
+      return [];
+    } catch (e) {
+      console.warn("Could not query tab groups to get titles.", e);
+      return [];
+    }
   }
 }

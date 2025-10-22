@@ -16,6 +16,7 @@ class ModalManager {
     document.getElementById('predefinedCategoriesBtn')?.addEventListener('click', () => this.openPredefinedCategoriesModal());
     document.getElementById('simplifyCategoriesBtn')?.addEventListener('click', () => this.handleSimplifyCategories());
     document.getElementById('createAllGroupsBtn')?.addEventListener('click', () => this.handleCreateAllGroups());
+    document.getElementById('closePredefinedCategoriesModal')?.addEventListener('click', () => this.closeModal('predefinedCategoriesModal'));
 
 
     // Close modals on outside click
@@ -353,8 +354,9 @@ class ModalManager {
         return;
       }
 
+      const existingGroupTitles = await this.tabManager.getTabGroupTitles();
       // Call the new method in categoryManager
-      const simplifiedResult = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs);
+      const simplifiedResult = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs, existingGroupTitles);
 
       // Update cache
       this.predefinedCache.categorizedTabs = simplifiedResult.simplifiedTabs;

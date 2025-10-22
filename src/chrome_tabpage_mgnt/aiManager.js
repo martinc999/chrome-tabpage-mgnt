@@ -294,17 +294,32 @@ ${categoryExamples}`;
    * @param {string[]} categories - The list of category names to simplify.
    * @returns {Promise<Object>} A mapping from old category names to new, simplified ones.
    */
-  async simplifyCategoryList(categories) {
+  async simplifyCategoryList(categories, preferredCategories = []) {
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category simplification.');
     }
 
     const categoryListString = categories.map(c => `- ${c}`).join('\n');
 
-    const prompt = `You are an expert at organizing information. Your task is to simplify the following list of browser tab categories by merging similar or related items.
+    let preferredCategoriesPromptPart = '';
+    if (preferredCategories.length > 0) {
+      const preferredListString = preferredCategories.map(c => `- ${c}`).join('\n');
+      preferredCategoriesPromptPart = `
+**Primary Rule: Use Existing Category Names**
+You are given a list of "Preferred Categories" that already exist as tab groups in the user's browser. Your highest priority is to use these names.
+
+1.  When merging categories, if a name from the "Preferred Categories" list is a logical parent, you **MUST** use it.
+2.  Do **NOT** invent a new general category if a suitable one already exists in the list below.
+
+**Preferred Categories List:**
+${preferredListString}
+`;
+    }
+
+    const prompt = `You are an expert at organizing information. Your task is to simplify the following list of browser tab categories by merging similar or related items.${preferredCategoriesPromptPart}
 
 **Instructions:**
-1.  Analyze the provided list of categories.
+1.  Analyze the provided list of categories to be simplified.
 2.  Identify categories that can be grouped under a more general, common name (e.g., 'React Dev' and 'Vue Dev' could become 'Web Development').
 3.  If a category is already distinct and general enough, keep its name.
 4.  Respond **ONLY** with a JSON object that maps every old category to a new (or same) category name.

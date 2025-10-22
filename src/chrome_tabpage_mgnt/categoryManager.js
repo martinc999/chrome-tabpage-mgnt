@@ -480,7 +480,7 @@ class CategoryManager {
         return categories[0];
     }
 
-    async simplifyCategoriesAI(categorizedTabs) {
+    async simplifyCategoriesAI(categorizedTabs, existingGroupTitles = []) {
         console.log('CategoryManager: simplifyCategoriesAI() called');
         const currentCategories = Object.keys(categorizedTabs);
 
@@ -493,7 +493,7 @@ class CategoryManager {
         }
 
         // Get the mapping from old to new categories from the AI
-        const categoryMap = await this.aiManager.simplifyCategoryList(currentCategories);
+        const categoryMap = await this.aiManager.simplifyCategoryList(currentCategories, existingGroupTitles);
         console.log('AI simplification map:', categoryMap);
 
         const simplifiedTabs = {};

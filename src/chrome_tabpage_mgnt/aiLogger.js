@@ -10,12 +10,18 @@ class AILogger {
     }
 
     log(systemPrompt, prompt, response) {
+        // Log to console for immediate debugging visibility
+        console.groupCollapsed(`AI Interaction Log: ${systemPrompt.substring(0, 100).replace(/\n/g, ' ')}...`);
+        console.log('System Prompt:', systemPrompt);
+        console.log('Prompt:', prompt);
+        console.log('Response:', response);
         const content = `Timestamp: ${new Date().toISOString()}\n\n--- SYSTEM PROMPT ---\n${systemPrompt}\n\n--- PROMPT ---\n${prompt}\n\n--- RESPONSE ---\n${response}\n\n====================\n\n`;
         this.logEntries.push(content);
 
         if (this.logEntries.length >= this.batchSize) {
             this.downloadLogBatch();
         }
+        console.groupEnd();
     }
 
     downloadLogBatch() {

@@ -27,7 +27,27 @@ Because you've got better things to do than play "Where's Waldo?" with your brow
 
 ---
 
-## 🚀 Welcome to Tab Scanner! Getting Started
+## � Installation Guide
+
+Since this extension uses experimental on-device AI features, it's currently loaded as a developer extension. Here's how to get it running:
+
+1.  **Download the Code:**
+    *   Clone this repository or download it as a ZIP file and unzip it.
+
+2.  **Open Chrome Extensions:**
+    *   Open Google Chrome and navigate to `chrome://extensions`.
+
+3.  **Enable Developer Mode:**
+    *   In the top-right corner, toggle on **"Developer mode"**.
+
+4.  **Load the Extension:**
+    *   Click the **"Load unpacked"** button that appears on the left.
+    *   In the file selection dialog, navigate to and select the `src/chrome_tabpage_mgnt` folder from the downloaded code.
+
+The Tab Scanner icon will now appear in your Chrome toolbar, ready to use!
+---
+
+## �🚀 Getting Started
 
 So, you've installed Tab Scanner. Congratulations! You're just a few clicks away from transforming your browser from a chaotic mess into a beautifully organized workspace. Let's get you started.
 
@@ -77,4 +97,3 @@ Tab Scanner is smart and uses a cache to remember its work, making future scans 
 That's it! You're now ready to conquer tab chaos. Enjoy your new, organized browsing experience!
 
 ***
-

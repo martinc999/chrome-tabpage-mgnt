@@ -35,16 +35,26 @@ Since this extension uses experimental on-device AI features, it's currently loa
     *   Clone this repository or download it as a ZIP file and unzip it.
 
 2.  **Open Chrome Extensions:**
+2.  **Enable On-Device AI & Download Model:**
+    *   Navigate to `chrome://flags/#prompt-api-for-gemini-nano`.
+    *   Set the **"Prompt API for Gemini Nano"** flag to **"Enabled"**.
+    *   Relaunch Chrome when prompted.
+    *   **Important:** After relaunching, Chrome will download the AI model in the background. This can take a few minutes. You can check the download progress by navigating to `chrome://components` and looking for **"On-Device Model"**. Wait for its status to show "Up-to-date" before proceeding.
+
+3.  **Open Chrome Extensions:**
     *   Open Google Chrome and navigate to `chrome://extensions`.
 
 3.  **Enable Developer Mode:**
+4.  **Enable Developer Mode:**
     *   In the top-right corner, toggle on **"Developer mode"**.
 
 4.  **Load the Extension:**
+5.  **Load the Extension:**
     *   Click the **"Load unpacked"** button that appears on the left.
     *   In the file selection dialog, navigate to and select the `src/chrome_tabpage_mgnt` folder from the downloaded code.
 
 The Tab Scanner icon will now appear in your Chrome toolbar, ready to use!
+
 ---
 
 ## �🚀 Getting Started

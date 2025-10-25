@@ -27,7 +27,7 @@ Because you've got better things to do than play "Where's Waldo?" with your brow
 
 ---
 
-## � Installation Guide
+## 💥 Installation Guide
 
 Since this extension uses experimental on-device AI features, it's currently loaded as a developer extension. Here's how to get it running:
 
@@ -57,7 +57,7 @@ The Tab Scanner icon will now appear in your Chrome toolbar, ready to use!
 
 ---
 
-## �🚀 Getting Started
+## 💥 Getting Started
 
 So, you've installed Tab Scanner. Congratulations! You're just a few clicks away from transforming your browser from a chaotic mess into a beautifully organized workspace. Let's get you started.
 

@@ -107,3 +107,25 @@ Tab Scanner is smart and uses a cache to remember its work, making future scans 
 That's it! You're now ready to conquer tab chaos. Enjoy your new, organized browsing experience!
 
 ***
+
+---
+## Support the Project Development 🌟
+
+This project is Open Source software, available to everyone thanks to the permissive **Apache 2.0** license. We strive for continuous development, adding new features, and maintaining the highest code quality.
+
+If our work helps you in personal projects, or, more importantly, **your commercial business** uses this code and generates value from it — please consider supporting our efforts!
+
+By supporting us, you directly contribute to:
+* **Greater stability** and faster bug fixing.
+* **Accelerated development** of new, highly requested features.
+* **Long-term maintenance** of the project.
+
+### How Can You Support Us?
+
+Your financial support has a real impact on the future of this project. You can sponsor us quickly and securely via PayPal:
+
+➡️ **Support via PayPal:** [https://paypal.me/marcinc](https://paypal.me/marcinc)
+
+[![Support via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=for-the-badge&logo=paypal)](https://paypal.me/marcinc)
+
+Thank you for every donation—it helps keep the development going! 🙏

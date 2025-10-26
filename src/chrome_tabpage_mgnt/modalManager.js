@@ -333,6 +333,7 @@ class ModalManager {
 
     console.log(`Found ${tabsToMove.length} tabs to move for category: ${categoryName}`, tabsToMove);
 
+    // Only show confirmation for manual single category moves, not during "Create All Groups"
     if (showConfirmation && !confirm(`Move all ${categoryName} tabs (${tabsToMove.length} tabs) to a new window with a tab group?`)) {
       return;
     }
@@ -363,17 +364,14 @@ class ModalManager {
           window.tabAnalyzer.uiManager.updateStatistics();
         }
 
-        // Show appropriate success message
+        // Only log to console, don't show notification for each group
         const movedCount = result.movedTabs.length;
         const skippedCount = tabsToMove.length - movedCount;
         
         if (skippedCount > 0) {
-          this.showNotification(
-            `Moved ${movedCount} tabs to "${categoryName}" group (${skippedCount} system/new-tab pages skipped)`,
-            'success'
-          );
+          console.log(`✓ Moved ${movedCount} tabs to "${categoryName}" group (${skippedCount} system/new-tab pages skipped)`);
         } else {
-          this.showNotification(`Successfully moved ${movedCount} tabs to "${categoryName}" group`, 'success');
+          console.log(`✓ Successfully moved ${movedCount} tabs to "${categoryName}" group`);
         }
       } else {
         throw new Error('Move operation returned success: false');

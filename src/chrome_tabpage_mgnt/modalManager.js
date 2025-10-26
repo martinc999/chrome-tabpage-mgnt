@@ -1,4 +1,4 @@
-// modalManager.js - Fixed Multi-Window Support
+// modalManager.js - Fixed Multi-Window Support with Auto-Refresh
 class ModalManager {
   constructor(tabManager, aiManager, categoryManager) {
     this.tabManager = tabManager;
@@ -9,6 +9,26 @@ class ModalManager {
       categories: null,
       categorizedTabs: null
     };
+  }
+
+  /**
+   * Refresh the tab list and update UI
+   */
+  async refreshTabList() {
+    console.log('Refreshing tab list...');
+    try {
+      await this.tabManager.loadAllTabs();
+      
+      if (window.tabAnalyzer?.uiManager) {
+        window.tabAnalyzer.uiManager.updateStatistics();
+        window.tabAnalyzer.uiManager.renderTabList();
+        console.log('Tab list refreshed successfully');
+      }
+      return true;
+    } catch (error) {
+      console.error('Failed to refresh tab list:', error);
+      return false;
+    }
   }
 
   setupModalEventHandlers() {
@@ -38,18 +58,7 @@ class ModalManager {
     
     // Refresh tab list when closing predefined categories modal
     if (modalId === 'predefinedCategoriesModal') {
-      console.log('Closing predefined categories modal, refreshing tab list...');
-      try {
-        await this.tabManager.loadAllTabs();
-        
-        if (window.tabAnalyzer?.uiManager) {
-          window.tabAnalyzer.uiManager.updateStatistics();
-          window.tabAnalyzer.uiManager.renderTabList();
-          console.log('Tab list refreshed successfully');
-        }
-      } catch (error) {
-        console.error('Failed to refresh tab list:', error);
-      }
+      await this.refreshTabList();
     }
   }
 
@@ -90,7 +99,7 @@ class ModalManager {
         console.log('No grouped tabs from generation, categorizing now...');
         categoryList.style.display = 'none';
         container.style.display = 'block';
-        container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
+        container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
 
         finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
       }
@@ -148,12 +157,9 @@ class ModalManager {
   }
 
   renderCategoryTab(tab) {
-    // Check if tab is a system page
     const isSystemPage = this.isSystemPage(tab.url);
     const systemPageClass = isSystemPage ? 'system-page' : '';
     const systemPageIndicator = isSystemPage ? '<span class="system-page-badge" title="System page - cannot be moved">🔒</span>' : '';
-    
-    // Use Google Favicon API for better CORS compatibility
     const faviconUrl = this.getSafeFaviconUrl(tab);
     
     return `
@@ -171,21 +177,15 @@ class ModalManager {
     `;
   }
 
-  /**
-   * Get safe favicon URL with fallback to Google Favicon API
-   */
   getSafeFaviconUrl(tab) {
-    // For chrome:// and other system URLs, use default icon immediately
     if (this.isSystemPage(tab.url)) {
       return this.getDefaultFavicon();
     }
 
-    // If we have a data URI favicon, use it
     if (tab.favicon && tab.favicon.startsWith('data:')) {
       return tab.favicon;
     }
 
-    // Use Google Favicon API as primary source (more reliable for CORS)
     if (tab.domain && tab.domain !== 'invalid-url') {
       return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(tab.domain)}&sz=32`;
     }
@@ -197,7 +197,6 @@ class ModalManager {
     return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
   }
 
-  // Helper method to check if URL is a system page
   isSystemPage(url) {
     if (!url) return false;
     
@@ -218,9 +217,8 @@ class ModalManager {
     return systemPatterns.some(pattern => url.startsWith(pattern)) || url.length < 10;
   }
 
-  // Handle favicon errors with proper event listeners
   attachFaviconErrorHandlers(container) {
-    const defaultFavicon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
+    const defaultFavicon = this.getDefaultFavicon();
     
     container.querySelectorAll('.category-tab-favicon[data-default-favicon]').forEach(img => {
       img.addEventListener('error', function() {
@@ -236,7 +234,6 @@ class ModalManager {
     // Handle category header clicks for toggling
     container.querySelectorAll('.category-header').forEach(header => {
       header.addEventListener('click', (e) => {
-        // Prevent toggling when action buttons are clicked
         if (e.target.closest('.category-actions')) {
           return;
         }
@@ -261,7 +258,6 @@ class ModalManager {
         nameSpan.setAttribute('data-original-name', oldName);
         nameSpan.focus();
         
-        // Select all text
         const range = document.createRange();
         range.selectNodeContents(nameSpan);
         const selection = window.getSelection();
@@ -331,7 +327,6 @@ class ModalManager {
   handleRenameCategory(nameSpanElement, oldName, newName) {
     console.log(`Attempting to rename category from "${oldName}" to "${newName}"`);
 
-    // Validation
     if (!newName) {
       this.showNotification('Category name cannot be empty.', 'error');
       nameSpanElement.textContent = oldName;
@@ -344,11 +339,9 @@ class ModalManager {
       return;
     }
 
-    // Update cache: categorizedTabs
     this.predefinedCache.categorizedTabs[newName] = this.predefinedCache.categorizedTabs[oldName];
     delete this.predefinedCache.categorizedTabs[oldName];
 
-    // Update cache: categories array
     const categoryIndex = this.predefinedCache.categories.indexOf(oldName);
     if (categoryIndex > -1) {
       this.predefinedCache.categories[categoryIndex] = newName;
@@ -356,7 +349,6 @@ class ModalManager {
       this.predefinedCache.categories.push(newName);
     }
 
-    // Update DOM attributes
     const header = nameSpanElement.closest('.category-header');
     if (header) {
       header.dataset.category = newName;
@@ -384,7 +376,6 @@ class ModalManager {
 
     console.log(`Found ${tabsToMove.length} tabs to move for category: ${categoryName}`, tabsToMove);
 
-    // Only show confirmation for manual single category moves, not during "Create All Groups"
     if (showConfirmation && !confirm(`Move all ${categoryName} tabs (${tabsToMove.length} tabs) to a new window with a tab group?`)) {
       return;
     }
@@ -411,11 +402,12 @@ class ModalManager {
           categoryGroup.remove();
         }
 
-        if (window.tabAnalyzer?.uiManager) {
-          window.tabAnalyzer.uiManager.updateStatistics();
-        }
+        // ✅ Wait for Chrome to complete grouping before refreshing
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // ✅ REFRESH TAB LIST AFTER SUCCESSFUL MOVE
+        await this.refreshTabList();
 
-        // Only log to console, don't show notification for each group
         const movedCount = result.movedTabs.length;
         const skippedCount = tabsToMove.length - movedCount;
         
@@ -431,7 +423,6 @@ class ModalManager {
     } catch (error) {
       console.error(`Failed to move tabs for category ${categoryName}:`, error);
       
-      // Provide more helpful error messages
       let errorMsg = error.message;
       if (errorMsg.includes('system/new-tab pages')) {
         errorMsg = 'Cannot move system pages or new tab pages. These tabs have been skipped.';
@@ -491,6 +482,12 @@ class ModalManager {
       }
 
       delete cache.categorizedTabs[categoryName];
+
+      // ✅ Wait for Chrome to complete closing tabs
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // ✅ REFRESH TAB LIST AFTER SUCCESSFUL CLOSE
+      await this.refreshTabList();
 
     } catch (error) {
       console.error(`Failed to close tabs for category ${categoryName}:`, error);
@@ -587,14 +584,13 @@ class ModalManager {
         console.log(`Progress: ${processed}/${total} - Processing "${currentCategory}"`);
       });
 
-      // After all groups are created, refresh the tab list
-      console.log('All groups created, refreshing tab list...');
-      await this.tabManager.loadAllTabs();
+      // ✅ Wait for all Chrome operations to complete
+      console.log('All groups created, waiting for Chrome to stabilize...');
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      if (window.tabAnalyzer?.uiManager) {
-        window.tabAnalyzer.uiManager.updateStatistics();
-        window.tabAnalyzer.uiManager.renderTabList();
-      }
+      // ✅ REFRESH TAB LIST AFTER ALL GROUPS ARE CREATED
+      console.log('Refreshing tab list...');
+      await this.refreshTabList();
 
       if (result.failureCount > 0) {
         this.showNotification(

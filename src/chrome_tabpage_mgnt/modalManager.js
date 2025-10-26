@@ -153,9 +153,12 @@ class ModalManager {
     const systemPageClass = isSystemPage ? 'system-page' : '';
     const systemPageIndicator = isSystemPage ? '<span class="system-page-badge" title="System page - cannot be moved">🔒</span>' : '';
     
+    // Use Google Favicon API for better CORS compatibility
+    const faviconUrl = this.getSafeFaviconUrl(tab);
+    
     return `
       <div class="category-tab-item ${systemPageClass}" data-tab-id="${tab.id}">
-        <img src="${tab.favicon}" class="category-tab-favicon" alt="" data-default-favicon="true">
+        <img src="${faviconUrl}" class="category-tab-favicon" alt="" data-domain="${tab.domain}" data-original-favicon="${tab.favicon}">
         <div class="category-tab-info">
           <div class="category-tab-title">${this.escapeHtml(this.truncateText(tab.title, 50))} ${systemPageIndicator}</div>
           <div class="category-tab-meta">
@@ -166,6 +169,32 @@ class ModalManager {
         </div>
       </div>
     `;
+  }
+
+  /**
+   * Get safe favicon URL with fallback to Google Favicon API
+   */
+  getSafeFaviconUrl(tab) {
+    // For chrome:// and other system URLs, use default icon immediately
+    if (this.isSystemPage(tab.url)) {
+      return this.getDefaultFavicon();
+    }
+
+    // If we have a data URI favicon, use it
+    if (tab.favicon && tab.favicon.startsWith('data:')) {
+      return tab.favicon;
+    }
+
+    // Use Google Favicon API as primary source (more reliable for CORS)
+    if (tab.domain && tab.domain !== 'invalid-url') {
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(tab.domain)}&sz=32`;
+    }
+
+    return this.getDefaultFavicon();
+  }
+
+  getDefaultFavicon() {
+    return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
   }
 
   // Helper method to check if URL is a system page

@@ -1,7 +1,8 @@
-// uiManager.js - Fixed CSP Violations
+// uiManager.js - Fixed Favicon CORS Issues
 class UIManager {
   constructor(tabManager) {
     this.tabManager = tabManager;
+    this.faviconCache = new Map();
   }
 
   showLoadingState() {
@@ -30,7 +31,7 @@ class UIManager {
 
     container.innerHTML = html;
     this.attachTabEventListeners();
-    this.attachFaviconErrorHandlers(); // NEW: Attach favicon error handlers
+    this.attachFaviconErrorHandlers();
   }
 
   groupTabsByWindow(tabs) {
@@ -69,12 +70,12 @@ class UIManager {
   renderTabItem(tab) {
     const activeClass = tab.isActive ? 'active' : '';
     const pinnedClass = tab.isPinned ? 'pinned' : '';
+    const faviconUrl = this.getSafeFaviconUrl(tab);
     
-    // FIXED: Removed inline onerror handler
     return `
       <div class="tab-item ${activeClass} ${pinnedClass}" data-tab-id="${tab.id}">
         <div class="tab-favicon">
-          <img src="${tab.favicon}" alt="" loading="lazy" class="tab-favicon-img" data-has-fallback="true">
+          <img src="${faviconUrl}" alt="" loading="lazy" class="tab-favicon-img" data-domain="${tab.domain}" data-original-favicon="${tab.favicon}">
           ${tab.isPinned ? '<div class="pin-indicator">📌</div>' : ''}
         </div>
         <div class="tab-info">
@@ -92,15 +93,61 @@ class UIManager {
     `;
   }
 
-  // NEW: Handle favicon errors with proper event listeners
+  /**
+   * Get safe favicon URL with fallback to Google Favicon API
+   */
+  getSafeFaviconUrl(tab) {
+    // For chrome:// and other system URLs, use default icon immediately
+    if (this.isSystemUrl(tab.url)) {
+      return this.getDefaultFavicon();
+    }
+
+    // If we have a valid favicon URL from the tab, use it
+    if (tab.favicon && tab.favicon.startsWith('data:')) {
+      return tab.favicon;
+    }
+
+    // Use Google Favicon API as primary source (more reliable for CORS)
+    if (tab.domain && tab.domain !== 'invalid-url') {
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(tab.domain)}&sz=32`;
+    }
+
+    return this.getDefaultFavicon();
+  }
+
+  isSystemUrl(url) {
+    if (!url) return true;
+    const systemPrefixes = ['chrome://', 'chrome-extension://', 'edge://', 'about:', 'devtools://'];
+    return systemPrefixes.some(prefix => url.startsWith(prefix));
+  }
+
+  getDefaultFavicon() {
+    return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
+  }
+
   attachFaviconErrorHandlers() {
-    const defaultFavicon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
+    const defaultFavicon = this.getDefaultFavicon();
     
-    document.querySelectorAll('.tab-favicon-img[data-has-fallback]').forEach(img => {
-      img.addEventListener('error', function() {
-        this.src = defaultFavicon;
-        this.removeAttribute('data-has-fallback'); // Prevent infinite loop
-      });
+    document.querySelectorAll('.tab-favicon-img').forEach(img => {
+      // Remove any existing error handler to prevent duplicates
+      const newImg = img.cloneNode(true);
+      img.parentNode.replaceChild(newImg, img);
+      
+      newImg.addEventListener('error', function(e) {
+        const domain = this.getAttribute('data-domain');
+        const originalFavicon = this.getAttribute('data-original-favicon');
+        
+        // Try original favicon if we were using Google API
+        if (this.src.includes('google.com/s2/favicons') && originalFavicon && !originalFavicon.includes('google.com')) {
+          console.log(`Google Favicon API failed for ${domain}, trying original: ${originalFavicon}`);
+          this.src = originalFavicon;
+          this.removeAttribute('data-original-favicon'); // Prevent infinite loop
+        } else {
+          // Ultimate fallback
+          console.log(`All favicon sources failed for ${domain}, using default icon`);
+          this.src = defaultFavicon;
+        }
+      }, { once: false }); // Allow multiple attempts
     });
   }
 

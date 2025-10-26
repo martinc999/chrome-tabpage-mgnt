@@ -1,4 +1,4 @@
-// tabManager.js
+// tabManager.js - Fixed Window Validation
 class TabManager {
   constructor() {
     this.tabs = [];
@@ -9,14 +9,28 @@ class TabManager {
     try {
       const windows = await chrome.windows.getAll({ populate: true });
       this.tabs = [];
+      let skippedSystemTabs = 0;
 
       for (const window of windows) {
         for (const tab of window.tabs) {
-          if (tab.groupId === -1) {
-            const tabData = await this.enrichTabData(tab, window.id);
-            this.tabs.push(tabData);
+          // Skip tabs that are already grouped
+          if (tab.groupId !== -1) {
+            continue;
           }
+          
+          // Skip system pages and new tab pages
+          if (!this.isMovableTab(tab)) {
+            skippedSystemTabs++;
+            continue;
+          }
+          
+          const tabData = await this.enrichTabData(tab, window.id);
+          this.tabs.push(tabData);
         }
+      }
+
+      if (skippedSystemTabs > 0) {
+        console.log(`TabManager: Loaded ${this.tabs.length} tabs (skipped ${skippedSystemTabs} system/new-tab pages)`);
       }
 
       this.filteredTabs = [...this.tabs];
@@ -57,7 +71,6 @@ class TabManager {
       });
 
       const description = results[0]?.result?.description || 'No description available';
-      // Remove newlines from the description to ensure it's a single line.
       return description.replace(/(\r\n|\n|\r)/gm, " ").trim();
     } catch {
       return 'Content not accessible';
@@ -101,7 +114,42 @@ class TabManager {
     return url.startsWith('chrome://') ||
       url.startsWith('chrome-extension://') ||
       url.startsWith('edge://') ||
-      url.startsWith('about:');
+      url.startsWith('about:') ||
+      url.startsWith('chrome-search://') ||
+      url.startsWith('devtools://');
+  }
+
+  /**
+   * Check if a tab can be moved/grouped
+   * New tab pages and system pages cannot be manipulated
+   */
+  isMovableTab(tab) {
+    // System pages cannot be moved
+    if (this.isSystemPage(tab.url)) {
+      return false;
+    }
+
+    // Check for new tab pages (various patterns)
+    const newTabPatterns = [
+      'chrome://newtab/',
+      'chrome://new-tab-page/',
+      'edge://newtab/',
+      'about:newtab',
+      'about:blank'
+    ];
+
+    for (const pattern of newTabPatterns) {
+      if (tab.url.startsWith(pattern)) {
+        return false;
+      }
+    }
+
+    // Check if URL is empty or just a protocol
+    if (!tab.url || tab.url === 'about:blank' || tab.url.length < 10) {
+      return false;
+    }
+
+    return true;
   }
 
   getDefaultFavicon() {
@@ -149,10 +197,7 @@ class TabManager {
 
   async closeTabs(tabIds) {
     try {
-      // Remove tabs from the Chrome browser
       await chrome.tabs.remove(tabIds);
-
-      // Update internal tabs array to reflect the closed tabs
       this.tabs = this.tabs.filter(tab => !tabIds.includes(tab.id));
       this.filteredTabs = this.filteredTabs.filter(tab => !tabIds.includes(tab.id));
 
@@ -164,149 +209,261 @@ class TabManager {
     }
   }
 
+  async windowExists(windowId) {
+    try {
+      await chrome.windows.get(windowId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 
-  // tabManager.js - Based on working window creation version
+  /**
+   * Move tabs to window and create group with robust error handling
+   * @param {number[]} tabIds - Array of tab IDs to move
+   * @param {string} categoryName - Name of the category/group
+   * @returns {Promise<Object>} Result object
+   */
   async moveTabsToWindow(tabIds, categoryName) {
     try {
       if (tabIds.length === 0) {
         throw new Error('No tabs to move');
       }
 
-      // Check if a group with this name already exists
-      const existingGroups = await chrome.tabGroups.query({ title: categoryName });
+      console.log(`\n=== TabManager: Processing category "${categoryName}" with ${tabIds.length} tabs ===`);
 
-      if (existingGroups.length > 0) {
-        // Group exists, move tabs to it
-        const targetGroup = existingGroups[0];
-        const targetWindowId = targetGroup.windowId;
-        console.log(`Moving ${tabIds.length} tabs to existing group "${categoryName}" in window ${targetWindowId}`);
+      // STEP 1: Verify all tabs exist and collect ONLY movable tabs
+      const validTabs = [];
+      const skippedTabs = [];
+      
+      for (const tabId of tabIds) {
+        try {
+          const tab = await chrome.tabs.get(tabId);
+          
+          // Check if tab can be moved
+          if (!this.isMovableTab(tab)) {
+            console.warn(`TabManager: Tab ${tabId} "${tab.title}" is a system/new-tab page, skipping`);
+            skippedTabs.push({ id: tab.id, title: tab.title, url: tab.url, reason: 'system_page' });
+            continue;
+          }
+          
+          validTabs.push(tab);
+        } catch (error) {
+          console.warn(`TabManager: Tab ${tabId} no longer exists, skipping`);
+          skippedTabs.push({ id: tabId, reason: 'not_found' });
+        }
+      }
 
-        // Move tabs to the window of the existing group
-        const movedTabsResult = await chrome.tabs.move(tabIds, { windowId: targetWindowId, index: -1 });
-        const movedTabIds = Array.isArray(movedTabsResult) ? movedTabsResult.map(t => t.id) : [movedTabsResult.id];
-
-        // Add tabs to the existing group
-        await chrome.tabs.group({
-          groupId: targetGroup.id,
-          tabIds: movedTabIds
-        });
-
-        // Focus the window
-        await chrome.windows.update(targetWindowId, { focused: true });
-
-        // Update internal state
-        movedTabIds.forEach(tabId => {
-          const existingTab = this.tabs.find(t => t.id === tabId);
-          if (existingTab) {
-            existingTab.windowId = targetWindowId;
+      // Log skipped tabs summary
+      if (skippedTabs.length > 0) {
+        console.log(`TabManager: Skipped ${skippedTabs.length} tabs (system/new-tab pages):`);
+        skippedTabs.forEach(tab => {
+          if (tab.title) {
+            console.log(`  - "${tab.title}" (${tab.url})`);
+          } else {
+            console.log(`  - Tab ID ${tab.id} (${tab.reason})`);
           }
         });
+      }
 
-        console.log(`Successfully moved ${movedTabIds.length} tabs to existing group.`);
-        const movedTabs = await Promise.all(movedTabIds.map(id => chrome.tabs.get(id)));
-        const targetWindow = await chrome.windows.get(targetWindowId);
+      if (validTabs.length === 0) {
+        const message = skippedTabs.length > 0
+          ? 'No movable tabs found (all tabs are system/new-tab pages)'
+          : 'No valid tabs found to move';
+        throw new Error(message);
+      }
 
-        return {
-          success: true,
-          movedTabs,
-          newWindow: targetWindow, // Not a new window, but returning for consistency
-          tabGroup: targetGroup
-        };
+      console.log(`TabManager: Found ${validTabs.length} valid movable tabs (${skippedTabs.length} skipped)`);
 
-      } else {
-        // Group does not exist, create a new window and group
-        console.log(`Moving ${tabIds.length} tabs to new window for category: ${categoryName}`);
+      // STEP 2: Check if group with this name already exists
+      const existingGroups = await chrome.tabGroups.query({ title: categoryName });
+      let targetWindowId = null;
+      let targetGroupId = null;
 
-        const firstTabId = tabIds[0];
-        const remainingTabIds = tabIds.slice(1);
+      if (existingGroups.length > 0) {
+        // Find first valid existing group
+        for (const group of existingGroups) {
+          if (await this.windowExists(group.windowId)) {
+            targetWindowId = group.windowId;
+            targetGroupId = group.id;
+            console.log(`TabManager: Found existing group "${categoryName}" in window ${targetWindowId}`);
+            break;
+          } else {
+            console.warn(`TabManager: Group "${categoryName}" exists but window ${group.windowId} is invalid, ignoring`);
+          }
+        }
+      }
 
-        console.log('Creating new window with first tab:', firstTabId);
+      // STEP 3: Create new window if needed
+      if (!targetWindowId) {
+        console.log(`TabManager: Creating new window for category "${categoryName}"`);
+        const firstTab = validTabs[0];
+        
         const newWindow = await chrome.windows.create({
-          tabId: firstTabId,
+          tabId: firstTab.id,
           focused: true
         });
+        
+        targetWindowId = newWindow.id;
+        
+        // Remove first tab from list (already in new window)
+        validTabs.shift();
+        
+        console.log(`TabManager: Created new window ${targetWindowId}`);
+        
+        // Wait for window to stabilize
+        await new Promise(resolve => setTimeout(resolve, 400));
+      }
 
-        console.log('New window created successfully:', newWindow.id);
-        const movedTabs = [await chrome.tabs.get(firstTabId)];
+      // STEP 4: Verify target window still exists before moving tabs
+      if (!await this.windowExists(targetWindowId)) {
+        throw new Error(`Target window ${targetWindowId} no longer exists`);
+      }
 
-        if (remainingTabIds.length > 0) {
-          console.log('Moving remaining tabs:', remainingTabIds);
+      // STEP 5: Move ALL remaining tabs to target window FIRST
+      console.log(`TabManager: Moving ${validTabs.length} tabs to window ${targetWindowId}`);
+      const movedTabIds = [];
+
+      if (validTabs.length > 0) {
+        const tabIdsToMove = validTabs.map(t => t.id);
+        
+        // Move in batches to avoid overwhelming the API
+        const batchSize = 10;
+        for (let i = 0; i < tabIdsToMove.length; i += batchSize) {
+          const batch = tabIdsToMove.slice(i, i + batchSize);
+          
           try {
-            const additionalMovedTabs = await chrome.tabs.move(remainingTabIds, {
-              windowId: newWindow.id,
+            // Verify window still exists before each batch
+            if (!await this.windowExists(targetWindowId)) {
+              throw new Error(`Window ${targetWindowId} closed during tab move operation`);
+            }
+
+            const movedTabs = await chrome.tabs.move(batch, {
+              windowId: targetWindowId,
               index: -1
             });
 
-            if (Array.isArray(additionalMovedTabs)) {
-              additionalMovedTabs.forEach(tab => movedTabs.push(tab));
-            } else {
-              movedTabs.push(additionalMovedTabs);
-            }
-          } catch (moveError) {
-            console.error('Error moving remaining tabs:', moveError);
-          }
-        }
-
-        console.log('All tabs moved to new window:', movedTabs.length);
-
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        const currentTabsInWindow = await chrome.tabs.query({ windowId: newWindow.id });
-        console.log('Current tabs in window:', currentTabsInWindow.length);
-
-        let tabGroup = null;
-        if (currentTabsInWindow.length > 0) {
-          console.log('Attempting to create tab group...');
-
-          try {
-            const tabIdsToGroup = currentTabsInWindow.map(tab => tab.id);
-            console.log('Tab IDs to group:', tabIdsToGroup);
-
-            if (chrome.tabs.group) {
-              try {
-                console.log('Using chrome.tabs.group API');
-                const groupId = await chrome.tabs.group({
-                  tabIds: tabIdsToGroup
-                });
-
-                console.log('Group created with ID:', groupId);
-
-                await chrome.tabGroups.update(groupId, {
-                  title: categoryName,
-                  color: 'blue'
-                });
-
-                tabGroup = await chrome.tabGroups.get(groupId);
-                console.log('Tab group created successfully:', tabGroup);
-
-              } catch (groupError) {
-                console.error('tabs.group failed:', groupError);
-              }
+            const movedIds = Array.isArray(movedTabs) 
+              ? movedTabs.map(t => t.id) 
+              : [movedTabs.id];
+            
+            movedTabIds.push(...movedIds);
+            console.log(`TabManager: Moved batch ${Math.floor(i / batchSize) + 1}, total moved: ${movedTabIds.length}`);
+            
+            // Small delay between batches
+            if (i + batchSize < tabIdsToMove.length) {
+              await new Promise(resolve => setTimeout(resolve, 100));
             }
           } catch (error) {
-            console.error('Tab group creation failed:', error);
+            console.error(`TabManager: Error moving batch:`, error);
+            // Don't throw here, continue with what we have
           }
         }
-
-        movedTabs.forEach(tab => {
-          const existingTab = this.tabs.find(t => t.id === tab.id);
-          if (existingTab) {
-            existingTab.windowId = newWindow.id;
-          }
-        });
-
-        console.log(`Successfully moved ${movedTabs.length} tabs to new window`);
-        return {
-          success: true,
-          movedTabs,
-          newWindow,
-          tabGroup
-        };
       }
+
+      // STEP 6: Get all tabs in the target window that belong to this category
+      const allTabsInWindow = await chrome.tabs.query({ windowId: targetWindowId });
+      const originalTabIds = tabIds;
+      const finalTabIdsToGroup = allTabsInWindow
+        .filter(tab => originalTabIds.includes(tab.id))
+        .map(tab => tab.id);
+
+      console.log(`TabManager: All tabs moved. Found ${finalTabIdsToGroup.length} tabs to group in window ${targetWindowId}`);
+
+      // Wait for tabs to settle before grouping
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // STEP 7: Verify window still exists before grouping
+      if (!await this.windowExists(targetWindowId)) {
+        throw new Error(`Window ${targetWindowId} was closed before grouping could complete`);
+      }
+
+      // STEP 8: NOW create/update the group with ALL tabs at once
+      let tabGroup = null;
+      if (finalTabIdsToGroup.length > 0) {
+        try {
+          if (targetGroupId) {
+            // Add to existing group
+            console.log(`TabManager: Adding ${finalTabIdsToGroup.length} tabs to existing group ${targetGroupId}`);
+            await chrome.tabs.group({
+              groupId: targetGroupId,
+              tabIds: finalTabIdsToGroup
+            });
+            tabGroup = await chrome.tabGroups.get(targetGroupId);
+          } else {
+            // Create new group with ALL tabs at once
+            console.log(`TabManager: Creating new group "${categoryName}" with ${finalTabIdsToGroup.length} tabs`);
+            const groupId = await chrome.tabs.group({
+              tabIds: finalTabIdsToGroup
+            });
+
+            await chrome.tabGroups.update(groupId, {
+              title: categoryName,
+              color: this.getRandomColor(),
+              collapsed: false
+            });
+
+            tabGroup = await chrome.tabGroups.get(groupId);
+            console.log(`TabManager: Group created successfully with ID ${groupId}`);
+          }
+        } catch (error) {
+          console.error(`TabManager: Failed to create/update group:`, error);
+          throw error;
+        }
+      }
+
+      // STEP 9: Update internal state
+      finalTabIdsToGroup.forEach(tabId => {
+        const existingTab = this.tabs.find(t => t.id === tabId);
+        if (existingTab) {
+          existingTab.windowId = targetWindowId;
+        }
+      });
+
+      // STEP 10: Focus the window (with error handling)
+      try {
+        // Verify one more time before focusing
+        if (await this.windowExists(targetWindowId)) {
+          await chrome.windows.update(targetWindowId, { focused: true });
+        } else {
+          console.warn('TabManager: Window closed before focus, skipping focus step');
+        }
+      } catch (error) {
+        console.warn('TabManager: Failed to focus window (window may be closed):', error.message);
+        // Don't throw - the operation was successful, just couldn't focus
+      }
+
+      // STEP 11: Get final window state
+      let targetWindow;
+      try {
+        targetWindow = await chrome.windows.get(targetWindowId);
+      } catch (error) {
+        console.warn('TabManager: Window closed after grouping, using cached data');
+        targetWindow = { id: targetWindowId };
+      }
+
+      const finalMovedTabs = await Promise.all(
+        finalTabIdsToGroup.map(id => chrome.tabs.get(id).catch(() => null))
+      ).then(tabs => tabs.filter(t => t !== null));
+
+      console.log(`TabManager: ✓ Successfully processed "${categoryName}": ${finalMovedTabs.length} tabs grouped\n`);
+
+      return {
+        success: true,
+        movedTabs: finalMovedTabs,
+        newWindow: targetWindow,
+        tabGroup
+      };
+
     } catch (error) {
-      console.error('Failed to move tabs to new window:', error);
+      console.error(`TabManager: ✗ Failed to process category:`, error);
       throw error;
     }
+  }
+
+  getRandomColor() {
+    const colors = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan', 'orange'];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 
   getStatistics() {

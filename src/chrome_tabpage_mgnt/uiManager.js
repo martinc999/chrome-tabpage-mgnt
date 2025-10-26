@@ -1,4 +1,4 @@
-// uiManager.js
+// uiManager.js - Fixed CSP Violations
 class UIManager {
   constructor(tabManager) {
     this.tabManager = tabManager;
@@ -30,6 +30,7 @@ class UIManager {
 
     container.innerHTML = html;
     this.attachTabEventListeners();
+    this.attachFaviconErrorHandlers(); // NEW: Attach favicon error handlers
   }
 
   groupTabsByWindow(tabs) {
@@ -69,11 +70,11 @@ class UIManager {
     const activeClass = tab.isActive ? 'active' : '';
     const pinnedClass = tab.isPinned ? 'pinned' : '';
     
+    // FIXED: Removed inline onerror handler
     return `
       <div class="tab-item ${activeClass} ${pinnedClass}" data-tab-id="${tab.id}">
         <div class="tab-favicon">
-          <img src="${tab.favicon}" alt="" loading="lazy" 
-               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K'">
+          <img src="${tab.favicon}" alt="" loading="lazy" class="tab-favicon-img" data-has-fallback="true">
           ${tab.isPinned ? '<div class="pin-indicator">📌</div>' : ''}
         </div>
         <div class="tab-info">
@@ -91,9 +92,22 @@ class UIManager {
     `;
   }
 
+  // NEW: Handle favicon errors with proper event listeners
+  attachFaviconErrorHandlers() {
+    const defaultFavicon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
+    
+    document.querySelectorAll('.tab-favicon-img[data-has-fallback]').forEach(img => {
+      img.addEventListener('error', function() {
+        this.src = defaultFavicon;
+        this.removeAttribute('data-has-fallback'); // Prevent infinite loop
+      });
+    });
+  }
+
   attachTabEventListeners() {
     const container = document.getElementById('tabsList');
     
+    // Window header toggle
     container.querySelectorAll('.window-header').forEach(header => {
       header.addEventListener('click', (e) => {
         if (e.target.closest('.window-actions')) return;
@@ -111,6 +125,7 @@ class UIManager {
       });
     });
 
+    // Activate tab button
     container.querySelectorAll('.activate-tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -119,6 +134,7 @@ class UIManager {
       });
     });
 
+    // Tab item click
     container.querySelectorAll('.tab-item').forEach(item => {
       item.addEventListener('click', () => {
         const tabId = parseInt(item.dataset.tabId);
@@ -126,6 +142,7 @@ class UIManager {
       });
     });
 
+    // Focus window button
     container.querySelectorAll('.focus-window-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();

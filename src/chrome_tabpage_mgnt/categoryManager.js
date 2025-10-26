@@ -1,4 +1,4 @@
-// categoryManager.js
+// categoryManager.js - Fixed Version
 class CategoryManager {
     constructor(tabManager, aiManager) {
         console.log('CategoryManager: Initializing with tabManager and aiManager');
@@ -185,16 +185,42 @@ class CategoryManager {
                         progressCallback(progress, processedTabs, totalTabs);
                     }
 
+                    // Parse the mapping to create direct index -> category map
+                    const indexToCategoryMap = {};
+                    if (result.mapping && Array.isArray(result.mapping)) {
+                        result.mapping.forEach(mappingEntry => {
+                            // mappingEntry format: "tabId\windowId\domain\title\url_ext|CategoryName"
+                            const parts = mappingEntry.split('|');
+                            if (parts.length === 2) {
+                                const tabInfoPart = parts[0];
+                                const categoryName = parts[1];
+                                
+                                // Find the index of this tab in tabInfoList
+                                const tabIdx = tabInfoList.findIndex(t => t.formatted === tabInfoPart);
+                                if (tabIdx !== -1) {
+                                    indexToCategoryMap[tabIdx] = categoryName;
+                                }
+                            }
+                        });
+                    }
+
                     return {
                         categories: result.categories,
-                        tabInfoList: tabInfoList
+                        tabInfoList: tabInfoList,
+                        indexToCategoryMap: indexToCategoryMap
                     };
 
                 } catch (error) {
                     console.error(`CategoryManager: Error processing chunk ${index + 1}:`, error);
+                    // Return fallback with all tabs assigned to "Unknown"
+                    const fallbackMap = {};
+                    tabInfoList.forEach((_, idx) => {
+                        fallbackMap[idx] = 'Unknown';
+                    });
                     return {
                         categories: ['Unknown'],
-                        tabInfoList: tabInfoList
+                        tabInfoList: tabInfoList,
+                        indexToCategoryMap: fallbackMap
                     };
                 }
             };
@@ -203,17 +229,13 @@ class CategoryManager {
             const allResults = (await this.processInParallel(chunks, processChunk, concurrencyLimit))
                 .filter(res => res !== null);
 
-            // Download mapping file with allResults for unknown tabs
-            console.log('CategoryManager: Downloading mapping with allResults including categories for unknown tabs');
-            // this.downloadMapping(allResults);
+            console.log('CategoryManager: All chunks processed. Results collected:', allResults.length);
 
-            const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
-            console.log('CategoryManager: All chunks processed. Category sets collected:', allCategorySets.length);
-
-            if (allCategorySets.length === 0) {
+            if (allResults.length === 0) {
                 newCategories = this.generateFallbackCategories();
                 newGroupedTabs = {};
             } else {
+                const allCategorySets = allResults.map(res => res.categories).filter(set => set && set.length > 0);
                 newCategories = this.mergeCategories(allCategorySets);
                 newGroupedTabs = this.groupTabsByCategories(allResults, newCategories);
             }
@@ -247,8 +269,31 @@ class CategoryManager {
 
         console.log('CategoryManager: Final result with grouped tabs:', {
             categories: finalCategories,
-            groupedTabsKeys: Object.keys(finalGroupedTabs)
+            groupedTabsKeys: Object.keys(finalGroupedTabs),
+            tabCounts: Object.entries(finalGroupedTabs).map(([cat, tabs]) => `${cat}: ${tabs.length}`)
         });
+
+        // Verify all tabs are categorized
+        const categorizedTabIds = new Set();
+        Object.values(finalGroupedTabs).forEach(tabs => {
+            tabs.forEach(tab => categorizedTabIds.add(tab.id));
+        });
+        
+        const uncategorizedTabs = allTabs.filter(tab => !categorizedTabIds.has(tab.id));
+        if (uncategorizedTabs.length > 0) {
+            console.warn(`CategoryManager: Found ${uncategorizedTabs.length} uncategorized tabs:`, 
+                uncategorizedTabs.map(t => t.title));
+            
+            // Assign uncategorized tabs to first category as fallback
+            if (finalCategories.length > 0) {
+                const fallbackCategory = finalCategories[0];
+                if (!finalGroupedTabs[fallbackCategory]) {
+                    finalGroupedTabs[fallbackCategory] = [];
+                }
+                finalGroupedTabs[fallbackCategory].push(...uncategorizedTabs);
+                console.log(`CategoryManager: Assigned ${uncategorizedTabs.length} uncategorized tabs to "${fallbackCategory}"`);
+            }
+        }
 
         // Clean and update cache: recreate cache with only current tabs
         const updatedCache = {};
@@ -264,15 +309,17 @@ class CategoryManager {
             }
             if (category) {
                 updatedCache[key] = category;
+            } else {
+                console.warn(`CategoryManager: Tab "${tab.title}" not found in any category for cache update`);
             }
         });
 
         await new Promise((resolve) => {
             chrome.storage.local.set({ [this.TAB_CATEGORY_CACHE_KEY]: updatedCache }, () => {
+                console.log(`CategoryManager: Updated cache with ${Object.keys(updatedCache).length} entries`);
                 resolve();
             });
         });
-        console.log('CategoryManager: Cleaned and updated cache with current tab categories.');
 
         return {
             categories: finalCategories,
@@ -282,33 +329,59 @@ class CategoryManager {
 
     groupTabsByCategories(results, categories) {
         console.log('CategoryManager: Grouping tabs by categories');
+        console.log('CategoryManager: Available categories for grouping:', categories);
 
         const grouped = {};
         categories.forEach(cat => grouped[cat] = []);
 
         results.forEach((result, resultIndex) => {
+            const indexToCategoryMap = result.indexToCategoryMap || {};
             const assignedCategories = result.categories;
             const tabInfoList = result.tabInfoList;
 
+            console.log(`CategoryManager: Processing result ${resultIndex + 1} with ${tabInfoList.length} tabs`);
+            console.log(`CategoryManager: Index to category map:`, indexToCategoryMap);
+
             tabInfoList.forEach((tabInfo, tabIndex) => {
-                // Assign to the first category from this result, or distribute evenly
-                const categoryIndex = tabIndex % assignedCategories.length;
-                const assignedCategory = assignedCategories[categoryIndex];
+                // Use direct mapping from AI response if available
+                let assignedCategory = indexToCategoryMap[tabIndex];
+                
+                // Fallback: distribute evenly if no mapping
+                if (!assignedCategory && assignedCategories.length > 0) {
+                    const categoryIndex = tabIndex % assignedCategories.length;
+                    assignedCategory = assignedCategories[categoryIndex];
+                    console.warn(`CategoryManager: No direct mapping for tab ${tabIndex}, using fallback: ${assignedCategory}`);
+                }
+                
+                // Final fallback: use first category
+                if (!assignedCategory) {
+                    assignedCategory = categories[0];
+                    console.warn(`CategoryManager: Using first category as last resort for tab "${tabInfo.tabObject.title}"`);
+                }
 
                 // Find matching category in merged list (case-insensitive)
                 const matchingCategory = categories.find(cat =>
                     cat.toLowerCase().trim() === assignedCategory.toLowerCase().trim()
-                ) || categories[0];
+                );
 
-                grouped[matchingCategory].push(tabInfo.tabObject);
-
-                console.log(`CategoryManager: Assigned tab "${tabInfo.tabObject.title}" to "${matchingCategory}"`);
+                if (matchingCategory) {
+                    grouped[matchingCategory].push(tabInfo.tabObject);
+                    console.log(`CategoryManager: ✓ Assigned tab "${tabInfo.tabObject.title}" to "${matchingCategory}"`);
+                } else {
+                    // If no match found, assign to first category
+                    grouped[categories[0]].push(tabInfo.tabObject);
+                    console.warn(`CategoryManager: ⚠ Category "${assignedCategory}" not found in merged list. Assigned tab "${tabInfo.tabObject.title}" to "${categories[0]}"`);
+                }
             });
         });
 
         // Log summary
+        console.log('CategoryManager: Grouping summary:');
         Object.entries(grouped).forEach(([category, tabs]) => {
-            console.log(`CategoryManager: Category "${category}" contains ${tabs.length} tabs`);
+            console.log(`  - "${category}": ${tabs.length} tabs`);
+            tabs.forEach(tab => {
+                console.log(`    • ${tab.title}`);
+            });
         });
 
         return grouped;
@@ -323,9 +396,8 @@ class CategoryManager {
         // Extract formatted strings from allResults with category information using res.categories
         const mappingArray = allResults.flatMap(res =>
             res.tabInfoList.map((t, tabIndex) => {
-                // Use the category from res.categories based on tab index
-                const categoryIndex = tabIndex % res.categories.length;
-                const category = res.categories[categoryIndex] || 'Unknown';
+                // Use the category from indexToCategoryMap or fallback
+                const category = res.indexToCategoryMap?.[tabIndex] || res.categories[tabIndex % res.categories.length] || 'Unknown';
                 return `${t.formatted}\\${category}`;
             })
         );
@@ -336,17 +408,7 @@ class CategoryManager {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
 
-        // chrome.downloads.download({
-        //     url: url,
-        //     filename: `${filenamePrefix}-${Date.now()}.txt`,
-        //     saveAs: false
-        // }, () => {
-        //     if (chrome.runtime.lastError) {
-        //         console.error('CategoryManager: Download failed:', chrome.runtime.lastError);
-        //     }
-        // });
-
-        console.log(`CategoryManager: Triggered download for mapping file with ${mappingArray.length} entries including categories.`);
+        console.log(`CategoryManager: Mapping file ready with ${mappingArray.length} entries including categories.`);
     }
 
     mergeCategories(categorySets) {
@@ -488,9 +550,8 @@ class CategoryManager {
             console.log('Not enough categories to simplify.');
             return {
                 simplifiedTabs: categorizedTabs,
-                simplifiedCategories: currentCategories
-                ,
-                categoryMap: {} // Return empty map if no simplification needed
+                simplifiedCategories: currentCategories,
+                categoryMap: {}
             };
         }
 
@@ -518,7 +579,7 @@ class CategoryManager {
         return {
             simplifiedTabs: simplifiedTabs,
             simplifiedCategories: Array.from(newCategorySet),
-            categoryMap: categoryMap // Return the map for user confirmation
+            categoryMap: categoryMap
         };
     }
 }

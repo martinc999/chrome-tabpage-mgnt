@@ -729,3 +729,30 @@ body {
 .close-category-tabs-btn:hover {
   background: #d33426;
 }
+
+/* System page indicators */
+.category-tab-item.system-page {
+  opacity: 0.6;
+  background: #f5f5f5;
+}
+
+.system-page-badge {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.category-tab-item.system-page:hover {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* Disable click on system pages */
+.category-tab-item.system-page {
+  pointer-events: none;
+}
+
+.category-tab-item.system-page .category-tab-title {
+  color: #666;
+}

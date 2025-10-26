@@ -1,4 +1,4 @@
-// aiManager.js
+// aiManager.js - Fixed Language Configuration
 class AIManager {
   constructor() {
     this.aiSession = null;
@@ -6,10 +6,10 @@ class AIManager {
     this.logger = new AILogger({ flushOnUnload: true });
     this.systemPrompt = '';
     this.promptCount = 0;
-    this.refreshThreshold = 50; // Refresh session after this many prompts
+    this.refreshThreshold = 50;
     this.isRefreshing = false;
     this.initializationPromise = null;
-    this.nextAiSessionPromise = null; // For the hot-swap
+    this.nextAiSessionPromise = null;
   }
 
   async initializeAI(retryCount = 3, delay = 1000) {
@@ -19,16 +19,13 @@ class AIManager {
         try {
           console.log('AIManager: Initializing AI session...');
 
-          // Get existing tab group titles to use as dynamic examples
           let exampleCategories = [];
 
-          // Get categories from plugin options
           const { predefinedCategories } = await chrome.storage.sync.get('predefinedCategories');
           if (predefinedCategories && predefinedCategories.length > 0) {
               exampleCategories.push(...new Set(predefinedCategories));
           }
 
-          // Get categories from existing tab groups
           try {
             const groups = await chrome.tabGroups.query({});
             const existingGroupTitles = groups.map(g => g.title).filter(t => t && t.trim() !== '');
@@ -44,7 +41,6 @@ class AIManager {
             console.warn("Could not query tab groups to generate dynamic examples.", e);
           }
 
-          // If no categories from storage or tab groups, use hardcoded defaults
           if (exampleCategories.length === 0) {
               exampleCategories = [
                   "Coding",
@@ -55,7 +51,6 @@ class AIManager {
               ];
           }
 
-          // Format for the prompt
           const categoryExamples = exampleCategories.map((cat, i) => `${i}: ${cat}`).join('\n');
 
           const systemPromptContent = `You are an expert browser tab organizer. Your task is to analyze a list of tab data (domain, description, and URL extension) and assign a single, logical category name to each tab.
@@ -82,21 +77,25 @@ class AIManager {
 
 **Example of Desired Output (use these as inspiration):**
 ${categoryExamples}`;
+          
           this.systemPrompt = systemPromptContent;
+          
+          // FIXED: Added outputLanguage to initial session creation
           this.aiSession = await LanguageModel.create({
             temperature: 0.2,
             topK: 1,
-            outputLanguage: 'en',
+            outputLanguage: 'en',  // ← THIS WAS MISSING
             initialPrompts: [{
               role: "system",
               content: systemPromptContent
             }]
           });
+          
           this.isAIAvailable = true;
-          this.promptCount = 0; // Reset counter on successful initialization
+          this.promptCount = 0;
           console.log('AI ready for category generation');
           this.initializationPromise = null;
-          return; // Success
+          return;
         } catch (error) {
           console.error(`AI initialization attempt ${i + 1} failed:`, error.message);
           if (i < retryCount - 1) {
@@ -105,7 +104,7 @@ ${categoryExamples}`;
           } else {
             console.error('AI initialization failed after multiple retries.');
             this.initializationPromise = null;
-            throw error; // Re-throw the error after the last attempt
+            throw error;
           }
         }
       }
@@ -113,13 +112,7 @@ ${categoryExamples}`;
     return this.initializationPromise;
   }
 
-  /**
-   * A wrapper for aiSession.prompt that handles session refreshing.
-   * @param {string} promptText The prompt to send to the AI.
-   * @returns {Promise<string>} The AI's response.
-   */
   async prompt(promptText) {
-    // If a new session is ready, perform the hot-swap
     if (this.nextAiSessionPromise) {
       try {
         const newSession = await this.nextAiSessionPromise;
@@ -132,13 +125,12 @@ ${categoryExamples}`;
         console.log('AIManager: Hot-swapped to new AI session.');
       } catch (error) {
         console.error('AIManager: Failed to swap to new AI session, continuing with old one.', error);
-        this.nextAiSessionPromise = null; // Clear the failed promise
+        this.nextAiSessionPromise = null;
       }
     }
 
     this.promptCount++;
 
-    // Trigger a non-blocking refresh if threshold is met
     if (this.promptCount >= this.refreshThreshold && !this.nextAiSessionPromise) {
       this.prepareNextSession();
     }
@@ -150,12 +142,11 @@ ${categoryExamples}`;
     return this.aiSession.prompt(promptText);
   }
 
-  /**
-   * Creates a new AI session in the background without blocking ongoing requests.
-   */
   prepareNextSession() {
     console.log(`AIManager: Refresh threshold reached. Preparing new AI session in the background.`);
     this.nextAiSessionPromise = LanguageModel.create({
+      temperature: 0.2,  // Added for consistency
+      topK: 1,           // Added for consistency
       outputLanguage: 'en',
       initialPrompts: [{
         role: "system",
@@ -163,17 +154,11 @@ ${categoryExamples}`;
       }]
     }).catch(error => {
       console.error('AIManager: Failed to prepare next AI session.', error);
-      // Ensure we can try again later by nullifying the failed promise
       this.nextAiSessionPromise = null;
-      throw error; // Rethrow so the original caller knows, if it was awaited
+      throw error;
     });
   }
 
-  /**
-   * Generate a list of categories based on tab names
-   * @param {string|Array} tabNames - Either a comma-separated string or array of tab names
-   * @returns {Array} Array of category names
-   */
   async generateCategoriesFromTabNames(tabNames) {
     console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
@@ -214,12 +199,6 @@ ${categoryExamples}`;
     }
   }
 
-  /**
-   * Generate categories with a custom prompt
-   * @param {string} customPrompt - Custom instruction for category generation
-   * @param {string|Array} tabNames - Tab names to analyze
-   * @returns {Array} Array of category names
-   */
   async generateCategoriesWithCustomPrompt(customPrompt, tabNames) {
     console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
@@ -258,12 +237,6 @@ ${categoryExamples}`;
     }
   }
 
-  /**
-   * Generate categories with specified count limit
-   * @param {string|Array} tabNames - Tab names to analyze
-   * @param {number} maxCategories - Maximum number of categories to generate
-   * @returns {Array} Array of category names
-   */
   async generateLimitedCategories(tabNames, maxCategories = 5) {
     console.log("System Prompt for categorization:", this.systemPrompt);
     if (!this.isAIAvailable || !this.aiSession) {
@@ -303,22 +276,11 @@ ${categoryExamples}`;
     }
   }
 
-  /**
-   * Generate categories by theme/purpose
-   * @param {string|Array} tabNames - Tab names to analyze
-   * @param {string} theme - Theme like 'work', 'personal', 'research', etc.
-   * @returns {Array} Array of category names
-   */
   async generateThematicCategories(tabNames, theme) {
     const customPrompt = `Generate category names specifically for ${theme}-related browser tabs. Focus on categories that would be most relevant for ${theme} activities and organization.`;
     return await this.generateCategoriesWithCustomPrompt(customPrompt, tabNames);
   }
 
-  /**
-   * Asks the AI to simplify a list of categories.
-   * @param {string[]} categories - The list of category names to simplify.
-   * @returns {Promise<Object>} A mapping from old category names to new, simplified ones.
-   */
   async simplifyCategoryList(categories, preferredCategories = []) {
     if (!this.isAIAvailable || !this.aiSession) {
       throw new Error('AI not available for category simplification.');
@@ -369,7 +331,6 @@ ${categoryListString}`;
     const response = await this.prompt(prompt);
     this.logger.log("Simplify Categories Prompt", prompt, response);
 
-    // Extract the JSON part of the response to handle cases where the AI adds extra text
     const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       console.error("AI response for simplification did not contain a JSON object. Response:", response);
@@ -384,7 +345,6 @@ ${categoryListString}`;
     }
   }
 
-  // Add a method to check browser compatibility
   static checkBrowserCompatibility() {
     const isChrome = /Chrome/.test(navigator.userAgent);
     const chromeVersion = navigator.userAgent.match(/Chrome\/(\d+)/)?.[1];
@@ -406,7 +366,6 @@ ${categoryListString}`;
     return true;
   }
 
-  // Clean up method
   destroy() {
     if (this.aiSession) {
       this.aiSession.destroy();
@@ -416,31 +375,3 @@ ${categoryListString}`;
     }
   }
 }
-
-// Usage examples:
-/*
-// Basic usage:
-const aiManager = new AIManager();
-await aiManager.initializeAI();
-
-// From array of tab names
-const tabNames = ['Gmail', 'Slack', 'GitHub', 'Stack Overflow', 'YouTube', 'Netflix'];
-const categories = await aiManager.generateCategoriesFromTabNames(tabNames);
-console.log('Categories:', categories); // e.g., ['Work Communication', 'Development', 'Entertainment']
-
-// From comma-separated string
-const tabString = 'Gmail, Slack, GitHub, Stack Overflow, YouTube, Netflix';
-const categories2 = await aiManager.generateCategoriesFromTabNames(tabString);
-
-// With custom prompt
-const customCategories = await aiManager.generateCategoriesWithCustomPrompt(
-  'Generate categories focused on productivity and time management',
-  tabNames
-);
-
-// Limited number of categories
-const limitedCategories = await aiManager.generateLimitedCategories(tabNames, 3);
-
-// Thematic categories
-const workCategories = await aiManager.generateThematicCategories(tabNames, 'work');
-*/

@@ -1,4 +1,4 @@
-// modalManager.js
+// modalManager.js - Fixed CSP Violations
 class ModalManager {
   constructor(tabManager, aiManager, categoryManager) {
     this.tabManager = tabManager;
@@ -18,7 +18,6 @@ class ModalManager {
     document.getElementById('createAllGroupsBtn')?.addEventListener('click', () => this.handleCreateAllGroups());
     document.getElementById('closePredefinedCategoriesModal')?.addEventListener('click', () => this.closeModal('predefinedCategoriesModal'));
 
-
     // Close modals on outside click
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
@@ -35,7 +34,6 @@ class ModalManager {
     document.getElementById('predefinedCategoriesModal').style.display = 'flex';
     await this.generatePredefinedCategories();
   }
-
 
   async generatePredefinedCategories() {
     const container = document.getElementById('predefinedCategoryTree');
@@ -69,7 +67,7 @@ class ModalManager {
         console.log('No grouped tabs from generation, categorizing now...');
         categoryList.style.display = 'none';
         container.style.display = 'block';
-        container.innerHTML = '<div class="loading">📄 Organizing tabs...</div>';
+        container.innerHTML = '<div class="loading">🔄 Organizing tabs...</div>';
 
         finalCategorizedTabs = await this.categoryManager.categorizeTabs(result.categories);
       }
@@ -94,7 +92,6 @@ class ModalManager {
       container.style.display = 'none';
     }
   }
-
 
   renderCategoryTree(categorizedTabs, container, title) {
     let html = `<div class="category-tree-root">${title}</div>`;
@@ -124,15 +121,21 @@ class ModalManager {
 
     container.innerHTML = html;
     this.attachCategoryEventListeners(container);
+    this.attachFaviconErrorHandlers(container);
   }
 
   renderCategoryTab(tab) {
+    // Check if tab is a system page
+    const isSystemPage = this.isSystemPage(tab.url);
+    const systemPageClass = isSystemPage ? 'system-page' : '';
+    const systemPageIndicator = isSystemPage ? '<span class="system-page-badge" title="System page - cannot be moved">🔒</span>' : '';
+    
+    // FIXED: Removed inline onerror handler
     return `
-      <div class="category-tab-item" data-tab-id="${tab.id}">
-        <img src="${tab.favicon}" class="category-tab-favicon" alt="" 
-             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K'">
+      <div class="category-tab-item ${systemPageClass}" data-tab-id="${tab.id}">
+        <img src="${tab.favicon}" class="category-tab-favicon" alt="" data-default-favicon="true">
         <div class="category-tab-info">
-          <div class="category-tab-title">${this.escapeHtml(this.truncateText(tab.title, 50))}</div>
+          <div class="category-tab-title">${this.escapeHtml(this.truncateText(tab.title, 50))} ${systemPageIndicator}</div>
           <div class="category-tab-meta">
             <span class="category-tab-domain">${tab.domain}</span>
             <span class="category-tab-window">Window ${tab.windowId}</span>
@@ -141,6 +144,39 @@ class ModalManager {
         </div>
       </div>
     `;
+  }
+
+  // Helper method to check if URL is a system page
+  isSystemPage(url) {
+    if (!url) return false;
+    
+    const systemPatterns = [
+      'chrome://',
+      'chrome-extension://',
+      'edge://',
+      'about:',
+      'chrome-search://',
+      'devtools://',
+      'chrome://newtab/',
+      'chrome://new-tab-page/',
+      'edge://newtab/',
+      'about:newtab',
+      'about:blank'
+    ];
+    
+    return systemPatterns.some(pattern => url.startsWith(pattern)) || url.length < 10;
+  }
+
+  // NEW: Handle favicon errors with proper event listeners
+  attachFaviconErrorHandlers(container) {
+    const defaultFavicon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
+    
+    container.querySelectorAll('.category-tab-favicon[data-default-favicon]').forEach(img => {
+      img.addEventListener('error', function() {
+        this.src = defaultFavicon;
+        this.removeAttribute('data-default-favicon'); // Prevent infinite loop
+      });
+    });
   }
 
   attachCategoryEventListeners(container) {
@@ -173,7 +209,13 @@ class ModalManager {
         nameSpan.setAttribute('contenteditable', 'true');
         nameSpan.setAttribute('data-original-name', oldName);
         nameSpan.focus();
-        document.execCommand('selectAll', false, null); // Select all text
+        
+        // Select all text
+        const range = document.createRange();
+        range.selectNodeContents(nameSpan);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
 
         const onFinishEditing = (e) => {
           nameSpan.removeEventListener('blur', onFinishEditing);
@@ -184,7 +226,7 @@ class ModalManager {
           if (e.key !== 'Escape' && newName !== oldName) {
             this.handleRenameCategory(nameSpan, oldName, newName);
           } else {
-            nameSpan.textContent = oldName; // Revert on escape or no change
+            nameSpan.textContent = oldName;
           }
         };
 
@@ -201,7 +243,6 @@ class ModalManager {
         nameSpan.addEventListener('keydown', onKeyDown);
       });
     });
-
 
     // Handle tab item clicks
     container.querySelectorAll('.category-tab-item').forEach(item => {
@@ -264,7 +305,7 @@ class ModalManager {
       this.predefinedCache.categories.push(newName);
     }
 
-    // Update DOM attributes to keep things consistent without a full re-render
+    // Update DOM attributes
     const header = nameSpanElement.closest('.category-header');
     if (header) {
       header.dataset.category = newName;
@@ -299,14 +340,12 @@ class ModalManager {
     try {
       const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
       if (button) {
-        const originalText = button.textContent;
         button.textContent = 'Moving...';
         button.disabled = true;
       }
 
       console.log('Calling tabManager.moveTabsToWindow...');
 
-      // Use TabManager to move tabs
       const result = await this.tabManager.moveTabsToWindow(tabIdsToMove, categoryName);
 
       console.log('moveTabsToWindow result:', result);
@@ -314,16 +353,27 @@ class ModalManager {
       if (result.success) {
         console.log('Successfully moved tabs, updating UI...');
 
-        // Remove the category from cache and UI
         delete cache.categorizedTabs[categoryName];
         const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`)?.parentElement;
         if (categoryGroup) {
           categoryGroup.remove();
         }
 
-        // Update statistics
         if (window.tabAnalyzer?.uiManager) {
           window.tabAnalyzer.uiManager.updateStatistics();
+        }
+
+        // Show appropriate success message
+        const movedCount = result.movedTabs.length;
+        const skippedCount = tabsToMove.length - movedCount;
+        
+        if (skippedCount > 0) {
+          this.showNotification(
+            `Moved ${movedCount} tabs to "${categoryName}" group (${skippedCount} system/new-tab pages skipped)`,
+            'success'
+          );
+        } else {
+          this.showNotification(`Successfully moved ${movedCount} tabs to "${categoryName}" group`, 'success');
         }
       } else {
         throw new Error('Move operation returned success: false');
@@ -331,23 +381,25 @@ class ModalManager {
 
     } catch (error) {
       console.error(`Failed to move tabs for category ${categoryName}:`, error);
-      this.showNotification(`Error moving tabs: ${error.message}`, 'error');
+      
+      // Provide more helpful error messages
+      let errorMsg = error.message;
+      if (errorMsg.includes('system/new-tab pages')) {
+        errorMsg = 'Cannot move system pages or new tab pages. These tabs have been skipped.';
+      }
+      
+      this.showNotification(`Error moving tabs: ${errorMsg}`, 'error');
 
-
-      // Reset button state
       const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
       if (button) {
         button.textContent = '🪟 Move to New Window';
         button.disabled = false;
       }
     }
-    return;
   }
-
 
   updateProgress(progress, processed, total) {
     const categoryList = document.getElementById('predefinedCategoryList');
-
     const message = `🤖 AI analyzing your tabs... (${processed}/${total} tabs, ${progress}%)`;
 
     if (categoryList && categoryList.style.display !== 'none') {
@@ -384,13 +436,11 @@ class ModalManager {
     try {
       await this.tabManager.closeTabs(tabIdsToClose);
 
-      // Remove the category group from the UI
       const categoryGroup = container.querySelector(`.category-header[data-category="${categoryName}"]`)?.parentElement;
       if (categoryGroup) {
         categoryGroup.remove();
       }
 
-      // Update the cache
       delete cache.categorizedTabs[categoryName];
 
     } catch (error) {
@@ -400,11 +450,10 @@ class ModalManager {
   }
 
   showNotification(message, type = 'info') {
-    // Use the main TabAnalyzer's notification system if available
     if (window.tabAnalyzer && typeof window.tabAnalyzer.showNotification === 'function') {
       window.tabAnalyzer.showNotification(message, type);
     } else {
-      // Fallback notification
+      console.log(`[${type.toUpperCase()}] ${message}`);
       alert(`${type.toUpperCase()}: ${message}`);
     }
   }
@@ -427,7 +476,6 @@ class ModalManager {
       const existingGroupTitles = await this.tabManager.getTabGroupTitles();
       const { simplifiedTabs, simplifiedCategories, categoryMap } = await this.categoryManager.simplifyCategoriesAI(currentCategorizedTabs, existingGroupTitles);
 
-      // Check if any actual simplification occurred
       const hasChanges = Object.keys(categoryMap).some(oldCat => categoryMap[oldCat] !== oldCat);
 
       if (!hasChanges) {
@@ -435,10 +483,9 @@ class ModalManager {
         return;
       }
 
-      // Prepare confirmation message
       let confirmationMessage = 'AI proposes the following category simplifications:\n\n';
       for (const oldCat in categoryMap) {
-        if (categoryMap[oldCat] !== oldCat) { // Only show actual changes
+        if (categoryMap[oldCat] !== oldCat) {
           confirmationMessage += `"${oldCat}" -> "${categoryMap[oldCat]}"\n`;
         }
       }
@@ -449,11 +496,9 @@ class ModalManager {
         return;
       }
 
-      // Update cache
       this.predefinedCache.categorizedTabs = simplifiedTabs;
       this.predefinedCache.categories = simplifiedCategories;
 
-      // Re-render the tree
       const container = document.getElementById('predefinedCategoryTree');
       this.renderCategoryTree(this.predefinedCache.categorizedTabs, container, 'Predefined Categories (Simplified)');
 
@@ -486,40 +531,146 @@ class ModalManager {
     const createAllBtn = document.getElementById('createAllGroupsBtn');
     const originalBtnText = createAllBtn.textContent;
     createAllBtn.disabled = true;
-    createAllBtn.textContent = 'Creating...';
 
-    let successCount = 0;
-    let errorCount = 0;
+    try {
+      const result = await this.createGroupsSequentially(categorizedTabs, container, (processed, total, currentCategory) => {
+        createAllBtn.textContent = `Creating ${processed}/${total}...`;
+        console.log(`Progress: ${processed}/${total} - Processing "${currentCategory}"`);
+      });
 
-    // Create a copy of the keys to iterate over, as the underlying collection will be modified.
-    const categoriesToProcess = [...Object.keys(categorizedTabs)];
+      if (result.failureCount > 0) {
+        this.showNotification(
+          `Finished creating groups. Success: ${result.successCount}, Failed: ${result.failureCount}.`,
+          'warning'
+        );
+      } else {
+        this.showNotification(
+          `Successfully created all ${result.successCount} tab groups!`,
+          'success'
+        );
+      }
 
-    for (const categoryName of categoriesToProcess) {
-      const tabsToMove = categorizedTabs[categoryName];
-      if (!tabsToMove || tabsToMove.length === 0) continue;
+      if (Object.keys(this.predefinedCache.categorizedTabs).length === 0) {
+        this.closeModal('predefinedCategoriesModal');
+      }
+
+    } catch (error) {
+      console.error('Error in group creation process:', error);
+      this.showNotification('Failed to create groups. Check console for details.', 'error');
+    } finally {
+      createAllBtn.disabled = false;
+      createAllBtn.textContent = originalBtnText;
+    }
+  }
+
+  async createGroupsSequentially(groupedTabs, container, progressCallback = null) {
+    const categories = Object.keys(groupedTabs);
+    const totalCategories = categories.length;
+    let processedCategories = 0;
+    const results = [];
+
+    console.log(`\n=== Starting sequential group creation for ${totalCategories} categories ===`);
+
+    for (const category of categories) {
+      const tabs = groupedTabs[category];
+
+      if (!tabs || tabs.length === 0) {
+        console.warn(`Skipping empty category: ${category}`);
+        processedCategories++;
+        if (progressCallback) {
+          progressCallback(processedCategories, totalCategories, category);
+        }
+        continue;
+      }
+
+      console.log(`\n--- Processing category: "${category}" (${tabs.length} tabs) ---`);
 
       try {
-        // Re-use the single category move logic
-        await this.handleMoveCategoryToWindow(categoryName, container, false); // Pass false to skip confirmation
-        successCount++;
+        const tabIds = [];
+        for (const tab of tabs) {
+          try {
+            await chrome.tabs.get(tab.id);
+            tabIds.push(tab.id);
+          } catch (error) {
+            console.warn(`Tab ${tab.id} (${tab.title}) no longer exists, skipping`);
+          }
+        }
+
+        if (tabIds.length === 0) {
+          console.warn(`No valid tabs found for category: ${category}`);
+          results.push({
+            category,
+            success: false,
+            error: 'No valid tabs found',
+            skipped: true
+          });
+          processedCategories++;
+          if (progressCallback) {
+            progressCallback(processedCategories, totalCategories, category);
+          }
+          continue;
+        }
+
+        console.log(`Moving ${tabIds.length} tabs to group "${category}"`);
+
+        try {
+          await this.handleMoveCategoryToWindow(category, container, false);
+          
+          results.push({
+            category,
+            success: true,
+            tabCount: tabIds.length
+          });
+
+          console.log(`✓ Successfully created group "${category}" with ${tabIds.length} tabs`);
+        } catch (moveError) {
+          console.error(`✗ Failed to move tabs for "${category}":`, moveError);
+          results.push({
+            category,
+            success: false,
+            error: moveError.message,
+            tabCount: tabIds.length
+          });
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
       } catch (error) {
-        console.error(`Failed to create group for category ${categoryName}:`, error);
-        errorCount++;
+        console.error(`✗ Unexpected error for category "${category}":`, error);
+        results.push({
+          category,
+          success: false,
+          error: error.message
+        });
+      }
+
+      processedCategories++;
+      if (progressCallback) {
+        progressCallback(processedCategories, totalCategories, category);
       }
     }
 
-    createAllBtn.disabled = false;
-    createAllBtn.textContent = originalBtnText;
+    const successCount = results.filter(r => r.success).length;
+    const failureCount = results.filter(r => !r.success).length;
 
-    if (errorCount > 0) {
-      this.showNotification(`Finished creating groups. Success: ${successCount}, Failed: ${errorCount}.`, 'error');
-    } else {
-      this.showNotification(`Successfully created all ${successCount} tab groups.`, 'success');
-    }
+    console.log(`\n=== Group Creation Summary ===`);
+    console.log(`Total categories: ${totalCategories}`);
+    console.log(`Successful: ${successCount}`);
+    console.log(`Failed: ${failureCount}`);
 
-    // Close modal if all categories were processed
-    if (Object.keys(this.predefinedCache.categorizedTabs).length === 0) {
-      this.closeModal('predefinedCategoriesModal');
-    }
+    results.forEach(result => {
+      if (result.success) {
+        console.log(`  ✓ ${result.category}: ${result.tabCount} tabs`);
+      } else {
+        console.log(`  ✗ ${result.category}: ${result.error}`);
+      }
+    });
+
+    return {
+      results,
+      successCount,
+      failureCount,
+      totalCategories
+    };
   }
 }

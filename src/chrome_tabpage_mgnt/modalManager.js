@@ -16,18 +16,41 @@ class ModalManager {
     document.getElementById('predefinedCategoriesBtn')?.addEventListener('click', () => this.openPredefinedCategoriesModal());
     document.getElementById('simplifyCategoriesBtn')?.addEventListener('click', () => this.handleSimplifyCategories());
     document.getElementById('createAllGroupsBtn')?.addEventListener('click', () => this.handleCreateAllGroups());
-    document.getElementById('closePredefinedCategoriesModal')?.addEventListener('click', () => this.closeModal('predefinedCategoriesModal'));
+    document.getElementById('closePredefinedCategoriesModal')?.addEventListener('click', async () => {
+      await this.closeModal('predefinedCategoriesModal');
+    });
 
-    // Close modals on outside click
-    window.addEventListener('click', (e) => {
+    // Close modals on outside click with refresh
+    window.addEventListener('click', async (e) => {
       if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
+        const modalId = e.target.id;
+        if (modalId) {
+          await this.closeModal(modalId);
+        } else {
+          e.target.style.display = 'none';
+        }
       }
     });
   }
 
-  closeModal(modalId) {
+  async closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
+    
+    // Refresh tab list when closing predefined categories modal
+    if (modalId === 'predefinedCategoriesModal') {
+      console.log('Closing predefined categories modal, refreshing tab list...');
+      try {
+        await this.tabManager.loadAllTabs();
+        
+        if (window.tabAnalyzer?.uiManager) {
+          window.tabAnalyzer.uiManager.updateStatistics();
+          window.tabAnalyzer.uiManager.renderTabList();
+          console.log('Tab list refreshed successfully');
+        }
+      } catch (error) {
+        console.error('Failed to refresh tab list:', error);
+      }
+    }
   }
 
   async openPredefinedCategoriesModal() {
@@ -558,7 +581,7 @@ class ModalManager {
 
       // Close modal if all categories processed
       if (Object.keys(this.predefinedCache.categorizedTabs).length === 0) {
-        this.closeModal('predefinedCategoriesModal');
+        await this.closeModal('predefinedCategoriesModal');
       }
 
     } catch (error) {

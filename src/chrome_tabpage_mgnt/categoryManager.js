@@ -1,4 +1,4 @@
-// categoryManager.js - Fixed Version
+// categoryManager.js - Fixed AI Response Mapping
 class CategoryManager {
     constructor(tabManager, aiManager) {
         console.log('CategoryManager: Initializing with tabManager and aiManager');
@@ -177,6 +177,7 @@ class CategoryManager {
                         result = await this.aiManager.generateCategoriesWithCustomPrompt(customPrompt, tabInfo);
                     }
 
+                    console.log(`CategoryManager: Chunk ${index + 1} AI response:`, result);
                     console.log(`CategoryManager: Chunk ${index + 1} generated categories:`, result.categories);
 
                     processedTabs += chunk.length;
@@ -187,8 +188,11 @@ class CategoryManager {
 
                     // Parse the mapping to create direct index -> category map
                     const indexToCategoryMap = {};
+                    
                     if (result.mapping && Array.isArray(result.mapping)) {
-                        result.mapping.forEach(mappingEntry => {
+                        console.log(`CategoryManager: Processing ${result.mapping.length} mapping entries`);
+                        
+                        result.mapping.forEach((mappingEntry, mappingIdx) => {
                             // mappingEntry format: "tabId\windowId\domain\title\url_ext|CategoryName"
                             const parts = mappingEntry.split('|');
                             if (parts.length === 2) {
@@ -199,10 +203,19 @@ class CategoryManager {
                                 const tabIdx = tabInfoList.findIndex(t => t.formatted === tabInfoPart);
                                 if (tabIdx !== -1) {
                                     indexToCategoryMap[tabIdx] = categoryName;
+                                    console.log(`  Mapped index ${tabIdx} -> "${categoryName}"`);
+                                } else {
+                                    console.warn(`  Could not find tab for mapping entry: ${tabInfoPart.substring(0, 50)}...`);
                                 }
+                            } else {
+                                console.warn(`  Invalid mapping format at index ${mappingIdx}:`, mappingEntry);
                             }
                         });
+                    } else {
+                        console.warn(`CategoryManager: No mapping array in AI response, using fallback distribution`);
                     }
+
+                    console.log(`CategoryManager: Created indexToCategoryMap with ${Object.keys(indexToCategoryMap).length} entries:`, indexToCategoryMap);
 
                     return {
                         categories: result.categories,
@@ -346,11 +359,13 @@ class CategoryManager {
                 // Use direct mapping from AI response if available
                 let assignedCategory = indexToCategoryMap[tabIndex];
                 
-                // Fallback: distribute evenly if no mapping
-                if (!assignedCategory && assignedCategories.length > 0) {
-                    const categoryIndex = tabIndex % assignedCategories.length;
-                    assignedCategory = assignedCategories[categoryIndex];
-                    console.warn(`CategoryManager: No direct mapping for tab ${tabIndex}, using fallback: ${assignedCategory}`);
+                if (!assignedCategory) {
+                    console.warn(`CategoryManager: No direct mapping for tab ${tabIndex}, using fallback distribution`);
+                    // Fallback: distribute evenly if no mapping
+                    if (assignedCategories.length > 0) {
+                        const categoryIndex = tabIndex % assignedCategories.length;
+                        assignedCategory = assignedCategories[categoryIndex];
+                    }
                 }
                 
                 // Final fallback: use first category

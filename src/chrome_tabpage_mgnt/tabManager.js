@@ -1,4 +1,4 @@
-// tabManager.js - Fixed Window Validation
+// tabManager.js - Fixed Multi-Window Support
 class TabManager {
   constructor() {
     this.tabs = [];
@@ -10,11 +10,17 @@ class TabManager {
       const windows = await chrome.windows.getAll({ populate: true });
       this.tabs = [];
       let skippedSystemTabs = 0;
+      let skippedGroupedTabs = 0;
+
+      console.log(`TabManager: Loading tabs from ${windows.length} windows`);
 
       for (const window of windows) {
+        console.log(`TabManager: Processing window ${window.id} with ${window.tabs.length} tabs`);
+        
         for (const tab of window.tabs) {
           // Skip tabs that are already grouped
           if (tab.groupId !== -1) {
+            skippedGroupedTabs++;
             continue;
           }
           
@@ -29,8 +35,12 @@ class TabManager {
         }
       }
 
+      console.log(`TabManager: Loaded ${this.tabs.length} ungrouped tabs from ${windows.length} windows`);
+      if (skippedGroupedTabs > 0) {
+        console.log(`TabManager: Skipped ${skippedGroupedTabs} already-grouped tabs`);
+      }
       if (skippedSystemTabs > 0) {
-        console.log(`TabManager: Loaded ${this.tabs.length} tabs (skipped ${skippedSystemTabs} system/new-tab pages)`);
+        console.log(`TabManager: Skipped ${skippedSystemTabs} system/new-tab pages`);
       }
 
       this.filteredTabs = [...this.tabs];
@@ -412,13 +422,19 @@ class TabManager {
         }
       }
 
-      // STEP 9: Update internal state
+      // STEP 9: Update internal state - REMOVE grouped tabs from internal list
       finalTabIdsToGroup.forEach(tabId => {
-        const existingTab = this.tabs.find(t => t.id === tabId);
-        if (existingTab) {
-          existingTab.windowId = targetWindowId;
+        const tabIndex = this.tabs.findIndex(t => t.id === tabId);
+        if (tabIndex !== -1) {
+          this.tabs.splice(tabIndex, 1);
+        }
+        const filteredIndex = this.filteredTabs.findIndex(t => t.id === tabId);
+        if (filteredIndex !== -1) {
+          this.filteredTabs.splice(filteredIndex, 1);
         }
       });
+
+      console.log(`TabManager: Removed ${finalTabIdsToGroup.length} grouped tabs from internal list`);
 
       // STEP 10: Focus the window (with error handling)
       try {

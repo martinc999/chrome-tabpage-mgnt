@@ -1,4 +1,4 @@
-// modalManager.js - Fixed CSP Violations
+// modalManager.js - Fixed Multi-Window Support
 class ModalManager {
   constructor(tabManager, aiManager, categoryManager) {
     this.tabManager = tabManager;
@@ -130,7 +130,6 @@ class ModalManager {
     const systemPageClass = isSystemPage ? 'system-page' : '';
     const systemPageIndicator = isSystemPage ? '<span class="system-page-badge" title="System page - cannot be moved">🔒</span>' : '';
     
-    // FIXED: Removed inline onerror handler
     return `
       <div class="category-tab-item ${systemPageClass}" data-tab-id="${tab.id}">
         <img src="${tab.favicon}" class="category-tab-favicon" alt="" data-default-favicon="true">
@@ -167,14 +166,14 @@ class ModalManager {
     return systemPatterns.some(pattern => url.startsWith(pattern)) || url.length < 10;
   }
 
-  // NEW: Handle favicon errors with proper event listeners
+  // Handle favicon errors with proper event listeners
   attachFaviconErrorHandlers(container) {
     const defaultFavicon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjZGRkIiByeD0iMiIvPgo8L3N2Zz4K';
     
     container.querySelectorAll('.category-tab-favicon[data-default-favicon]').forEach(img => {
       img.addEventListener('error', function() {
         this.src = defaultFavicon;
-        this.removeAttribute('data-default-favicon'); // Prevent infinite loop
+        this.removeAttribute('data-default-favicon');
       });
     });
   }
@@ -536,6 +535,15 @@ class ModalManager {
         console.log(`Progress: ${processed}/${total} - Processing "${currentCategory}"`);
       });
 
+      // After all groups are created, refresh the tab list
+      console.log('All groups created, refreshing tab list...');
+      await this.tabManager.loadAllTabs();
+      
+      if (window.tabAnalyzer?.uiManager) {
+        window.tabAnalyzer.uiManager.updateStatistics();
+        window.tabAnalyzer.uiManager.renderTabList();
+      }
+
       if (result.failureCount > 0) {
         this.showNotification(
           `Finished creating groups. Success: ${result.successCount}, Failed: ${result.failureCount}.`,
@@ -543,11 +551,12 @@ class ModalManager {
         );
       } else {
         this.showNotification(
-          `Successfully created all ${result.successCount} tab groups!`,
+          `Successfully created all ${result.successCount} tab groups! All ungrouped tabs have been organized.`,
           'success'
         );
       }
 
+      // Close modal if all categories processed
       if (Object.keys(this.predefinedCache.categorizedTabs).length === 0) {
         this.closeModal('predefinedCategoriesModal');
       }

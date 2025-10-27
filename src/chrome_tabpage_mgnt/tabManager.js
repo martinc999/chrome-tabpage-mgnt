@@ -16,20 +16,20 @@ class TabManager {
 
       for (const window of windows) {
         console.log(`TabManager: Processing window ${window.id} with ${window.tabs.length} tabs`);
-        
+
         for (const tab of window.tabs) {
           // Skip tabs that are already grouped
           if (tab.groupId !== -1) {
             skippedGroupedTabs++;
             continue;
           }
-          
+
           // Skip system pages and new tab pages
           if (!this.isMovableTab(tab)) {
             skippedSystemTabs++;
             continue;
           }
-          
+
           const tabData = await this.enrichTabData(tab, window.id);
           this.tabs.push(tabData);
         }
@@ -61,7 +61,7 @@ class TabManager {
       favicon: tab.favIconUrl || this.getDefaultFavicon(),
       isActive: tab.active,
       isPinned: tab.pinned,
-      description: await this.extractPageDescription(tab),
+      description: 'Description will be loaded on demand', // Placeholder
       domain: this.extractDomain(tab.url),
       category: 'uncategorized'
     };
@@ -245,18 +245,18 @@ class TabManager {
       // STEP 1: Verify all tabs exist and collect ONLY movable tabs
       const validTabs = [];
       const skippedTabs = [];
-      
+
       for (const tabId of tabIds) {
         try {
           const tab = await chrome.tabs.get(tabId);
-          
+
           // Check if tab can be moved
           if (!this.isMovableTab(tab)) {
             console.warn(`TabManager: Tab ${tabId} "${tab.title}" is a system/new-tab page, skipping`);
             skippedTabs.push({ id: tab.id, title: tab.title, url: tab.url, reason: 'system_page' });
             continue;
           }
-          
+
           validTabs.push(tab);
         } catch (error) {
           console.warn(`TabManager: Tab ${tabId} no longer exists, skipping`);
@@ -308,21 +308,21 @@ class TabManager {
       if (!targetWindowId) {
         console.log(`TabManager: Creating new window for category "${categoryName}"`);
         const firstTab = validTabs[0];
-        
+
         const newWindow = await chrome.windows.create({
           tabId: firstTab.id,
           focused: true
         });
-        
+
         targetWindowId = newWindow.id;
-        
+
         // Remove first tab from list (already in new window)
         validTabs.shift();
-        
+
         console.log(`TabManager: Created new window ${targetWindowId}`);
-        
+
         // Wait for window to stabilize
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
       // STEP 4: Verify target window still exists before moving tabs
@@ -336,12 +336,12 @@ class TabManager {
 
       if (validTabs.length > 0) {
         const tabIdsToMove = validTabs.map(t => t.id);
-        
+
         // Move in batches to avoid overwhelming the API
         const batchSize = 10;
         for (let i = 0; i < tabIdsToMove.length; i += batchSize) {
           const batch = tabIdsToMove.slice(i, i + batchSize);
-          
+
           try {
             // Verify window still exists before each batch
             if (!await this.windowExists(targetWindowId)) {
@@ -353,13 +353,13 @@ class TabManager {
               index: -1
             });
 
-            const movedIds = Array.isArray(movedTabs) 
-              ? movedTabs.map(t => t.id) 
+            const movedIds = Array.isArray(movedTabs)
+              ? movedTabs.map(t => t.id)
               : [movedTabs.id];
-            
+
             movedTabIds.push(...movedIds);
             console.log(`TabManager: Moved batch ${Math.floor(i / batchSize) + 1}, total moved: ${movedTabIds.length}`);
-            
+
             // Small delay between batches
             if (i + batchSize < tabIdsToMove.length) {
               await new Promise(resolve => setTimeout(resolve, 100));
@@ -381,7 +381,7 @@ class TabManager {
       console.log(`TabManager: All tabs moved. Found ${finalTabIdsToGroup.length} tabs to group in window ${targetWindowId}`);
 
       // Wait for tabs to settle before grouping
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // STEP 7: Verify window still exists before grouping
       if (!await this.windowExists(targetWindowId)) {

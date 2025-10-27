@@ -18,7 +18,7 @@ class ModalManager {
     console.log('Refreshing tab list...');
     try {
       await this.tabManager.loadAllTabs();
-      
+
       if (window.tabAnalyzer?.uiManager) {
         window.tabAnalyzer.uiManager.updateStatistics();
         window.tabAnalyzer.uiManager.renderTabList();
@@ -55,7 +55,7 @@ class ModalManager {
 
   async closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
-    
+
     // Refresh tab list when closing predefined categories modal
     if (modalId === 'predefinedCategoriesModal') {
       await this.refreshTabList();
@@ -161,7 +161,7 @@ class ModalManager {
     const systemPageClass = isSystemPage ? 'system-page' : '';
     const systemPageIndicator = isSystemPage ? '<span class="system-page-badge" title="System page - cannot be moved">🔒</span>' : '';
     const faviconUrl = this.getSafeFaviconUrl(tab);
-    
+
     return `
       <div class="category-tab-item ${systemPageClass}" data-tab-id="${tab.id}">
         <img src="${faviconUrl}" class="category-tab-favicon" alt="" data-domain="${tab.domain}" data-original-favicon="${tab.favicon}">
@@ -199,7 +199,7 @@ class ModalManager {
 
   isSystemPage(url) {
     if (!url) return false;
-    
+
     const systemPatterns = [
       'chrome://',
       'chrome-extension://',
@@ -213,15 +213,15 @@ class ModalManager {
       'about:newtab',
       'about:blank'
     ];
-    
+
     return systemPatterns.some(pattern => url.startsWith(pattern)) || url.length < 10;
   }
 
   attachFaviconErrorHandlers(container) {
     const defaultFavicon = this.getDefaultFavicon();
-    
+
     container.querySelectorAll('.category-tab-favicon[data-default-favicon]').forEach(img => {
-      img.addEventListener('error', function() {
+      img.addEventListener('error', function () {
         this.src = defaultFavicon;
         this.removeAttribute('data-default-favicon');
       });
@@ -257,7 +257,7 @@ class ModalManager {
         nameSpan.setAttribute('contenteditable', 'true');
         nameSpan.setAttribute('data-original-name', oldName);
         nameSpan.focus();
-        
+
         const range = document.createRange();
         range.selectNodeContents(nameSpan);
         const selection = window.getSelection();
@@ -403,14 +403,14 @@ class ModalManager {
         }
 
         // ✅ Wait for Chrome to complete grouping before refreshing
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         // ✅ REFRESH TAB LIST AFTER SUCCESSFUL MOVE
         await this.refreshTabList();
 
         const movedCount = result.movedTabs.length;
         const skippedCount = tabsToMove.length - movedCount;
-        
+
         if (skippedCount > 0) {
           console.log(`✓ Moved ${movedCount} tabs to "${categoryName}" group (${skippedCount} system/new-tab pages skipped)`);
         } else {
@@ -422,12 +422,12 @@ class ModalManager {
 
     } catch (error) {
       console.error(`Failed to move tabs for category ${categoryName}:`, error);
-      
+
       let errorMsg = error.message;
       if (errorMsg.includes('system/new-tab pages')) {
         errorMsg = 'Cannot move system pages or new tab pages. These tabs have been skipped.';
       }
-      
+
       this.showNotification(`Error moving tabs: ${errorMsg}`, 'error');
 
       const button = container.querySelector(`.move-category-to-window-btn[data-category-name="${this.escapeHtml(categoryName)}"]`);
@@ -484,8 +484,8 @@ class ModalManager {
       delete cache.categorizedTabs[categoryName];
 
       // ✅ Wait for Chrome to complete closing tabs
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       // ✅ REFRESH TAB LIST AFTER SUCCESSFUL CLOSE
       await this.refreshTabList();
 
@@ -586,8 +586,8 @@ class ModalManager {
 
       // ✅ Wait for all Chrome operations to complete
       console.log('All groups created, waiting for Chrome to stabilize...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       // ✅ REFRESH TAB LIST AFTER ALL GROUPS ARE CREATED
       console.log('Refreshing tab list...');
       await this.refreshTabList();
@@ -670,7 +670,7 @@ class ModalManager {
 
         try {
           await this.handleMoveCategoryToWindow(category, container, false);
-          
+
           results.push({
             category,
             success: true,
@@ -688,7 +688,7 @@ class ModalManager {
           });
         }
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
       } catch (error) {
         console.error(`✗ Unexpected error for category "${category}":`, error);
